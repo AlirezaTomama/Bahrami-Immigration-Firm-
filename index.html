@@ -509,7 +509,7 @@ footer .foot-legal a{color:var(--spruce);font-weight:600;text-decoration:none}
               <div class="field"><label for="wCad" data-t="w_cad">Canadian skilled work (last 3 years)</label>
                 <select id="wCad"><option value="0" data-t="o_none">None</option><option value="1" selected data-t="y_1">1 year</option><option value="2" data-t="y_2">2 years</option><option value="3" data-t="y_3p">3+ years</option></select></div>
               <div class="field"><label for="wOffer" data-t="w_offer">Job offer in Canada</label>
-                <select id="wOffer"><option value="no" selected data-t="o_none">None</option><option value="bc" data-t="of_bc">Full-time permanent offer in BC (TEER 1–3)</option><option value="other" data-t="of_other">Offer in another province</option></select></div>
+                <select id="wOffer"><option value="no" selected data-t="o_none">None</option><option value="bc" data-t="of_bc">Full-time, indeterminate offer in BC (TEER 0–3)</option><option value="other" data-t="of_other">Offer in another province</option></select></div>
             </div>
             <p class="note" data-t="w3_note">Since March 25, 2025 a job offer adds <strong>0 CRS points</strong> — but it still matters for BC PNP and FSW-grid eligibility, so we ask.</p>
           </div>
@@ -518,7 +518,7 @@ footer .foot-legal a{color:var(--spruce);font-weight:600;text-decoration:none}
             <h3 data-t="w4_h">Money &amp; preferences</h3>
             <div class="grid2">
               <div class="field"><label for="wProv" data-t="w_prov">Preferred province</label>
-                <select id="wProv"><option selected data-t="p_bc">British Columbia</option><option data-t="p_on">Ontario</option><option data-t="p_ab">Alberta</option><option data-t="p_atl">Atlantic provinces</option><option data-t="p_np">No preference</option></select></div>
+                <select id="wProv"><option value="bc" selected data-t="p_bc">British Columbia</option><option value="on" data-t="p_on">Ontario</option><option value="ab" data-t="p_ab">Alberta</option><option value="sk" data-t="p_sk">Saskatchewan</option><option value="mb" data-t="p_mb">Manitoba</option><option value="atl" data-t="p_atl">Atlantic provinces</option><option value="np" data-t="p_np">No preference</option></select></div>
               <div class="field"><label for="wFunds" data-t="w_funds">Liquid settlement funds available</label>
                 <select id="wFunds"><option value="0" data-t="f_0">Under CAD $15,263</option><option value="1" selected>$15,263 – $50K</option><option value="2">$50K – $300K</option><option value="3">$300K+</option></select></div>
             </div>
@@ -568,7 +568,7 @@ footer .foot-legal a{color:var(--spruce);font-weight:600;text-decoration:none}
     </div>
     <div id="compareBox" style="margin-bottom:26px"></div>
     <div id="progLib"></div>
-    <p class="src" style="margin-top:10px" data-t="pg_src">Requirement data: IRCC program pages &amp; WelcomeBC, verified Sep 2026. In production this library is CMS-managed with per-rule source links and a review date on every entry.</p>
+    <p class="src" style="margin-top:10px" data-t="pg_src">BC PNP requirements verified against the official WelcomeBC pages (workers: May 28, 2026; entrepreneurs: Sep 10, 2025); federal criteria per IRCC pages, Sep 2026. This engine evaluates BC in depth and other provinces (OINP, AAIP, SINP, MPNP, AIP, Quebec) at overview level, verified Sep 2026 — full stream scoring happens in consultation. In production this library is CMS-managed with per-rule source links.</p>
     <div style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap">
       <a class="btn btn-primary" href="#/booking" data-t="pg_cta1">Continue — Book (Step 3)</a>
       <a class="btn btn-quiet" href="#/tools" data-t="pg_cta2">Check my CRS &amp; costs first</a>
@@ -1039,9 +1039,9 @@ w3_h:'سابقه کار',w_teer:'سطح مهارت شغل (NOC TEER)',t_01:'TEER
 w_sector:'حوزه کاری',s_tech:'فناوری / مهندسی',s_health:'درمان و سلامت',s_edu:'آموزش',s_trades:'مشاغل فنی و ساخت',
 w_exp:'سابقه کار ماهر خارج از کانادا',y_12:'۱–۲ سال',y_3p:'۳+ سال',
 w_cad:'کار ماهر در کانادا (۳ سال اخیر)',y_1:'۱ سال',y_2:'۲ سال',
-w_offer:'جاب آفر در کانادا',of_bc:'آفر تمام‌وقت دائمی در BC (TEER 1–3)',of_other:'آفر در استان دیگر',
+w_offer:'جاب آفر در کانادا',of_bc:'آفر تمام‌وقت بدون تاریخ پایان در BC (TEER 0–3)',of_other:'آفر در استان دیگر',
 w3_note:'از ۲۵ مارس ۲۰۲۵ جاب آفر <strong>صفر امتیاز CRS</strong> دارد — ولی برای BC PNP و جدول FSW هنوز مهم است، برای همین می‌پرسیم.',
-w4_h:'تمکن مالی و ترجیح‌ها',w_prov:'استان مورد نظر',p_bc:'بریتیش کلمبیا',p_on:'انتاریو',p_ab:'آلبرتا',p_atl:'استان‌های آتلانتیک',p_np:'فرقی ندارد',
+w4_h:'تمکن مالی و ترجیح‌ها',w_prov:'استان مورد نظر',p_bc:'بریتیش کلمبیا',p_on:'انتاریو',p_ab:'آلبرتا',p_sk:'ساسکاچوان',p_mb:'منیتوبا',p_atl:'استان‌های آتلانتیک',p_np:'فرقی ندارد',
 w_funds:'تمکن مالی نقد در دسترس',f_0:'زیر ۱۵٬۲۶۳ دلار کانادا',
 w4_note:'۱۵٬۲۶۳ دلار خط تمکن مالی ۲۰۲۶ برای متقاضی مجرد FSW/FST است (CEC معاف است). ۳۰۰ هزار دلار به بالا مسیر کارآفرینی منطقه‌ای BC را باز می‌کند؛ مسیر اصلی ۶۰۰ هزار دلار دارایی خالص می‌خواهد.',
 w5_h:'مرور و رضایت',
@@ -1053,7 +1053,7 @@ snap_cta1:'ادامه — مقایسه برنامه‌های منطبق من',sn
 snap_note:'پاسخ‌هایتان جلو می‌آید — فرم رزرو، چک‌لیست، هشدارها و دستیار هوشمند همه از همین پروفایل استفاده می‌کنند. این مرحله را تکرار نمی‌کنید.',
 pg_k:'قدم ۲ از ۳ — مقایسه',pg_h:'شروط برنامه‌ها و وضعیت شما',
 pg_p:'هر شرطی که پایین می‌بینید، وضعیت برنامه در سپتامبر ۲۰۲۶ است و تغییرات امسال علامت خورده. ارزیابی را کامل کنید تا وضعیت شخصی‌تان روی هر کارت بنشیند.',
-pg_src:'منبع شروط: صفحات IRCC و WelcomeBC، راستی‌آزمایی سپتامبر ۲۰۲۶. در نسخه نهایی این کتابخانه با CMS مدیریت می‌شود؛ هر قانون لینک منبع و تاریخ بازبینی دارد.',
+pg_src:'شروط BC PNP با صفحات رسمی WelcomeBC راستی‌آزمایی شد (کارگری: ۲۸ مه ۲۰۲۶؛ کارآفرینی: ۱۰ سپتامبر ۲۰۲۵)؛ شروط فدرال طبق صفحات IRCC، سپتامبر ۲۰۲۶. این موتور BC را عمیق و استان‌های دیگر (OINP، AAIP، SINP، MPNP، AIP، کبک) را در سطح مرور ارزیابی می‌کند — راستی‌آزمایی سپتامبر ۲۰۲۶؛ امتیازدهی کامل هر استریم در جلسه مشاوره انجام می‌شود. در نسخه نهایی، کتابخانه با CMS و لینک منبع هر قانون مدیریت می‌شود.',
 pg_cta1:'ادامه — رزرو (قدم ۳)',pg_cta2:'اول CRS و هزینه‌هایم را ببینم',
 tl_k:'ابزارها',tl_h:'قبل از تصمیم، اعدادتان را بدانید',
 tl_p:'موتور CRS از مقادیر رسمی جدول بعد از حذف امتیاز جاب آفر (۲۵ مارس ۲۰۲۵) استفاده می‌کند. هزینه‌ها افزایش ۳۰ آوریل ۲۰۲۶ را لحاظ کرده‌اند.',
@@ -1199,7 +1199,7 @@ const DATA={
   eeRprf:{label:['Right of Permanent Residence Fee','هزینه حق اقامت دائم (RPRF)'],amt:600},
   eeSpouse:{label:['Spouse — processing + RPRF','همسر — پردازش + RPRF'],amt:1590},
   eeChild:{label:['Dependent child (each)','فرزند همراه (هر نفر)'],amt:270,approx:true},
-  bcpnp:{label:['BC PNP application fee (since Jan 22, 2026)','هزینه درخواست BC PNP (از ۲۲ ژانویه ۲۰۲۶)'],amt:2000},
+  bcpnp:{label:['BC PNP Skills application fee (registration free; review $500)','هزینه درخواست BC PNP (ثبت‌نام رایگان؛ بازبینی ۵۰۰ دلار)'],amt:1750},
   bio1:{label:['Biometrics (individual)','بایومتریک (فردی)'],amt:85},
   bioFam:{label:['Biometrics (family max)','بایومتریک (سقف خانواده)'],amt:170},
   study:{label:['Study permit processing fee','هزینه پردازش ویزای تحصیلی'],amt:150},
@@ -1211,7 +1211,7 @@ const DATA={
  processing:[
   {p:['Express Entry — CEC','اکسپرس انتری — CEC'],hist:['5 months','۵ ماه'],fwd:['~6–7 months','حدود ۶–۷ ماه'],tag:'ok',t:['Stable','پایدار']},
   {p:['Express Entry — FSW','اکسپرس انتری — FSW'],hist:['6 months','۶ ماه'],fwd:['~8 months','حدود ۸ ماه'],tag:'warn',t:['Slowing','رو به کندی']},
-  {p:['BC PNP nomination (Skills Immigration)','نامزدی BC PNP'],hist:['2–3 months','۲–۳ ماه'],fwd:['~3 months','حدود ۳ ماه'],tag:'ok',t:['Stable','پایدار']},
+  {p:['BC PNP nomination (Skills Immigration)','نامزدی BC PNP'],hist:['3 months (80% of cases)','۳ ماه (۸۰٪ پرونده‌ها)'],fwd:['~3 months','حدود ۳ ماه'],tag:'ok',t:['Official — WelcomeBC','رسمی — WelcomeBC']},
   {p:['Study permit (outside Canada)','ویزای تحصیلی (خارج از کانادا)'],hist:['9 weeks','۹ هفته'],fwd:['~11 weeks','حدود ۱۱ هفته'],tag:'ok',t:['Stable','پایدار']},
   {p:['Spousal sponsorship (outland)','اسپانسرشیپ همسر (خارج کانادا)'],hist:['11 months','۱۱ ماه'],fwd:['~12 months','حدود ۱۲ ماه'],tag:'ok',t:['Stable','پایدار']},
   {p:['Visitor visa (Iran)','ویزای ویزیتوری (ایران)'],hist:['4 months','۴ ماه'],fwd:['varies','متغیر'],tag:'warn',t:['Volatile','نوسانی']}
@@ -1221,7 +1221,7 @@ const DATA={
   {d:['Apr 23, 2026','۲۳ آوریل ۲۰۲۶'],t:['BC PNP pivots to healthcare & trades','چرخش BC PNP به درمان و مشاغل فنی'],m:['Entry Level & Semi-Skilled closed; graduate/tech streams cancelled. 2026 allocation ≈ 5,254. Health, childcare, construction and veterinary occupations get targeted draws.','مسیر ELSS بسته شد؛ مسیرهای فارغ‌التحصیلی/تک لغو شدند. سهمیه ۲۰۲۶ حدود ۵٬۲۵۴. درمان، مراقبت کودک، ساخت‌وساز و دامپزشکی دراوهای هدفمند می‌گیرند.']},
   {d:['Mar 2026','مارس ۲۰۲۶'],t:['IRCC signals job-offer points may return','احتمال بازگشت امتیاز جاب آفر از نگاه IRCC'],m:['The 2026–27 Departmental Plan proposes reintroducing CRS points for high-wage job offers. Nothing in force yet — a job offer still adds 0 points today.','برنامه ۲۰۲۶–۲۷ وزارتخانه بازگرداندن امتیاز برای آفرهای پردرآمد را پیشنهاد داده. هنوز اجرایی نیست — امروز جاب آفر همچنان صفر امتیاز دارد.']},
   {d:['Feb 18, 2026','۱۸ فوریه ۲۰۲۶'],t:['2026 Express Entry categories announced','اعلام دسته‌های ۲۰۲۶ اکسپرس انتری'],m:['French, healthcare & social services, education, and trades continue as category-based draws — often with lower cut-offs than general rounds.','فرانسه، درمان و خدمات اجتماعی، آموزش و مشاغل فنی به‌عنوان دراوهای دسته‌ای ادامه دارند — معمولاً با کات‌آف پایین‌تر از دراوهای عمومی.']},
-  {d:['Jan 1, 2026','۱ ژانویه ۲۰۲۶'],t:['Start-Up Visa closed to new applicants','بسته شدن استارت‌آپ ویزا برای متقاضیان جدید'],m:['A targeted entrepreneur pilot is expected to replace it. Today the real routes are PNP entrepreneur streams (BC Base $600K net worth / Regional $300K) and the C11 work permit.','قرار است یک پایلوت کارآفرینی هدفمند جایگزینش شود. امروز مسیرهای واقعی، کارآفرینی استانی (BC اصلی ۶۰۰ هزار دلار دارایی خالص / منطقه‌ای ۳۰۰ هزار) و ورک پرمیت C11 هستند.']},
+  {d:['Jan 1, 2026','۱ ژانویه ۲۰۲۶'],t:['Start-Up Visa closed to new applicants','بسته شدن استارت‌آپ ویزا برای متقاضیان جدید'],m:['A targeted entrepreneur pilot is expected to replace it. Today the real routes are PNP entrepreneur streams (BC Base: $600K net worth, $200K investment / Regional: $300K net worth, $100K investment) and the C11 work permit.','قرار است یک پایلوت کارآفرینی هدفمند جایگزینش شود. امروز مسیرهای واقعی، کارآفرینی استانی (BC اصلی: ۶۰۰ هزار دلار دارایی + ۲۰۰ هزار سرمایه‌گذاری / منطقه‌ای: ۳۰۰ هزار دارایی + ۱۰۰ هزار سرمایه‌گذاری) و ورک پرمیت C11 هستند.']},
   {d:['Sep 1, 2026','۱ سپتامبر ۲۰۲۶'],t:['Study permit proof of funds now $23,448','تمکن مالی ویزای تحصیلی: ۲۳٬۴۴۸ دلار'],m:['Single applicant outside Quebec, on top of first-year tuition and travel.','برای متقاضی مجرد خارج از کبک، علاوه بر شهریه سال اول و هزینه سفر.']},
   {d:['Mar 25, 2025','۲۵ مارس ۲۰۲۵'],t:['Job offer points removed from CRS','حذف امتیاز جاب آفر از CRS'],m:['The 50/200 arranged-employment points are gone. Any calculator still counting them is wrong.','امتیازهای ۵۰/۲۰۰ حذف شدند. هر محاسبه‌گری که هنوز آن‌ها را می‌شمارد، غلط است.']}
  ]
@@ -1322,14 +1322,18 @@ function evaluatePrograms(p){
   }
   if(p.offer==='bc'&&p.teer!=='45'){
     const pri=(p.sector==='health'||p.sector==='trades');
-    out.push({id:'bcpnp',name:L('BC PNP — Skilled Worker (Express Entry BC)','BC PNP — نیروی ماهر (EEBC)'),cls:pri?'strong':'possible',
-      tag:pri?['tag-ok',L('Priority occupation','شغل اولویت‌دار')]:['tag-warn',L('Eligible — draw-dependent','واجد شرایط — وابسته به دراو')],
-      detail:L('BC job offer confirmed. Nomination adds <strong>+600 CRS</strong>. 2026: allocation cut to ≈5,254, wage-weighted SIRS scoring, priority to healthcare, childcare, construction & trades. Application fee $2,000.','جاب آفر BC دارید. نامزدی <strong>+۶۰۰ امتیاز</strong> می‌دهد. ۲۰۲۶: سهمیه حدود ۵٬۲۵۴، امتیازدهی SIRS با وزن دستمزد، اولویت با درمان، مراقبت کودک، ساخت‌وساز و مشاغل فنی. هزینه درخواست ۲٬۰۰۰ دلار.'),
-      missing:pri?[]:[L('2026 draws favour Care/Build/Innovate occupations — your sector may wait longer between rounds','دراوهای ۲۰۲۶ به مشاغل Care/Build/Innovate اولویت می‌دهند — حوزه شما ممکن است بین دراوها بیشتر منتظر بماند')]});
+    const exp2=(p.forYrs+p.cad)>=2;
+    const bmiss=[];
+    if(!exp2)bmiss.push(L('minimum 2 years of full-time equivalent work experience (WelcomeBC)','حداقل ۲ سال سابقه کار معادل تمام‌وقت (WelcomeBC)'));
+    if(!pri)bmiss.push(L('2026 draws favour Care/Build/Innovate occupations — your sector may wait longer between rounds','دراوهای ۲۰۲۶ به مشاغل Care/Build/Innovate اولویت می‌دهند — حوزه شما ممکن است بین دراوها بیشتر منتظر بماند'));
+    out.push({id:'bcpnp',name:L('BC PNP — Skilled Worker (Express Entry BC)','BC PNP — نیروی ماهر (EEBC)'),cls:(pri&&exp2)?'strong':(exp2?'possible':'no'),
+      tag:(pri&&exp2)?['tag-ok',L('Priority occupation','شغل اولویت‌دار')]:(exp2?['tag-warn',L('Eligible — draw-dependent','واجد شرایط — وابسته به دراو')]:['tag-bad',L('Not yet eligible','هنوز واجد شرایط نیست')]),
+      detail:L('BC job offer confirmed. Nomination adds <strong>+600 CRS</strong>. Official criteria: TEER 0–3 indeterminate offer, 2 yrs experience, CLB 4+, wage & licensing met. Application fee $1,750 (registration free). SIRS scores human capital plus wage and job location; 2026 draws prioritize healthcare, childcare, construction & trades.','جاب آفر BC دارید. نامزدی <strong>+۶۰۰ امتیاز</strong> می‌دهد. شروط رسمی: آفر بدون تاریخ پایان TEER 0–3، ۲ سال سابقه، حداقل CLB 4، احراز دستمزد و مجوز. هزینه درخواست ۱٬۷۵۰ دلار (ثبت‌نام رایگان). امتیاز SIRS بر پایه سرمایه انسانی به‌علاوه دستمزد و محل کار؛ دراوهای ۲۰۲۶ به درمان، مراقبت کودک، ساخت‌وساز و مشاغل فنی اولویت می‌دهند.'),
+      missing:bmiss});
   }else{
     out.push({id:'bcpnp',name:L('BC PNP — Skilled Worker','BC PNP — نیروی ماهر'),cls:'possible',tag:['tag-warn',L('Potential','بالقوه')],
       detail:L('A nomination adds <strong>+600 CRS</strong> — the single biggest lever if your score is below the cut-offs.','نامزدی استانی <strong>+۶۰۰ امتیاز</strong> می‌دهد — بزرگ‌ترین اهرم وقتی امتیازتان زیر کات‌آف است.'),
-      missing:[L('full-time permanent job offer from a BC employer in TEER 1–3','جاب آفر تمام‌وقت دائمی از کارفرمای BC در TEER 1–3')+(p.sector==='health'||p.sector==='trades'?'':L(' (healthcare & trades are prioritized in 2026)',' (در ۲۰۲۶ درمان و مشاغل فنی اولویت دارند)'))]});
+      missing:[L('full-time, indeterminate job offer from a BC employer in TEER 0–3','جاب آفر تمام‌وقت بدون تاریخ پایان از کارفرمای BC در TEER 0–3')+(p.sector==='health'||p.sector==='trades'?'':L(' (healthcare & trades are prioritized in 2026)',' (در ۲۰۲۶ درمان و مشاغل فنی اولویت دارند)'))]});
   }
   if(p.goal==='study'||p.cad===0){
     out.push({id:'study',name:L('Study permit → PGWP → PR','ویزای تحصیلی ← PGWP ← اقامت'),cls:'possible',tag:['tag-warn',L('Multi-stage','چندمرحله‌ای')],
@@ -1339,12 +1343,47 @@ function evaluatePrograms(p){
   if(p.goal==='business'||p.funds>=3){
     out.push({id:'biz',name:L('Business immigration','مهاجرت تجاری'),cls:p.funds>=3?'possible':'no',
       tag:p.funds>=3?['tag-warn',L('PNP routes only','فقط مسیرهای استانی')]:['tag-bad',L('Capital below thresholds','سرمایه زیر آستانه‌ها')],
-      detail:L('<strong>Start-Up Visa is closed</strong> (Jan 1, 2026; successor pilot pending). Real routes today: BC Entrepreneur Base ($600K net worth) / Regional ($300K) with active draws, or a C11 entrepreneur work permit with a significant-benefit business case.','<strong>استارت‌آپ ویزا بسته است</strong> (۱ ژانویه ۲۰۲۶؛ پایلوت جایگزین در راه). مسیرهای واقعی امروز: کارآفرینی BC اصلی (۶۰۰ هزار دلار دارایی خالص) / منطقه‌ای (۳۰۰ هزار) با دراوهای فعال، یا ورک پرمیت کارآفرینی C11 با پرونده منفعت قابل توجه.'),
+      detail:L('<strong>Start-Up Visa is closed</strong> (Jan 1, 2026; successor pilot pending). Real routes today: BC Entrepreneur Base ($600K net worth + $200K investment) / Regional ($300K net worth + $100K investment, community referral) — both need 3 yrs owner-manager experience and create 1+ Canadian job — or a C11 entrepreneur work permit with a significant-benefit business case.','<strong>استارت‌آپ ویزا بسته است</strong> (۱ ژانویه ۲۰۲۶؛ پایلوت جایگزین در راه). مسیرهای واقعی امروز: کارآفرینی BC اصلی (۶۰۰ هزار دلار دارایی خالص + ۲۰۰ هزار سرمایه‌گذاری) / منطقه‌ای (۳۰۰ هزار دارایی + ۱۰۰ هزار سرمایه‌گذاری، معرفی‌نامه جامعه) — هر دو با ۳ سال سابقه مالک-مدیری و ایجاد حداقل ۱ شغل کانادایی — یا ورک پرمیت کارآفرینی C11 با پرونده منفعت قابل توجه.'),
       missing:p.funds>=3?[]:[L('≈$300K+ available capital for the lowest-threshold BC entrepreneur tier','حدود ۳۰۰ هزار دلار+ سرمایه برای پایین‌ترین آستانه کارآفرینی BC')]});
   }
   if(p.goal==='business'){
     out.push({id:'suv',name:L('Start-Up Visa','استارت‌آپ ویزا'),cls:'closed',tag:['tag-closed',L('Closed Jan 1, 2026','بسته — ۱ ژانویه ۲۰۲۶')],
       detail:L('No new applications accepted. The 2025 commitment-certificate grace window ended June 30, 2026. Watch for the targeted entrepreneur pilot expected to replace it.','درخواست جدید پذیرفته نمی‌شود. مهلت ارفاقی دارندگان گواهی تعهد ۲۰۲۵ در ۳۰ ژوئن ۲۰۲۶ تمام شد. منتظر پایلوت کارآفرینی هدفمندِ جایگزین باشید.'),missing:[]});
+  }
+  /* other provinces — overview-level cards (verified Sep 2026); full stream scoring is consultation work */
+  const hasOffer=(p.offer==='other');
+  if(p.prov==='on'){
+    out.push({id:'oinp',name:L('OINP — Ontario Workforce Priority Stream','OINP — انتاریو: مسیر اولویت نیروی کار'),cls:hasOffer?'possible':'no',
+      tag:hasOffer?['tag-warn',L('Employer-anchored — verify OINP registration','مبتنی بر کارفرما — ثبت OINP را چک کنید')]:['tag-bad',L('Job offer required','جاب آفر لازم است')],
+      detail:L('Ontario revoked all pre-2026 streams (including Masters/PhD graduate paths) in spring 2026. The replacement OWP stream needs an Ontario job offer in TEER 0–5 from an OINP-registered employer whose position is approved by the OINP Director. 2026 allocation: 14,119. Rules are still settling — details in consultation.','انتاریو همه مسیرهای قبل از ۲۰۲۶ (از جمله ارشد/دکترا) را بهار ۲۰۲۶ لغو کرد. مسیر جایگزین OWP جاب آفر انتاریو در TEER 0–5 از کارفرمای ثبت‌شده در OINP می‌خواهد که موقعیتش توسط مدیر OINP تایید شده باشد. سهمیه ۲۰۲۶: ۱۴٬۱۱۹. قوانین هنوز در حال تثبیت است — جزئیات در مشاوره.'),
+      missing:hasOffer?[L('employer registration with the OINP and position approval (filed within 14 days of invitation)','ثبت کارفرما در OINP و تایید موقعیت شغلی (ظرف ۱۴ روز از دعوت)')]:[L('a job offer in TEER 0–5 from an OINP-registered Ontario employer','جاب آفر در TEER 0–5 از کارفرمای انتاریوییِ ثبت‌شده در OINP')]});
+  }else if(p.prov==='ab'){
+    const eeOk=r.total>=300;
+    const amiss=[];
+    if(!hasOffer)amiss.push(L('an Alberta job / full-time Alberta employment for the Opportunity Stream','شغل در آلبرتا / کار تمام‌وقت آلبرتایی برای مسیر فرصت'));
+    if(!eeOk)amiss.push(L('CRS 300+ with an active Express Entry profile for the Alberta EE Stream','CRS حداقل ۳۰۰ با پروفایل فعال اکسپرس انتری برای مسیر EE آلبرتا'));
+    out.push({id:'aaip',name:L('AAIP — Alberta','AAIP — آلبرتا'),cls:(hasOffer||eeOk)?'possible':'no',
+      tag:(hasOffer||eeOk)?['tag-warn',L('Route available — stream-dependent','مسیر موجود — بسته به استریم')]:['tag-bad',L('No current route','فعلاً مسیری ندارید')],
+      detail:L('Main routes: Alberta Opportunity Stream (already working full-time in Alberta), Alberta Express Entry Stream (EE profile + CRS ≥ 300; your CRS: '+r.total+') including Accelerated Tech and Health Care pathways, Rural Renewal (community endorsement), Tourism & Hospitality (LMIA). 2026 allocation 6,603; fee $1,500 within 24h; priority: healthcare, tech, construction, manufacturing, aviation, agriculture.','مسیرهای اصلی: فرصت آلبرتا (کار تمام‌وقت فعلی در آلبرتا)، اکسپرس انتری آلبرتا (پروفایل EE + CRS حداقل ۳۰۰؛ CRS شما: '+r.total+') شامل مسیر فناوری و سلامت، احیای روستایی (تاییدیه جامعه)، گردشگری (LMIA). سهمیه ۲۰۲۶: ۶٬۶۰۳؛ فی ۱٬۵۰۰ دلار ظرف ۲۴ ساعت؛ اولویت: سلامت، فناوری، ساخت‌وساز، تولید، هوانوردی، کشاورزی.'),
+      missing:amiss});
+  }else if(p.prov==='sk'){
+    out.push({id:'sinp',name:L('SINP — Saskatchewan (2026 redesign)','SINP — ساسکاچوان (بازطراحی ۲۰۲۶)'),cls:hasOffer?'possible':'no',
+      tag:hasOffer?['tag-warn',L('Job Approval Letter needed','نامه تایید شغلی (JAL) لازم است')]:['tag-bad',L('Job offer required for most paths','برای بیشتر مسیرها جاب آفر لازم است')],
+      detail:L('2026 redesign: ~4,761 spaces, sector caps, six fixed intake windows, a 110-point EOI grid and a $350 fee. Most sub-categories require a Saskatchewan job offer (JAL). PGWP holders who studied outside SK are limited to five pathways. Priority sectors (health, agriculture, trades) stay open year-round.','بازطراحی ۲۰۲۶: حدود ۴٬۷۶۱ ظرفیت، سقف بخشی، شش پنجره ثبت‌نام ثابت، جدول ۱۱۰ امتیازی EOI و فی ۳۵۰ دلار. بیشتر زیرمجموعه‌ها جاب آفر ساسکاچوان (JAL) می‌خواهند. دارندگان PGWP با تحصیل خارج از SK به پنج مسیر محدودند. بخش‌های اولویت‌دار (سلامت، کشاورزی، فنی) تمام سال بازند.'),
+      missing:hasOffer?[]:[L('a Saskatchewan job offer with an approved Job Approval Letter','جاب آفر ساسکاچوان با نامه تایید شغلی (JAL)')]});
+  }else if(p.prov==='mb'){
+    out.push({id:'mpnp',name:L('MPNP — Manitoba','MPNP — منیتوبا'),cls:hasOffer?'possible':'no',
+      tag:hasOffer?['tag-warn',L('Connection via employer — verify','پیوند از طریق کارفرما — نیاز به بررسی')]:['tag-bad',L('Manitoba connection required','پیوند منیتوبایی لازم است')],
+      detail:L('MPNP is gated on an established Manitoba connection: close family, prior Manitoba work/study, or a strategic-recruitment / Employer Services invitation. Skilled Worker Overseas needs 60/100 on the MPNP grid; draws run about twice a month and 2026 rounds are dominated by strategic-recruitment invitations. 2026 spaces: 6,239.','MPNP به پیوند اثبات‌شده با منیتوبا گره خورده: خانواده نزدیک، سابقه کار/تحصیل در منیتوبا، یا دعوت جذب راهبردی/خدمات کارفرمایی. نیروی ماهر خارج از کانادا حداقل ۶۰ از ۱۰۰ می‌خواهد؛ دراوها حدوداً دو بار در ماه و در ۲۰۲۶ غالباً با دعوت جذب راهبردی. ظرفیت ۲۰۲۶: ۶٬۲۳۹.'),
+      missing:hasOffer?[L('confirm the employer relationship qualifies as a Manitoba connection (Employer Services)','تایید اینکه رابطه کارفرمایی به‌عنوان پیوند منیتوبایی شناخته می‌شود (خدمات کارفرمایی)')]:[L('an established Manitoba connection — family, prior Manitoba work/study, or a strategic-recruitment invitation','پیوند منیتوبایی — خانواده، سابقه کار/تحصیل در منیتوبا، یا دعوت جذب راهبردی')]});
+  }else if(p.prov==='atl'){
+    const lmiss=[];
+    if(!hasOffer)lmiss.push(L('a full-time job offer from a designated Atlantic employer (TEER 0–4)','جاب آفر تمام‌وقت از کارفرمای تعیین‌شده آتلانتیک (TEER 0–4)'));
+    if(p.clb<5)lmiss.push(L('CLB 5 for TEER 0–3 offers (CLB 4 acceptable only for TEER 4)','CLB 5 برای آفرهای TEER 0–3 (CLB 4 فقط برای TEER 4)'));
+    out.push({id:'aip',name:L('AIP — Atlantic Immigration Program','AIP — برنامه مهاجرتی آتلانتیک'),cls:(hasOffer&&p.clb>=4)?'possible':'no',
+      tag:(hasOffer&&p.clb>=4)?['tag-warn',L('Verify employer designation','تعیین‌صلاحیت کارفرما را استعلام کنید')]:['tag-bad',L('Designated-employer offer required','آفر از کارفرمای تعیین‌شده لازم است')],
+      detail:L('Federal employer-driven program for NS, NB, PEI and NL: designated-employer job offer in TEER 0–4, 1 year of related experience in the last 5 (Atlantic graduates exempt), CLB 5 for TEER 0–3 / CLB 4 for TEER 4, ECA for foreign credentials, and settlement funds unless already working in Canada.','برنامه فدرال کارفرمامحور برای نوا اسکوشیا، نیوبرانزویک، PEI و نیوفاندلند: آفر از کارفرمای تعیین‌شده در TEER 0–4، یک سال سابقه مرتبط در ۵ سال اخیر (فارغ‌التحصیلان آتلانتیک معاف)، CLB 5 برای TEER 0–3 / CLB 4 برای TEER 4، ECA برای مدرک خارجی، و تمکن اسکان مگر هم‌اکنون در کانادا شاغل باشید.'),
+      missing:lmiss});
   }
   const rank={strong:0,possible:1,no:2,closed:3};
   out.sort((a,b)=>rank[a.cls]-rank[b.cls]);
@@ -1494,11 +1533,60 @@ const PROGLIB=[
    ['Job offer: 0 points — removed March 25, 2025','جاب آفر: صفر امتیاز — حذف ۲۵ مارس ۲۰۲۵']],
   s26:["IRCC's 2026–27 plan signals job-offer points may return for high-wage occupations; until regulations change, count zero.",'برنامه ۲۰۲۶–۲۷ IRCC از احتمال بازگشت امتیاز جاب آفر برای مشاغل پردرآمد می‌گوید؛ تا تغییر مقررات، صفر حساب کنید.']},
  {n:['BC PNP — Skills Immigration (Skilled Worker / EEBC)','BC PNP — مهاجرت مهارتی (نیروی ماهر / EEBC)'],req:[
-   ['Full-time, permanent job offer from a BC employer in NOC TEER 1–3','جاب آفر تمام‌وقت و دائمی از کارفرمای BC در NOC TEER 1–3'],
-   ['Registration in SIRS (scored /200 — hourly wage is the heaviest factor)','ثبت‌نام در SIRS (امتیاز از ۲۰۰ — دستمزد ساعتی سنگین‌ترین عامل)'],
-   ['Meet wage and licensing requirements for the occupation','احراز شرایط دستمزد و مجوز شغلی'],
-   ['Application fee $2,000 (since Jan 22, 2026)','هزینه درخواست ۲٬۰۰۰ دلار (از ۲۲ ژانویه ۲۰۲۶)']],
+   ['Full-time, indeterminate (no end date) job offer from an eligible BC employer in NOC TEER 0–3, with a completed Employer Declaration Form','جاب آفر تمام‌وقت بدون تاریخ پایان از کارفرمای واجد شرایط BC در NOC TEER 0–3، با فرم اظهارنامه کارفرما'],
+   ['Minimum 2 years of full-time equivalent work experience','حداقل ۲ سال سابقه کار معادل تمام‌وقت'],
+   ['Language: minimum CLB 4 (higher CLB scores more in SIRS)','زبان: حداقل CLB 4 (نمره بالاتر در SIRS امتیاز بیشتر می‌گیرد)'],
+   ['Meet minimum wage/income and occupational licensing requirements; some occupations are ineligible (e.g., admin assistants, bookkeepers, retail/food supervisors, real estate agents)','احراز حداقل دستمزد/درآمد و مجوز شغلی؛ برخی مشاغل واجد شرایط نیستند (مثل دستیار اداری، حسابدار دفتری، سرپرست خرده‌فروشی/رستوران، مشاور املاک)'],
+   ['SIRS registration scored on work experience, education, language, plus wage and job location; registration valid 12 months, 30 days to apply after invitation','ثبت‌نام SIRS با امتیاز سابقه کار، تحصیلات، زبان به‌علاوه دستمزد و محل کار؛ اعتبار ثبت‌نام ۱۲ ماه، ۳۰ روز مهلت اپلای بعد از دعوت'],
+   ['Fees: registration free · application $1,750 · request for review $500 · BC PNP processing ≈3 months (80% of cases)','هزینه‌ها: ثبت‌نام رایگان · درخواست ۱٬۷۵۰ دلار · بازبینی ۵۰۰ دلار · پردازش BC PNP حدود ۳ ماه (۸۰٪ پرونده‌ها)'],
+   ['A separate Health Authority stream exists for staff hired directly by a BC health authority (CLB 4, no fixed experience minimum — set by the employer)','مسیر جداگانه Health Authority برای استخدام مستقیم در سازمان‌های سلامت BC وجود دارد (CLB 4، حداقل سابقه را کارفرما تعیین می‌کند)']],
   s26:['April 23, 2026: BC closed Entry Level & Semi-Skilled, cancelled graduate/tech streams, and pivoted to "Care, Build, Innovate" — healthcare, childcare, construction, trades. 2026 allocation ≈ 5,254. A nomination adds +600 CRS.','۲۳ آوریل ۲۰۲۶: BC مسیر ELSS را بست، مسیرهای فارغ‌التحصیلی/تک را لغو کرد و به «Care, Build, Innovate» چرخید — درمان، مراقبت کودک، ساخت‌وساز، مشاغل فنی. سهمیه ۲۰۲۶ حدود ۵٬۲۵۴. نامزدی +۶۰۰ امتیاز می‌دهد.']},
+ {n:['BC PNP — Entrepreneur Immigration (Base / Regional / Strategic Projects)','BC PNP — کارآفرینی (اصلی / منطقه‌ای / پروژه‌های استراتژیک)'],req:[
+   ['Base stream: net worth ≥ $600K · personal investment ≥ $200K · 3+ yrs owner-manager experience in last 10 yrs (or eligible degree) · create ≥1 full-time Canadian job · CLB 4','مسیر اصلی: دارایی خالص ≥ ۶۰۰ هزار دلار · سرمایه‌گذاری شخصی ≥ ۲۰۰ هزار · ۳+ سال سابقه مالک-مدیری در ۱۰ سال اخیر (یا مدرک تحصیلی واجد شرایط) · ایجاد حداقل ۱ شغل تمام‌وقت کانادایی · CLB 4'],
+   ['Regional stream: net worth ≥ $300K · investment ≥ $100K · 3 yrs owner-manager in last 5 yrs · community referral + exploratory visit required · business outside Metro Vancouver','مسیر منطقه‌ای: دارایی خالص ≥ ۳۰۰ هزار دلار · سرمایه‌گذاری ≥ ۱۰۰ هزار · ۳ سال مالک-مدیری در ۵ سال اخیر · معرفی‌نامه جامعه میزبان + سفر اکتشافی الزامی · کسب‌وکار خارج از مترو ونکوور'],
+   ['Two-step path: Letter of Support → work permit → up to 20 months to run the business per your Performance Agreement → nomination → PR','مسیر دومرحله‌ای: نامه حمایت ← ورک پرمیت ← تا ۲۰ ماه اجرای کسب‌وکار طبق توافق‌نامه عملکرد ← نامزدی ← اقامت'],
+   ['Ineligible businesses include home-based businesses, real estate development/brokerage, import-export without value-add, coin laundries, and similar','کسب‌وکارهای غیرمجاز: کسب‌وکار خانگی، توسعه/دلالی املاک، صادرات-واردات بدون ارزش افزوده، لاندری سکه‌ای و مشابه'],
+   ['Fees: registration $300 · application $3,500 · Strategic Projects (foreign corporations): equity ≥ $500K, up to 5 key staff','هزینه‌ها: ثبت‌نام ۳۰۰ دلار · درخواست ۳٬۵۰۰ دلار · پروژه‌های استراتژیک (شرکت‌های خارجی): سرمایه ≥ ۵۰۰ هزار دلار، تا ۵ نیروی کلیدی']],
+  s26:['Verified from the official WelcomeBC entrepreneur page. Net worth is verified by a BC PNP-authorized accounting firm before you apply.','راستی‌آزمایی از صفحه رسمی WelcomeBC. دارایی خالص قبل از اپلای توسط موسسه حسابداری مورد تایید BC PNP بررسی می‌شود.']},
+ {n:['OINP — Ontario: Workforce Priority Stream (2026 redesign)','OINP — انتاریو: مسیر اولویت نیروی کار (بازطراحی ۲۰۲۶)'],req:[
+   ['All pre-2026 streams were revoked in spring 2026 — including Employer Job Offer, Express Entry Human Capital / French / Trades, and the Masters & PhD graduate streams (no more no-job-offer path)','همه مسیرهای قبل از ۲۰۲۶ در بهار ۲۰۲۶ لغو شدند — شامل جاب آفر کارفرما، اکسپرس انتری (سرمایه انسانی/فرانسه/فنی) و مسیرهای فارغ‌التحصیلی ارشد و دکترا (مسیر بدون جاب آفر دیگر وجود ندارد)'],
+   ['Phase 1 replacement: Ontario Workforce Priority (OWP) Stream, launched June 26, 2026 — job offer in NOC TEER 0–5 from an Ontario employer, plus a track for self-employed physicians','جایگزین فاز ۱: مسیر OWP از ۲۶ ژوئن ۲۰۲۶ — جاب آفر در NOC TEER 0–5 از کارفرمای انتاریو، به‌علاوه مسیر پزشکان خوداشتغال'],
+   ['Employer-anchored: the employer must be registered with the OINP and the position approved by the OINP Director (filed within 14 days of your invitation) before you can apply','مبتنی بر کارفرما: کارفرما باید در OINP ثبت باشد و موقعیت شغلی توسط مدیر OINP تایید شود (ظرف ۱۴ روز از دعوت شما) — قبل از آن نمی‌توانید اپلای کنید'],
+   ['Selection by Expression of Interest; EOI scoring favours TEER 0–1 occupations and jobs outside major urban centres','انتخاب با سیستم ابراز علاقه (EOI)؛ امتیازدهی به مشاغل TEER 0–1 و موقعیت‌های خارج از شهرهای بزرگ اولویت می‌دهد'],
+   ['2026 nomination allocation: 14,119 (up 31%) — Phase 2 streams (Priority Healthcare, Exceptional Talent, Entrepreneur) are proposed but not yet open','سهمیه ۲۰۲۶: ۱۴٬۱۱۹ (رشد ۳۱٪) — مسیرهای فاز ۲ (سلامت اولویت‌دار، استعداد استثنایی، کارآفرینی) پیشنهاد شده ولی هنوز باز نیستند']],
+  s26:['Sources conflict on the exact revocation date and stream count of the spring 2026 amendment — rules are still settling; verify on ontario.ca before acting.','منابع درباره تاریخ دقیق لغو و تعداد مسیرهای اصلاحیه بهار ۲۰۲۶ اختلاف دارند — قوانین هنوز در حال تثبیت است؛ قبل از اقدام ontario.ca را چک کنید.']},
+ {n:['AAIP — Alberta Advantage Immigration Program','AAIP — برنامه مهاجرتی آلبرتا'],req:[
+   ['Alberta Opportunity Stream: for temporary workers already working full-time in Alberta for an Alberta employer — the largest stream (~53% of allocation, heavy inventory)','مسیر فرصت آلبرتا (AOS): برای نیروهای موقتی که هم‌اکنون تمام‌وقت در آلبرتا کار می‌کنند — بزرگ‌ترین مسیر (~۵۳٪ سهمیه، صف سنگین)'],
+   ['Alberta Express Entry Stream: requires an active federal Express Entry profile with CRS ≥ 300; includes the Accelerated Tech Pathway (~600 spaces) and Dedicated Health Care Pathway','مسیر اکسپرس انتری آلبرتا: نیازمند پروفایل فعال فدرال با CRS حداقل ۳۰۰؛ شامل مسیر سریع فناوری (~۶۰۰ ظرفیت) و مسیر ویژه سلامت'],
+   ['Rural Renewal Stream: community endorsement required — from Jan 1, 2026: per-community caps, 1-year endorsement validity, TEER-based model, and a valid work permit required for in-Canada applicants','مسیر احیای روستایی: تاییدیه جامعه لازم است — از ۱ ژانویه ۲۰۲۶: سقف هر جامعه، اعتبار یک‌ساله تاییدیه، مدل مبتنی بر TEER و الزام ورک پرمیت معتبر برای متقاضیان داخل کانادا'],
+   ['Tourism & Hospitality Stream: full-time work in Alberta plus a positive LMIA','مسیر گردشگری و هتلداری: کار تمام‌وقت در آلبرتا به‌علاوه LMIA مثبت'],
+   ['2026: allocation 6,603 (topped up Aug 10) · application fee $1,500 paid within 24h, non-refundable · priority sectors: healthcare, tech, construction, manufacturing, aviation, agriculture','۲۰۲۶: سهمیه ۶٬۶۰۳ (افزایش ۱۰ اوت) · فی درخواست ۱٬۵۰۰ دلار ظرف ۲۴ ساعت، غیرقابل استرداد · بخش‌های اولویت‌دار: سلامت، فناوری، ساخت‌وساز، تولید، هوانوردی، کشاورزی']],
+  s26:['Verified from alberta.ca (AAIP updates & processing pages). WEOI profiles are valid 12 months; physicians and Francophones can be nominated from extra federal spaces outside the allocation.','راستی‌آزمایی از alberta.ca. پروفایل WEOI دوازده ماه اعتبار دارد؛ پزشکان و فرانسه‌زبانان از ظرفیت فدرال جدا از سهمیه هم قابل نامزدی‌اند.']},
+ {n:['SINP — Saskatchewan Immigrant Nominee Program (2026 redesign)','SINP — ساسکاچوان (بازطراحی ۲۰۲۶)'],req:[
+   ['Comprehensive 2026 redesign: sector caps, ~4,761 nomination spaces, and six fixed intake windows per year instead of continuous intake','بازطراحی جامع ۲۰۲۶: سقف بخشی، حدود ۴٬۷۶۱ ظرفیت نامزدی و شش پنجره ثبت‌نام ثابت در سال به‌جای پذیرش پیوسته'],
+   ['A Saskatchewan job offer (Job Approval Letter) is required for most sub-categories; candidates ranked on a 110-point EOI grid; application fee $350','برای بیشتر زیرمجموعه‌ها جاب آفر ساسکاچوان (JAL) لازم است؛ رتبه‌بندی با جدول ۱۱۰ امتیازی EOI؛ فی درخواست ۳۵۰ دلار'],
+   ['PGWP holders who studied outside Saskatchewan are limited to five pathways (Health / Agriculture / Innovation-Tech Talent, Employment Offer, or the Student category for SK graduates only)','دارندگان PGWP که خارج از ساسکاچوان تحصیل کرده‌اند فقط به پنج مسیر محدودند (استعداد سلامت/کشاورزی/فناوری، پیشنهاد شغلی، یا مسیر دانشجویی مخصوص فارغ‌التحصیلان خود ساسکاچوان)'],
+   ['Priority sectors (health, agriculture, skilled trades and similar) remain open outside the fixed windows','بخش‌های اولویت‌دار (سلامت، کشاورزی، مشاغل فنی و مانند آن) خارج از پنجره‌های ثابت هم باز می‌مانند']],
+  s26:['Known for lower effective cut-offs than Express Entry — but the 2026 rules are strict on who may enter each sub-category; check eligibility before planning around SINP.','به کات‌آف موثر پایین‌تر از اکسپرس انتری معروف است — ولی قوانین ۲۰۲۶ درباره ورود به هر زیرمجموعه سخت‌گیرند؛ قبل از برنامه‌ریزی حتماً شرایط را چک کنید.']},
+ {n:['MPNP — Manitoba Provincial Nominee Program','MPNP — منیتوبا'],req:[
+   ['Gateway requirement: an established Manitoba connection — close family, previous Manitoba work or study, or an invitation through a strategic recruitment initiative / Employer Services','شرط دروازه‌ای: پیوند اثبات‌شده با منیتوبا — خانواده نزدیک، سابقه کار یا تحصیل در منیتوبا، یا دعوت از طریق ابتکارهای جذب راهبردی / خدمات کارفرمایی'],
+   ['Skilled Worker Overseas: minimum 60/100 on the MPNP grid plus language, education, funds and settlement intent; EOI draws roughly twice a month (1,000-point ranking)','نیروی ماهر خارج از کانادا: حداقل ۶۰ از ۱۰۰ در جدول MPNP به‌علاوه زبان، تحصیلات، تمکن و قصد اسکان؛ دراوهای EOI حدوداً دو بار در ماه (رتبه‌بندی ۱٬۰۰۰ امتیازی)'],
+   ['Skilled Worker in Manitoba: transition after ~6 months of full-time work with your Manitoba employer','نیروی ماهر داخل منیتوبا: تبدیل وضعیت پس از حدود ۶ ماه کار تمام‌وقت با کارفرمای منیتوبایی'],
+   ['International Education Stream: Manitoba graduates, CLB 7, no work-experience requirement — the fastest route for local grads','مسیر تحصیلی بین‌المللی: فارغ‌التحصیلان منیتوبا، CLB 7، بدون شرط سابقه کار — سریع‌ترین مسیر برای فارغ‌التحصیل محلی'],
+   ['2026: 6,239 nomination spaces; strategic-recruitment invitations dominate this year’s draws','۲۰۲۶: ۶٬۲۳۹ ظرفیت؛ دعوت‌های جذب راهبردی بر دراوهای امسال غالب است']],
+  s26:['Without a Manitoba connection, MPNP is effectively closed — build the connection first (employer, study, or family) rather than submitting a cold EOI.','بدون پیوند منیتوبایی، MPNP عملاً بسته است — اول پیوند را بسازید (کارفرما، تحصیل یا خانواده) نه اینکه EOI خالی بفرستید.']},
+ {n:['AIP — Atlantic Immigration Program (NS · NB · PEI · NL)','AIP — برنامه مهاجرتی آتلانتیک (نوا اسکوشیا · نیوبرانزویک · PEI · نیوفاندلند)'],req:[
+   ['Federal employer-driven program (not a PNP): full-time job offer from a designated Atlantic employer in NOC TEER 0–4','برنامه فدرال کارفرمامحور (PNP نیست): جاب آفر تمام‌وقت از کارفرمای تعیین‌شده آتلانتیک در NOC TEER 0–4'],
+   ['At least 1 year of related work experience within the last 5 years — recent graduates of Atlantic post-secondary institutions are exempt','حداقل ۱ سال سابقه کار مرتبط در ۵ سال اخیر — فارغ‌التحصیلان اخیر موسسات آتلانتیک معاف‌اند'],
+   ['Language: CLB 5 for TEER 0–3 offers, CLB 4 for TEER 4 · educational credential (ECA if foreign)','زبان: CLB 5 برای آفرهای TEER 0–3 و CLB 4 برای TEER 4 · مدرک تحصیلی (ECA برای مدرک خارجی)'],
+   ['Settlement funds required unless you already live and work in Canada; each offer comes with a settlement plan from a designated organization','تمکن اسکان لازم است مگر هم‌اکنون در کانادا زندگی و کار کنید؛ هر آفر با پلن اسکان از یک سازمان تعیین‌شده همراه است']],
+  s26:['The employer must hold a valid AIP designation from their province — always verify designation before counting on an Atlantic offer.','کارفرما باید تعیین‌صلاحیت معتبر AIP از استان خود داشته باشد — قبل از حساب کردن روی آفر آتلانتیک، حتماً این را استعلام کنید.']},
+ {n:['Quebec — a separate system (PSTQ / Arrima), not a PNP','کبک — سیستم جداگانه (PSTQ / آریما)، نه PNP'],req:[
+   ['Quebec selects its own economic immigrants (CSQ) — provincial nomination and Express Entry do not apply','کبک مهاجران اقتصادی‌اش را خودش انتخاب می‌کند (CSQ) — نامزدی استانی و اکسپرس انتری اینجا کاربرد ندارد'],
+   ['PSTQ (Skilled Worker Selection Program) via the Arrima portal — four streams; French is mandatory for streams 1–3 (roughly oral level 5–7+)','PSTQ از طریق پورتال آریما — چهار مسیر؛ فرانسه برای مسیرهای ۱ تا ۳ الزامی است (حدوداً شفاهی سطح ۵ تا ۷+)'],
+   ['PEQ (the fast-track for Quebec graduates/workers) closed Nov 19, 2025, then reopened July 2, 2026 for a limited two-year window with restricted intake periods','PEQ (مسیر سریع فارغ‌التحصیلان/شاغلان کبک) در ۱۹ نوامبر ۲۰۲۵ بسته شد و از ۲ ژوئیه ۲۰۲۶ برای یک پنجره محدود دوساله با دوره‌های پذیرش محدود بازگشایی شد'],
+   ['2026–2029 plan: about 45,000 admissions per year, prioritizing French speakers and people with Quebec study or work experience','برنامه ۲۰۲۶–۲۰۲۹: حدود ۴۵ هزار پذیرش در سال، با اولویت فرانسه‌زبان‌ها و دارندگان سابقه تحصیل یا کار در کبک']],
+  s26:['For Persian-speaking applicants without French, Quebec is rarely the efficient path — the rest of Canada usually is.','برای متقاضی فارسی‌زبان بدون فرانسه، کبک معمولاً مسیر بهینه نیست — بقیه کانادا معمولاً هست.']},
  {n:['Study permit → PGWP → PR','ویزای تحصیلی ← PGWP ← اقامت'],req:[
    ['Letter of acceptance from a Designated Learning Institution + provincial attestation letter (cap system)','پذیرش از موسسه DLI + نامه تاییدیه استانی (سیستم سقف)'],
    ['Proof of funds: $23,448 (single, outside Quebec, from Sep 1, 2026) plus first-year tuition and travel','تمکن مالی: ۲۳٬۴۴۸ دلار (مجرد، خارج از کبک، از ۱ سپتامبر ۲۰۲۶) به‌علاوه شهریه سال اول و سفر'],
@@ -1805,7 +1893,7 @@ function guideContext(){
   const langLine=state.lang==='fa'
     ?'Respond in Persian (Farsi). End every answer with exactly this line: "اطلاعات عمومی — تا پیش از بازبینی توسط متخصص دارای مجوز، مشاوره حقوقی فردی محسوب نمی‌شود."'
     :'Respond in English. End every answer with exactly this line: "General information — not individualized legal advice until reviewed by an authorized professional."';
-  return 'You are the Immigration Guide on the website of Bahrami Immigration (RCIC #R418351, CICC-regulated, Vancouver & Tehran). Answer ONLY from the rules data and user profile below. If the answer is not derivable from them, say you do not know and suggest booking a consultation. Never guarantee outcomes. Keep answers under 150 words, plain language. '+langLine+'\n\n=== 2026 PROGRAM RULES (verified Sep 2026) ===\n'+rules+'\n\n=== KEY FACTS ===\nJob offer CRS points: 0 since Mar 25, 2025. Latest draw: Aug 18, 2026 CEC 1,000 ITAs. 2026 CEC cut-off range: 510–525. EE fees since Apr 30, 2026: principal $1,590 total. Proof of funds 2026: $15,263 single (CEC exempt). Study funds: $23,448 from Sep 1, 2026. Start-Up Visa closed Jan 1, 2026. BC PNP 2026: allocation ~5,254, priority healthcare/trades, fee $2,000.\n\n=== USER ===\n'+prof;
+  return 'You are the Immigration Guide on the website of Bahrami Immigration (RCIC #R418351, CICC-regulated, Vancouver & Tehran). Answer ONLY from the rules data and user profile below. If the answer is not derivable from them, say you do not know and suggest booking a consultation. Never guarantee outcomes. Keep answers under 150 words, plain language. '+langLine+'\n\n=== 2026 PROGRAM RULES (verified Sep 2026) ===\n'+rules+'\n\n=== KEY FACTS ===\nJob offer CRS points: 0 since Mar 25, 2025. Latest draw: Aug 18, 2026 CEC 1,000 ITAs. 2026 CEC cut-off range: 510–525. EE fees since Apr 30, 2026: principal $1,590 total. Proof of funds 2026: $15,263 single (CEC exempt). Study funds: $23,448 from Sep 1, 2026. Start-Up Visa closed Jan 1, 2026. BC PNP 2026: allocation ~5,254 (reported), priority healthcare/trades. Skills: TEER 0-3 indeterminate offer, 2 yrs experience, CLB 4+, application fee $1,750 (registration free). Entrepreneur: Base $600K net worth/$200K investment, Regional $300K/$100K + community referral (WelcomeBC official).\n\n=== USER ===\n'+prof;
 }
 let chatBusy=false;
 async function sendChat(){
