@@ -339,6 +339,169 @@ footer .foot-legal a{color:var(--spruce);font-weight:600;text-decoration:none}
 .login-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius-l);padding:30px}
 .login-card .btn{width:100%;margin-top:6px}
 .demo-hint{background:var(--gold-soft);border:1px solid #E5D3A0;border-radius:var(--radius-s);padding:10px 13px;font-size:13px;margin-top:14px}
+
+/* ================================================================
+   UI v2 — "Consulate Modern"  (style-only layer; engine untouched)
+   One bold move: deep-evergreen hero & closing band with a guilloché
+   texture (the fine security-line pattern of passports & banknotes).
+   Everything else: warm ivory, layered depth, brass for decisions.
+   ================================================================ */
+:root{
+  --ink:#17251F; --spruce:#1E4D3D; --spruce-deep:#0F2B22; --pine:#143528;
+  --spruce-soft:#E0EAE2; --mist:#F4F3EB; --paper:#FFFFFF;
+  --gold:#C6982F; --brass:#A67C1B; --gold-soft:#F6EDD6;
+  --garnet:#A93A2E; --garnet-soft:#F6E3E0;
+  --line:#E0E4D6; --muted:#5C6B60;
+  --radius-l:18px; --radius-s:10px;
+  --shadow-card:0 1px 2px rgba(21,36,29,.05),0 14px 34px -20px rgba(15,43,34,.28);
+  --shadow-pop:0 2px 4px rgba(21,36,29,.08),0 22px 48px -22px rgba(15,43,34,.38);
+  --guilloche:
+    radial-gradient(1100px 460px at 88% -12%,rgba(198,152,47,.16),transparent 62%),
+    repeating-radial-gradient(circle at 112% 18%,rgba(214,184,116,.055) 0 1px,transparent 1px 9px),
+    repeating-radial-gradient(circle at -12% 112%,rgba(214,184,116,.05) 0 1px,transparent 1px 11px),
+    linear-gradient(158deg,#0E2A21 0%,#143528 52%,#1B4636 100%);
+}
+::selection{background:rgba(198,152,47,.35)}
+html{scroll-behavior:smooth}
+body{background:
+  radial-gradient(900px 340px at 50% -180px,rgba(30,77,61,.06),transparent 70%),
+  var(--mist)}
+
+/* ---- focus & interaction quality floor ---- */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,.chip:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+input,select,textarea{font-family:inherit;font-size:15px;color:var(--ink);
+  background:#fff;border:1.5px solid var(--line);border-radius:var(--radius-s);
+  transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--spruce);box-shadow:0 0 0 3px rgba(198,152,47,.22);outline:none}
+
+/* ---- header: quiet ivory glass ---- */
+header{background:rgba(250,249,243,.86);backdrop-filter:blur(12px) saturate(1.15);
+  border-bottom:1px solid rgba(21,36,29,.1);box-shadow:0 1px 0 rgba(255,255,255,.6) inset}
+.nav-links a{position:relative;color:#2A3B33;transition:color .15s}
+.nav-links a:hover{color:var(--spruce-deep)}
+.nav-links a::after{content:"";position:absolute;left:0;right:100%;bottom:-6px;height:2px;
+  background:var(--gold);transition:right .18s ease}
+.nav-links a:hover::after{right:0}
+
+/* ---- buttons ---- */
+.btn{transition:transform .12s ease,box-shadow .15s ease,background .15s,border-color .15s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:linear-gradient(180deg,#276350 0%,#1E4D3D 100%);
+  border-color:#173C30;color:#F7F4E9;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 2px 6px -2px rgba(15,43,34,.45)}
+.btn-primary:hover{background:linear-gradient(180deg,#2C6E59,#22553F);transform:translateY(-1px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 8px 18px -8px rgba(15,43,34,.5)}
+.btn-secondary{background:#fff;border-color:#CBD3C4;color:var(--spruce-deep)}
+.btn-secondary:hover{border-color:var(--spruce);background:#FBFBF6}
+
+/* ---- journey bar: instrument cluster ---- */
+.journey{background:linear-gradient(180deg,#FDFCF7,#F7F6EE);border-bottom:1px solid var(--line)}
+.jstep{border:1px solid transparent;border-radius:999px;transition:background .15s}
+.jstep.current{background:var(--gold-soft);border-color:#E3CE94;color:#5F470E;box-shadow:inset 0 1px 0 #fff}
+.jstep.done .num{background:var(--spruce);color:#fff}
+.jarrow{color:#B9C2B4}
+
+/* ---- HERO: the one bold move ---- */
+.hero{background:var(--guilloche);border-bottom:1px solid rgba(198,152,47,.28);position:relative}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(198,152,47,.55),transparent)}
+.hero h1{color:#F5F2E4;text-shadow:0 1px 0 rgba(0,0,0,.25);
+  font-variation-settings:"opsz" 60;letter-spacing:-.01em}
+.hero p.lede{color:#C9D6CB}
+.hero .note{color:#9FB3A4}
+.hero a:not(.btn){color:#E8DCB2}
+.hero .btn-primary{background:linear-gradient(180deg,#D9AC3E 0%,#C6982F 100%);
+  border-color:#8F6B14;color:#1B2A22;font-weight:700;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 16px -6px rgba(0,0,0,.5)}
+.hero .btn-primary:hover{background:linear-gradient(180deg,#E2B549,#CFA034)}
+.hero .btn-secondary{background:rgba(255,255,255,.06);border-color:rgba(233,224,196,.4);color:#EFEADA}
+.hero .btn-secondary:hover{background:rgba(255,255,255,.11);border-color:rgba(233,224,196,.65)}
+.trust-strip{color:#AEBFAF}
+.trust-strip strong,.trust-strip b{color:#E9E4D2}
+.trust-strip a{color:#E8DCB2}
+/* the document card on the dark hero — a passport-page feel */
+.trust-card{background:linear-gradient(180deg,#FDFCF6,#F7F4E8);border:1px solid #E7E2CC;
+  border-top:3px solid var(--gold);border-radius:var(--radius-l);
+  box-shadow:0 30px 60px -28px rgba(0,0,0,.55),0 2px 6px rgba(0,0,0,.2)}
+
+/* ---- cards & surfaces ---- */
+.card,.wizard,.login-card,.story,.chat,.refusal,.trust-card2{border-radius:var(--radius-l)}
+.card,.login-card,.story{background:linear-gradient(180deg,#FFFFFF,#FDFCF6);
+  border:1px solid var(--line);box-shadow:var(--shadow-card)}
+.intent{background:linear-gradient(180deg,#FFFFFF,#FDFCF6);border:1px solid var(--line);
+  border-radius:var(--radius-l);box-shadow:var(--shadow-card);
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s}
+.intent:hover{transform:translateY(-2px);border-color:#BFCDBB;box-shadow:var(--shadow-pop)}
+.res-link{transition:border-color .15s,box-shadow .15s,transform .12s}
+.res-link:hover{border-color:var(--gold);box-shadow:0 6px 16px -10px rgba(15,43,34,.35);transform:translateY(-1px)}
+
+/* ---- wizard: cockpit ---- */
+.wizard{border:1px solid #DCE0D0;box-shadow:var(--shadow-pop);background:#fff}
+.wizard-top{background:linear-gradient(160deg,#0F2B22,#1B4636);
+  border-bottom:2px solid var(--gold)}
+.chip{transition:border-color .13s,background .13s,transform .12s;box-shadow:0 1px 0 rgba(255,255,255,.7) inset}
+.chip:hover{border-color:var(--spruce)}
+.chip.sel{background:linear-gradient(180deg,#276350,#1E4D3D);border-color:#173C30;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.chip:active{transform:scale(.98)}
+
+/* ---- match results: verdict cards ---- */
+.match{box-shadow:var(--shadow-card);transition:box-shadow .15s}
+.match:hover{box-shadow:var(--shadow-pop)}
+.match.strong{background:linear-gradient(to right,rgba(30,77,61,.06),rgba(30,77,61,0) 42%),#fff}
+.match.possible{background:linear-gradient(to right,rgba(198,152,47,.07),rgba(198,152,47,0) 42%),#fff}
+.match.no{background:linear-gradient(to right,rgba(169,58,46,.05),rgba(169,58,46,0) 42%),#fff}
+.match.closed{opacity:.82}
+.tag{letter-spacing:.01em;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04)}
+.tag-ok{background:#DCEBE0;color:#123A2C}
+.tag-warn{background:#F4E7C4;color:#6E5310}
+.tag-bad{background:#F4DBD6;color:#7C2318}
+
+/* ---- tables ---- */
+.compare th{background:linear-gradient(180deg,#16382C,#1E4D3D);border-bottom:2px solid var(--gold)}
+.compare tr:nth-child(even) td{background:#FAF9F1}
+.fee-table tr.total td{border-top:2px solid var(--gold);color:var(--spruce-deep)}
+
+/* ---- chat: concierge ---- */
+.chat{border:1px solid #DCE0D0;box-shadow:var(--shadow-card);background:#fff}
+.msg{box-shadow:0 1px 2px rgba(21,36,29,.06)}
+.msg.user{background:linear-gradient(180deg,#276350,#1E4D3D);border-bottom-right-radius:4px}
+.msg.ai{background:#F7F6EC;border:1px solid #E7E6D8;border-bottom-left-radius:4px}
+.chat-in{background:#FBFAF3;border-top:1px solid var(--line)}
+
+/* ---- portal & stats ---- */
+.dash-stat{background:linear-gradient(180deg,#FBFAF2,#F3F2E7);border:1px solid #E6E5D5}
+.dash-stat .v{color:var(--spruce-deep)}
+
+/* ---- deep bookends: final band, next bar, footer ---- */
+.final{background:var(--guilloche)}
+.final h2{color:#F5F2E4}
+.final p{color:#BFD0C2}
+.final .btn-primary{background:linear-gradient(180deg,#D9AC3E,#C6982F);border-color:#8F6B14;color:#1B2A22;font-weight:700}
+.final .btn-primary:hover{background:linear-gradient(180deg,#E2B549,#CFA034)}
+.nextbar{background:rgba(14,40,32,.93);backdrop-filter:blur(10px);
+  border-top:1px solid rgba(198,152,47,.4);box-shadow:0 -10px 30px -18px rgba(0,0,0,.6)}
+.nextbar .btn{background:linear-gradient(180deg,#D9AC3E,#C6982F);border-color:#8F6B14;color:#1B2A22;font-weight:700}
+footer{background:linear-gradient(180deg,#0F2B22,#0C231C)}
+footer a:hover{color:#E8DCB2}
+
+/* ---- one orchestrated moment: hero settle-in ---- */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hero-inner>*{animation:rise .6s cubic-bezier(.2,.7,.2,1) both}
+.hero-inner>*:nth-child(2){animation-delay:.12s}
+@media (prefers-reduced-motion:reduce){
+  .hero-inner>*{animation:none}
+  html{scroll-behavior:auto}
+  .btn,.intent,.res-link,.chip,.match{transition:none}
+}
+
+/* ---- scrollbar (subtle, webkit) ---- */
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#C9CFBE;border-radius:8px;border:3px solid var(--mist)}
+::-webkit-scrollbar-thumb:hover{background:#AEB89F}
+
 </style>
 </head>
 <body>
@@ -352,6 +515,7 @@ footer .foot-legal a{color:var(--spruce);font-weight:600;text-decoration:none}
       <a href="#/stories" data-page="stories" data-t="nav_stories">Stories</a>
       <a href="#/refusal" data-page="refusal" data-t="nav_refusal">Refusals</a>
       <a href="#/guide" data-page="guide" data-t="nav_guide">AI Guide</a>
+      <a href="#/articles" data-page="articles" data-t="nav_articles">Articles</a>
     </div>
     <div class="langtoggle" role="group" aria-label="Language">
       <button id="langEn" class="on" onclick="setLang('en')">EN</button>
@@ -772,6 +936,16 @@ footer .foot-legal a{color:var(--spruce);font-weight:600;text-decoration:none}
   </section>
 </div>
 
+<!-- ================= ARTICLES ================= -->
+<div class="page" id="p-articles">
+  <section class="section">
+    <h2 data-t="ar_h">Articles &amp; guides</h2>
+    <p style="color:var(--muted);max-width:62ch;margin-top:6px" data-t="ar_p">Plain-language guides on the 2026 rules. Published from the firm&#8217;s content file and reviewed by the licensed consultant before release.</p>
+    <div class="stories" id="artList" style="margin-top:22px"></div>
+    <article class="card" id="artBody" style="display:none;max-width:840px;margin-top:22px"></article>
+  </section>
+</div>
+
 <!-- ================= LOGIN ================= -->
 <div class="page" id="p-login">
   <section class="section" style="padding-top:44px">
@@ -1001,7 +1175,7 @@ function L(en,fa){return state.lang==='fa'?fa:en;}
 function lx(p){return state.lang==='fa'?p[1]:p[0];}
 
 const FA={
-nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
+nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
 hero_h:'مسیر مهاجرت شما به کانادا با انتخاب برنامه درست شروع می‌شود.',
 hero_p:'قوانین در ۲۰۲۵–۲۰۲۶ خیلی عوض شد — امتیاز جاب آفر از CRS حذف شد، استارت‌آپ ویزا بسته شد و BC PNP به سمت درمان و مشاغل فنی چرخید. ببینید امروز واقعاً کجای مسیر ایستاده‌اید.',
 hero_cta:'ارزیابی شرایط من',hero_alt:'یا اول شرایط برنامه‌ها را ببینید',
@@ -1151,6 +1325,7 @@ function setLang(lang){
   document.getElementById('langEn').classList.toggle('on',lang==='en');
   document.getElementById('langFa').classList.toggle('on',lang==='fa');
   applyLang();
+  route();
 }
 function applyLang(){
   document.documentElement.lang=state.lang;
@@ -1168,7 +1343,8 @@ function applyLang(){
   if(state.goal)document.getElementById('goalTxt').textContent=G(state.goal);
   renderLoginLink();
   syncBookingSummary();
-  route(); // re-renders page-specific dynamic content in the new language
+  route();
+  loadContent(); // re-renders page-specific dynamic content in the new language
   if(state.assessmentDone&&location.hash.includes('assess'))renderSnapshot();
 }
 function renderLoginLink(){
@@ -1393,7 +1569,7 @@ function evaluatePrograms(p){
 /* ============ router / journey ============ */
 function audit(ev,extra){state.auditLog.unshift({t:new Date().toLocaleTimeString(),ev,extra:extra||''});}
 audit('session_start');
-const pages=['home','assess','programs','tools','updates','refusal','stories','portal','booking','guide','login'];
+const pages=['home','assess','programs','tools','updates','refusal','stories','portal','booking','guide','articles','login'];
 function go(p){location.hash='#/'+p;}
 function route(){
   let p=(location.hash||'#/home').replace('#/','');
@@ -1411,7 +1587,69 @@ function route(){
   if(p==='updates')renderUpdates();
   if(p==='refusal')refCalc();
   if(p==='portal'){renderDash();renderChecklist();renderTimeline();renderAudit();}
+  if(p==='stories'&&window.STORIES)renderStories(window.STORIES);
+  if(p==='articles')renderArticles();
 }
+
+/* ============ content layer (stage 0): repo JSON files with safe fallback ============
+   data.json    -> overrides matching top-level keys of DATA (draws, fees, funds, updates, ...)
+   stories.json -> replaces the success-story cards
+   posts.json   -> powers the Articles page
+   If a file is missing or malformed, the embedded content keeps working. */
+var POSTS=[];
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function mdLite(t){return esc(t).split(/\n\s*\n/).map(function(b){b=b.trim();if(!b)return'';
+  if(b.indexOf('## ')===0)return '<h3 style="margin:18px 0 8px">'+b.slice(3)+'</h3>';
+  return '<p style="margin:0 0 12px">'+b.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')+'</p>';}).join('');}
+function renderStories(st){
+  var wrap=document.querySelector('#p-stories .stories');
+  if(!wrap||!st||!st.length)return;
+  wrap.innerHTML=st.map(function(s){
+    var tg=s.status==='warn'?'tag-warn':'tag-ok';
+    return '<div class="card story"><span class="tag '+tg+'">'+esc(L(s.tag[0],s.tag[1]))+'</span>'
+     +'<h3 style="font-size:18px;margin-top:12px">'+esc(L(s.title[0],s.title[1]))+'</h3>'
+     +'<div class="route">'+esc(L(s.route[0],s.route[1]))+'</div><dl>'
+     +(s.rows||[]).map(function(r){return '<div><dt>'+esc(L(r.t[0],r.t[1]))+'</dt><dd>'+esc(L(r.d[0],r.d[1]))+'</dd></div>';}).join('')
+     +'</dl><div class="outcome"><span class="tag '+tg+'">'+esc(L(s.outcome[0],s.outcome[1]))+'</span></div></div>';
+  }).join('');
+}
+function renderArticles(){
+  var list=document.getElementById('artList'),body=document.getElementById('artBody');
+  if(!list)return;
+  body.style.display='none';list.style.display='';
+  var posts=POSTS||[];
+  if(!posts.length){list.innerHTML='<div class="card" style="grid-column:1/-1">'+L('Articles are published from the content file (posts.json) — nothing here yet.','مقاله‌ها از فایل محتوا (posts.json) منتشر می‌شوند — فعلاً مقاله‌ای ثبت نشده.')+'</div>';return;}
+  list.innerHTML=posts.map(function(p,i){
+    return '<div class="card story" style="cursor:pointer" onclick="openArticle('+i+')">'
+     +'<span class="tag tag-warn">'+esc(L((p.tag&&p.tag[0])||'Guide',(p.tag&&p.tag[1])||'راهنما'))+'</span>'
+     +'<h3 style="font-size:18px;margin-top:12px">'+esc(L(p.title[0],p.title[1]))+'</h3>'
+     +'<div class="route">'+esc(p.date||'')+'</div>'
+     +'<p style="font-size:14px;color:var(--muted);margin-top:8px">'+esc(L(p.excerpt[0],p.excerpt[1]))+'</p></div>';
+  }).join('');
+}
+function openArticle(i){
+  var p=POSTS[i];if(!p)return;
+  var list=document.getElementById('artList'),body=document.getElementById('artBody');
+  list.style.display='none';body.style.display='block';
+  body.innerHTML='<a href="#/articles" onclick="renderArticles();return false" style="font-weight:600;text-decoration:none">'+L('&larr; All articles','&rarr; همه مقاله‌ها')+'</a>'
+   +'<h2 style="margin:12px 0 4px">'+esc(L(p.title[0],p.title[1]))+'</h2>'
+   +'<div class="route" style="margin-bottom:14px">'+esc(p.date||'')+'</div>'
+   +mdLite(L(p.body[0],p.body[1]))
+   +'<p class="src" style="margin-top:16px">'+L('General information based on rules verified at the date above — not legal advice. For your own case, book a consultation.','اطلاعات عمومی بر پایه قوانینِ راستی‌آزمایی‌شده تا تاریخ بالا — توصیه حقوقی نیست. برای پرونده خودتان مشاوره رزرو کنید.')+'</p>';
+  audit('article_open',esc(p.title[0]).slice(0,50));
+  window.scrollTo(0,0);
+}
+async function loadContent(){
+  var touched=false;
+  try{var r=await fetch('data.json',{cache:'no-store'});if(r.ok){var j=await r.json();for(var k in j){if(k.charAt(0)!=='_'&&Object.prototype.hasOwnProperty.call(DATA,k)){DATA[k]=j[k];touched=true;}}}}catch(e){}
+  try{var r2=await fetch('stories.json',{cache:'no-store'});if(r2.ok){var j2=await r2.json();if(j2&&Array.isArray(j2.stories)&&j2.stories.length){window.STORIES=j2.stories;touched=true;}}}catch(e){}
+  try{var r3=await fetch('posts.json',{cache:'no-store'});if(r3.ok){var j3=await r3.json();if(j3&&Array.isArray(j3.posts)){POSTS=j3.posts;touched=true;}}}catch(e){}
+  try{var r4=await fetch('programs.json',{cache:'no-store'});if(r4.ok){var j4=await r4.json();
+    if(j4&&Array.isArray(j4.programs)&&j4.programs.length&&j4.programs.every(function(p){return p&&Array.isArray(p.n)&&Array.isArray(p.req);})){
+      PROGLIB.length=0;j4.programs.forEach(function(p){PROGLIB.push(p);});touched=true;}}}catch(e){}
+  if(touched)route();
+}
+
 window.addEventListener('hashchange',route);
 
 const GOALS={pr:['Permanent residence','اقامت دائم'],work:['Work in Canada','کار در کانادا'],study:['Study in Canada','تحصیل در کانادا'],
@@ -1906,10 +2144,13 @@ async function sendChat(){
   log.scrollTop=log.scrollHeight;
   audit('guide_question',q.slice(0,60));
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    /* Inside Claude artifacts this endpoint works keyless; in production set window.AI_PROXY_URL
+       (one line in index.html) to your Cloudflare Worker proxy that holds the API key server-side. */
+    const res=await fetch(window.AI_PROXY_URL||'https://api.anthropic.com/v1/messages',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,
         messages:[{role:'user',content:guideContext()+'\n\nUser question: '+q}]})});
+    if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     const text=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n')||L('No answer returned — please try again.','پاسخی نیامد — دوباره امتحان کنید.');
     document.getElementById('pending').outerHTML='<div class="msg ai">'+text.replace(/</g,'&lt;')+'</div>';

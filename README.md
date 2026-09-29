@@ -55,12 +55,23 @@ Age bands use band-representative values (disclosed in the UI); processing times
 - Full i18n: EN/FA toggle, RTL layout, Vazirmatn for Persian; **engine output is bilingual too** (match cards, checklist, timeline, refusal actions)
 - Real brand assets: embedded logo, real office addresses, real social links, RCIC licence + CICC verify link in the footer
 - Responsive: 900 / 640 / 380 px breakpoints, scrollable mobile nav
+- UI: "Consulate Modern" design layer — deep-evergreen hero/closing band with a guilloché (passport security-line) texture, ivory surfaces, brass accents for decisions; pure CSS, engine untouched
+
+## Content editing (no code)
+Draws, fees, rule updates, success stories and articles live in `data.json`, `stories.json`, `posts.json` and `programs.json` (program requirement texts) next to `index.html`. Edit them on GitHub, commit, and the site updates in ~1 minute — with safe fallback to embedded content if a file is malformed. Full instructions (Farsi): `CONTENT-GUIDE.md`.
 
 ## Deploy
 
 1. Put `index.html` at the repo root on `main`.
 2. **Settings → Pages → Deploy from a branch → `main` / `(root)`**.
 3. Live at `https://<username>.github.io/<repo>/` in ~1 minute.
+
+
+## Enabling the AI Guide in production
+The in-page call to `api.anthropic.com` works keyless **only inside Claude's artifact environment**. On GitHub Pages or any other host it fails by design (the key must never live in client code). Fix:
+1. Deploy `ai-proxy-worker.js` on Cloudflare Workers (free tier), set the `ANTHROPIC_API_KEY` secret, and put your domains in `ALLOWED_ORIGINS`.
+2. Add one line to `index.html`: `window.AI_PROXY_URL='https://your-worker.workers.dev';`
+Cost control is built in: model and max_tokens are forced server-side, and you can set a hard monthly spend cap in the Anthropic console.
 
 ## Honest limitations
 

@@ -1,0 +1,158 @@
+{
+ "_readme_fa": "پرونده‌های موفق سایت. برای پرونده جدید یک بلوک از stories را کپی و مقادیر [انگلیسی، فارسی] را عوض کنید. جزئیات هویتی هرگز ننویسید؛ status فقط ok یا warn.",
+ "stories": [
+  {
+   "status": "ok",
+   "tag": [
+    "Approved",
+    "تایید شد"
+   ],
+   "title": [
+    "Study Permit",
+    "ویزای تحصیلی"
+   ],
+   "route": [
+    "Iran → British Columbia",
+    "ایران ← بریتیش کلمبیا"
+   ],
+   "rows": [
+    {
+     "t": [
+      "Profile",
+      "پروفایل"
+     ],
+     "d": [
+      "26 · Bachelor's degree · one previous refusal",
+      "۲۶ ساله · کارشناسی · یک ریجکتی قبلی"
+     ]
+    },
+    {
+     "t": [
+      "Challenge",
+      "چالش"
+     ],
+     "d": [
+      "Weak study-plan explanation in the first application",
+      "توضیح ضعیف برنامه تحصیلی در پرونده اول"
+     ]
+    },
+    {
+     "t": [
+      "Strategy",
+      "استراتژی"
+     ],
+     "d": [
+      "Rebuilt the study plan around career logic and ties, addressed refusal reasons point by point",
+      "بازسازی برنامه تحصیلی حول منطق شغلی و وابستگی‌ها، پاسخ نقطه‌به‌نقطه به دلایل ریجکتی"
+     ]
+    }
+   ],
+   "outcome": [
+    "Outcome: Approved on reapplication",
+    "نتیجه: تایید در درخواست مجدد"
+   ]
+  },
+  {
+   "status": "ok",
+   "tag": [
+    "PR granted",
+    "اقامت گرفت"
+   ],
+   "title": [
+    "Spousal Sponsorship",
+    "اسپانسرشیپ همسر"
+   ],
+   "route": [
+    "Canada + Iran",
+    "کانادا + ایران"
+   ],
+   "rows": [
+    {
+     "t": [
+      "Profile",
+      "پروفایل"
+     ],
+     "d": [
+      "Canadian PR sponsoring spouse abroad",
+      "دارنده اقامت کانادا، اسپانسر همسر در خارج"
+     ]
+    },
+    {
+     "t": [
+      "Challenge",
+      "چالش"
+     ],
+     "d": [
+      "Relationship evidence gaps due to long-distance period",
+      "خلا مدارک رابطه به‌خاطر دوره دوری"
+     ]
+    },
+    {
+     "t": [
+      "Strategy",
+      "استراتژی"
+     ],
+     "d": [
+      "Structured evidence timeline; proactive relationship narrative",
+      "تایم‌لاین ساختاریافته مدارک؛ روایت فعالانه رابطه"
+     ]
+    }
+   ],
+   "outcome": [
+    "Outcome: Permanent residence",
+    "نتیجه: اقامت دائم"
+   ]
+  },
+  {
+   "status": "ok",
+   "tag": [
+    "Nominated",
+    "نامزد شد"
+   ],
+   "title": [
+    "BC PNP → Express Entry",
+    "BC PNP ← اکسپرس انتری"
+   ],
+   "route": [
+    "Work permit → PR pathway",
+    "ورک پرمیت ← مسیر اقامت"
+   ],
+   "rows": [
+    {
+     "t": [
+      "Profile",
+      "پروفایل"
+     ],
+     "d": [
+      "32 · Healthcare worker · CRS 468 at intake",
+      "۳۲ ساله · کادر درمان · CRS ورودی ۴۶۸"
+     ]
+    },
+    {
+     "t": [
+      "Challenge",
+      "چالش"
+     ],
+     "d": [
+      "Below 2026 CEC cut-offs; no French",
+      "زیر کات‌آف‌های CEC سال ۲۰۲۶؛ بدون فرانسه"
+     ]
+    },
+    {
+     "t": [
+      "Strategy",
+      "استراتژی"
+     ],
+     "d": [
+      "Targeted BC health-priority draw + language retest plan in parallel",
+      "هدف‌گیری دراو اولویت درمانی BC + برنامه موازی تکرار آزمون زبان"
+     ]
+    }
+   ],
+   "outcome": [
+    "Outcome: Provincial nomination, +600 CRS",
+    "نتیجه: نامزدی استانی، +۶۰۰ امتیاز"
+   ]
+  }
+ ]
+}

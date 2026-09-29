@@ -1,0 +1,345 @@
+{
+ "_readme_fa": "این فایل منبع داده سایت است. هر کلید اینجا جایگزین همان کلید داخل سایت می‌شود. قبل از ذخیره: JSON معتبر باشد (ویرگول‌ها!) و هر عدد به تایید مشاور دارای مجوز رسیده باشد. راهنمای کامل: CONTENT-GUIDE.md",
+ "_readme_en": "Content source for the site. Each top-level key overrides the same key in the app. Keep valid JSON; every figure RCIC-approved before commit. Guide: CONTENT-GUIDE.md",
+ "meta": {
+  "rulesVerified": [
+   "Sep 2026",
+   "سپتامبر ۲۰۲۶"
+  ]
+ },
+ "draws": {
+  "latest": {
+   "date": [
+    "Aug 18, 2026",
+    "۱۸ اوت ۲۰۲۶"
+   ],
+   "program": "CEC",
+   "itas": 1000
+  },
+  "cecCutoffRange": [
+   510,
+   525
+  ],
+  "categories": [
+   "French-language proficiency",
+   "Healthcare & social services",
+   "Education",
+   "Trades"
+  ]
+ },
+ "funds": {
+  "ee1": 15263,
+  "ee4": 28362,
+  "study": 23448,
+  "studyFrom": [
+   "Sep 1, 2026",
+   "۱ سپتامبر ۲۰۲۶"
+  ]
+ },
+ "fees": {
+  "eePrincipal": {
+   "label": [
+    "PR processing fee (principal)",
+    "هزینه پردازش اقامت (متقاضی اصلی)"
+   ],
+   "amt": 990
+  },
+  "eeRprf": {
+   "label": [
+    "Right of Permanent Residence Fee",
+    "هزینه حق اقامت دائم (RPRF)"
+   ],
+   "amt": 600
+  },
+  "eeSpouse": {
+   "label": [
+    "Spouse — processing + RPRF",
+    "همسر — پردازش + RPRF"
+   ],
+   "amt": 1590
+  },
+  "eeChild": {
+   "label": [
+    "Dependent child (each)",
+    "فرزند همراه (هر نفر)"
+   ],
+   "amt": 270,
+   "approx": true
+  },
+  "bcpnp": {
+   "label": [
+    "BC PNP Skills application fee (registration free; review $500)",
+    "هزینه درخواست BC PNP (ثبت‌نام رایگان؛ بازبینی ۵۰۰ دلار)"
+   ],
+   "amt": 1750
+  },
+  "bio1": {
+   "label": [
+    "Biometrics (individual)",
+    "بایومتریک (فردی)"
+   ],
+   "amt": 85
+  },
+  "bioFam": {
+   "label": [
+    "Biometrics (family max)",
+    "بایومتریک (سقف خانواده)"
+   ],
+   "amt": 170
+  },
+  "study": {
+   "label": [
+    "Study permit processing fee",
+    "هزینه پردازش ویزای تحصیلی"
+   ],
+   "amt": 150
+  },
+  "visitor": {
+   "label": [
+    "Visitor visa (per person)",
+    "ویزای ویزیتوری (هر نفر)"
+   ],
+   "amt": 100
+  },
+  "lang": {
+   "label": [
+    "Language test (IELTS/CELPIP, approx.)",
+    "آزمون زبان (آیلتس/CELPIP، تقریبی)"
+   ],
+   "amt": 320,
+   "approx": true
+  },
+  "eca": {
+   "label": [
+    "Educational Credential Assessment (approx.)",
+    "ارزیابی مدرک تحصیلی ECA (تقریبی)"
+   ],
+   "amt": 250,
+   "approx": true
+  },
+  "medical": {
+   "label": [
+    "Immigration medical exam (approx., per person)",
+    "معاینه پزشکی مهاجرتی (تقریبی، هر نفر)"
+   ],
+   "amt": 400,
+   "approx": true
+  }
+ },
+ "processing": [
+  {
+   "p": [
+    "Express Entry — CEC",
+    "اکسپرس انتری — CEC"
+   ],
+   "hist": [
+    "5 months",
+    "۵ ماه"
+   ],
+   "fwd": [
+    "~6–7 months",
+    "حدود ۶–۷ ماه"
+   ],
+   "tag": "ok",
+   "t": [
+    "Stable",
+    "پایدار"
+   ]
+  },
+  {
+   "p": [
+    "Express Entry — FSW",
+    "اکسپرس انتری — FSW"
+   ],
+   "hist": [
+    "6 months",
+    "۶ ماه"
+   ],
+   "fwd": [
+    "~8 months",
+    "حدود ۸ ماه"
+   ],
+   "tag": "warn",
+   "t": [
+    "Slowing",
+    "رو به کندی"
+   ]
+  },
+  {
+   "p": [
+    "BC PNP nomination (Skills Immigration)",
+    "نامزدی BC PNP"
+   ],
+   "hist": [
+    "3 months (80% of cases)",
+    "۳ ماه (۸۰٪ پرونده‌ها)"
+   ],
+   "fwd": [
+    "~3 months",
+    "حدود ۳ ماه"
+   ],
+   "tag": "ok",
+   "t": [
+    "Official — WelcomeBC",
+    "رسمی — WelcomeBC"
+   ]
+  },
+  {
+   "p": [
+    "Study permit (outside Canada)",
+    "ویزای تحصیلی (خارج از کانادا)"
+   ],
+   "hist": [
+    "9 weeks",
+    "۹ هفته"
+   ],
+   "fwd": [
+    "~11 weeks",
+    "حدود ۱۱ هفته"
+   ],
+   "tag": "ok",
+   "t": [
+    "Stable",
+    "پایدار"
+   ]
+  },
+  {
+   "p": [
+    "Spousal sponsorship (outland)",
+    "اسپانسرشیپ همسر (خارج کانادا)"
+   ],
+   "hist": [
+    "11 months",
+    "۱۱ ماه"
+   ],
+   "fwd": [
+    "~12 months",
+    "حدود ۱۲ ماه"
+   ],
+   "tag": "ok",
+   "t": [
+    "Stable",
+    "پایدار"
+   ]
+  },
+  {
+   "p": [
+    "Visitor visa (Iran)",
+    "ویزای ویزیتوری (ایران)"
+   ],
+   "hist": [
+    "4 months",
+    "۴ ماه"
+   ],
+   "fwd": [
+    "varies",
+    "متغیر"
+   ],
+   "tag": "warn",
+   "t": [
+    "Volatile",
+    "نوسانی"
+   ]
+  }
+ ],
+ "updates": [
+  {
+   "d": [
+    "Apr 30, 2026",
+    "۳۰ آوریل ۲۰۲۶"
+   ],
+   "t": [
+    "PR fees increased across all streams",
+    "افزایش هزینه‌های اقامت در همه مسیرها"
+   ],
+   "m": [
+    "Express Entry principal now totals $1,590 including a $600 RPRF. Budget the new numbers.",
+    "مجموع هزینه متقاضی اصلی اکسپرس انتری حالا ۱٬۵۹۰ دلار است (شامل ۶۰۰ دلار RPRF). با اعداد جدید بودجه ببندید."
+   ]
+  },
+  {
+   "d": [
+    "Apr 23, 2026",
+    "۲۳ آوریل ۲۰۲۶"
+   ],
+   "t": [
+    "BC PNP pivots to healthcare & trades",
+    "چرخش BC PNP به درمان و مشاغل فنی"
+   ],
+   "m": [
+    "Entry Level & Semi-Skilled closed; graduate/tech streams cancelled. 2026 allocation ≈ 5,254. Health, childcare, construction and veterinary occupations get targeted draws.",
+    "مسیر ELSS بسته شد؛ مسیرهای فارغ‌التحصیلی/تک لغو شدند. سهمیه ۲۰۲۶ حدود ۵٬۲۵۴. درمان، مراقبت کودک، ساخت‌وساز و دامپزشکی دراوهای هدفمند می‌گیرند."
+   ]
+  },
+  {
+   "d": [
+    "Mar 2026",
+    "مارس ۲۰۲۶"
+   ],
+   "t": [
+    "IRCC signals job-offer points may return",
+    "احتمال بازگشت امتیاز جاب آفر از نگاه IRCC"
+   ],
+   "m": [
+    "The 2026–27 Departmental Plan proposes reintroducing CRS points for high-wage job offers. Nothing in force yet — a job offer still adds 0 points today.",
+    "برنامه ۲۰۲۶–۲۷ وزارتخانه بازگرداندن امتیاز برای آفرهای پردرآمد را پیشنهاد داده. هنوز اجرایی نیست — امروز جاب آفر همچنان صفر امتیاز دارد."
+   ]
+  },
+  {
+   "d": [
+    "Feb 18, 2026",
+    "۱۸ فوریه ۲۰۲۶"
+   ],
+   "t": [
+    "2026 Express Entry categories announced",
+    "اعلام دسته‌های ۲۰۲۶ اکسپرس انتری"
+   ],
+   "m": [
+    "French, healthcare & social services, education, and trades continue as category-based draws — often with lower cut-offs than general rounds.",
+    "فرانسه، درمان و خدمات اجتماعی، آموزش و مشاغل فنی به‌عنوان دراوهای دسته‌ای ادامه دارند — معمولاً با کات‌آف پایین‌تر از دراوهای عمومی."
+   ]
+  },
+  {
+   "d": [
+    "Jan 1, 2026",
+    "۱ ژانویه ۲۰۲۶"
+   ],
+   "t": [
+    "Start-Up Visa closed to new applicants",
+    "بسته شدن استارت‌آپ ویزا برای متقاضیان جدید"
+   ],
+   "m": [
+    "A targeted entrepreneur pilot is expected to replace it. Today the real routes are PNP entrepreneur streams (BC Base: $600K net worth, $200K investment / Regional: $300K net worth, $100K investment) and the C11 work permit.",
+    "قرار است یک پایلوت کارآفرینی هدفمند جایگزینش شود. امروز مسیرهای واقعی، کارآفرینی استانی (BC اصلی: ۶۰۰ هزار دلار دارایی + ۲۰۰ هزار سرمایه‌گذاری / منطقه‌ای: ۳۰۰ هزار دارایی + ۱۰۰ هزار سرمایه‌گذاری) و ورک پرمیت C11 هستند."
+   ]
+  },
+  {
+   "d": [
+    "Sep 1, 2026",
+    "۱ سپتامبر ۲۰۲۶"
+   ],
+   "t": [
+    "Study permit proof of funds now $23,448",
+    "تمکن مالی ویزای تحصیلی: ۲۳٬۴۴۸ دلار"
+   ],
+   "m": [
+    "Single applicant outside Quebec, on top of first-year tuition and travel.",
+    "برای متقاضی مجرد خارج از کبک، علاوه بر شهریه سال اول و هزینه سفر."
+   ]
+  },
+  {
+   "d": [
+    "Mar 25, 2025",
+    "۲۵ مارس ۲۰۲۵"
+   ],
+   "t": [
+    "Job offer points removed from CRS",
+    "حذف امتیاز جاب آفر از CRS"
+   ],
+   "m": [
+    "The 50/200 arranged-employment points are gone. Any calculator still counting them is wrong.",
+    "امتیازهای ۵۰/۲۰۰ حذف شدند. هر محاسبه‌گری که هنوز آن‌ها را می‌شمارد، غلط است."
+   ]
+  }
+ ]
+}

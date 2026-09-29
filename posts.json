@@ -1,0 +1,43 @@
+{
+ "_readme_fa": "مقاله‌های سایت. برای مقاله جدید یک بلوک از posts را کپی کنید. body با دو اینتر پاراگراف جدید می‌شود و خطی که با '## ' شروع شود تیتر است؛ **متن** پررنگ می‌شود. مقاله جدید را اول آرایه بگذارید تا اول دیده شود.",
+ "posts": [
+  {
+   "tag": [
+    "Express Entry",
+    "اکسپرس انتری"
+   ],
+   "date": "2026-09-29",
+   "title": [
+    "Job-offer points are gone — what actually raises your CRS in 2026",
+    "امتیاز جاب آفر حذف شده — در ۲۰۲۶ واقعاً چه چیزی CRS شما را بالا می‌برد؟"
+   ],
+   "excerpt": [
+    "Since March 2025 a job offer adds zero CRS points. The levers that still work: French, Canadian experience, education — and a provincial nomination.",
+    "از مارس ۲۰۲۵ جاب آفر صفر امتیاز دارد. اهرم‌هایی که هنوز کار می‌کنند: فرانسه، سابقه کانادایی، تحصیلات — و نامزدی استانی."
+   ],
+   "body": [
+    "## The change\n\nOn March 25, 2025, IRCC removed the 50/200 additional CRS points for arranged employment. A job offer still matters for provincial programs, but inside the Express Entry pool it moves your score by exactly zero. IRCC has signalled the points may return in some form — until that is law, plan without them.\n\n## What still moves your score\n\n**French (+25 or +50).** CLB 7 in French with English CLB 5+ adds 50 points, and French-category draws have had far lower cut-offs than general CEC rounds all year.\n\n**Canadian experience.** Each additional year of Canadian skilled work raises both core points and transferability combinations.\n\n**Education pairing.** A completed Canadian credential adds 15–30 points on top of your education score.\n\n**Provincial nomination (+600).** The single largest lever left. BC's Skills stream needs a TEER 0–3 indeterminate offer and 2 years of experience; other provinces have their own gates.\n\n## The honest math\n\n2026 CEC cut-offs have run 510–525. If you are at 460, no single retest closes that gap — a combination (French + one more year + nomination attempt) is the realistic route. Run your numbers in the assessment tool, then plan the sequence.",
+    "## تغییر چه بود\n\nدر ۲۵ مارس ۲۰۲۵، IRCC امتیاز اضافه ۵۰/۲۰۰ برای جاب آفر را حذف کرد. جاب آفر هنوز برای برنامه‌های استانی مهم است، ولی داخل استخر اکسپرس انتری دقیقاً صفر امتیاز جابه‌جا می‌کند. IRCC اشاره کرده شاید به شکلی برگردد — تا وقتی قانون نشده، بدون آن برنامه بریزید.\n\n## چه چیزهایی هنوز امتیاز می‌آورند\n\n**فرانسه (۲۵+ یا ۵۰+).** فرانسه CLB 7 با انگلیسی CLB 5 به بالا ۵۰ امتیاز می‌دهد، و دراوهای دسته فرانسه تمام امسال کات‌آفی خیلی پایین‌تر از CEC عمومی داشته‌اند.\n\n**سابقه کانادایی.** هر سال سابقه ماهر کانادایی هم امتیاز هسته را بالا می‌برد هم ترکیب‌های انتقال‌پذیری را.\n\n**تحصیلات.** مدرک کانادایی تکمیل‌شده ۱۵ تا ۳۰ امتیاز روی نمره تحصیلات اضافه می‌کند.\n\n**نامزدی استانی (۶۰۰+).** بزرگ‌ترین اهرم باقی‌مانده. مسیر Skills بی‌سی آفر بدون تاریخ پایان TEER 0–3 و ۲ سال سابقه می‌خواهد؛ استان‌های دیگر شرط‌های خودشان را دارند.\n\n## حساب صادقانه\n\nکات‌آف CEC در ۲۰۲۶ بین ۵۱۰ تا ۵۲۵ بوده. اگر ۴۶۰ هستید، هیچ آزمون مجدد تکی این فاصله را نمی‌بندد — ترکیب (فرانسه + یک سال سابقه بیشتر + تلاش برای نامزدی) مسیر واقع‌بینانه است. عددتان را در ابزار ارزیابی حساب کنید، بعد ترتیب اقدام را بچینید."
+   ]
+  },
+  {
+   "tag": [
+    "BC PNP",
+    "BC PNP"
+   ],
+   "date": "2026-09-29",
+   "title": [
+    "BC PNP in 2026: who still qualifies for the Skills stream",
+    "BC PNP در ۲۰۲۶: چه کسی هنوز واجد شرایط مسیر Skills است؟"
+   ],
+   "excerpt": [
+    "After the 2026 pivot, BC runs two worker streams. The official checklist is short but strict — most refusals we see are on two of these lines.",
+    "بعد از چرخش ۲۰۲۶، بی‌سی دو مسیر کارگری دارد. چک‌لیست رسمی کوتاه ولی سخت‌گیر است — بیشتر ردهایی که می‌بینیم روی دو قلم از همین‌هاست."
+   ],
+   "body": [
+    "## The 2026 shape of the program\n\nBC refocused its nominee program on priority sectors — healthcare, childcare, construction and trades — and now runs the Skilled Worker stream plus a Health Authority stream for direct health-employer hires.\n\n## The official checklist (WelcomeBC)\n\n**1.** A full-time job offer with no end date from an eligible BC employer, in NOC TEER 0–3, with a completed Employer Declaration Form.\n\n**2.** At least 2 years of full-time-equivalent work experience.\n\n**3.** Language at CLB 4 minimum — higher scores earn more SIRS points.\n\n**4.** Wage and licensing requirements met; some occupations (admin assistants, bookkeepers, retail and food-service supervisors, real-estate agents) are not eligible.\n\n**Fees:** registration is free, the application is $1,750, and BC PNP processes about 80% of applications in 3 months. A nomination adds 600 CRS points.\n\n## Where files fail\n\nThe two lines that quietly disqualify people: the offer must be indeterminate (a fixed-term contract fails), and the 2-year experience bar counts full-time equivalent — part-time years count at their real fraction. If either is your gap, the fix is usually contract wording or timing, not a different program.",
+    "## شکل ۲۰۲۶ برنامه\n\nبی‌سی برنامه نامزدی‌اش را روی بخش‌های اولویت‌دار متمرکز کرد — درمان، مراقبت کودک، ساخت‌وساز و مشاغل فنی — و حالا مسیر Skilled Worker به‌علاوه مسیر Health Authority برای استخدام مستقیم سازمان‌های سلامت را اجرا می‌کند.\n\n## چک‌لیست رسمی (WelcomeBC)\n\n**۱.** جاب آفر تمام‌وقت بدون تاریخ پایان از کارفرمای واجد شرایط بی‌سی، در NOC TEER 0–3، با فرم اظهارنامه کارفرما.\n\n**۲.** حداقل ۲ سال سابقه کار معادل تمام‌وقت.\n\n**۳.** زبان حداقل CLB 4 — نمره بالاتر در SIRS امتیاز بیشتر می‌گیرد.\n\n**۴.** احراز دستمزد و مجوز شغلی؛ برخی مشاغل (دستیار اداری، حسابدار دفتری، سرپرست خرده‌فروشی و رستوران، مشاور املاک) واجد شرایط نیستند.\n\n**هزینه‌ها:** ثبت‌نام رایگان، درخواست ۱٬۷۵۰ دلار، و BC PNP حدود ۸۰٪ پرونده‌ها را در ۳ ماه پردازش می‌کند. نامزدی ۶۰۰ امتیاز CRS اضافه می‌کند.\n\n## پرونده‌ها کجا می‌سوزند\n\nدو قلمی که بی‌سروصدا افراد را حذف می‌کند: آفر باید بدون تاریخ پایان باشد (قرارداد مدت‌دار رد می‌شود)، و شرط ۲ سال «معادل تمام‌وقت» است — سال‌های پاره‌وقت با کسر واقعی‌شان حساب می‌شوند. اگر مشکل شما یکی از این دوست، راه‌حل معمولاً اصلاح متن قرارداد یا زمان‌بندی است، نه برنامه دیگر."
+   ]
+  }
+ ]
+}
