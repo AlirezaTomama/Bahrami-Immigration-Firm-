@@ -1025,7 +1025,7 @@ footer a:hover{color:#E8DCB2}
           <div class="stage"><span class="st-ic st-done">✓</span> <span data-t="cs_5">Submitted to IRCC</span></div>
           <div class="stage"><span class="st-ic st-done">✓</span> <span data-t="cs_6">Biometrics completed</span></div>
           <div class="stage"><span class="st-ic st-wait">…</span> <span data-t="cs_7">Decision pending</span></div>
-          <div class="next-action" data-t="cs_next"><strong>Next action:</strong> upload a new bank statement · Due Sep 12</div>
+          <div class="next-action" data-t="cs_next"><strong>Next action:</strong> upload a new bank statement · due in 7 days</div>
         </div>
         <div class="card">
           <h3 style="font-size:18px;margin-bottom:12px" data-t="cd_h">Case documents (demo data)</h3>
@@ -1078,12 +1078,7 @@ footer a:hover{color:#E8DCB2}
           <button class="chip" onclick="pick(this,'cons');document.getElementById('sumCons').textContent=this.textContent" data-t="cons_2">Associate consultant (RCIC)</button>
         </div>
         <label style="margin-bottom:8px" data-t="bk_3">3 · Pick a time (Vancouver time)</label>
-        <div class="slotrow" id="slots">
-          <button class="chip" onclick="pickSlot(this)" data-t="sl_1">Wed Sep 9 · 10:30</button>
-          <button class="chip sel" onclick="pickSlot(this)" data-t="sl_2">Thu Sep 10 · 14:00</button>
-          <button class="chip" onclick="pickSlot(this)" data-t="sl_3">Fri Sep 11 · 09:00</button>
-          <button class="chip" onclick="pickSlot(this)" data-t="sl_4">Fri Sep 11 · 19:30</button>
-        </div>
+        <div class="slotrow" id="slots"></div>
         <label style="margin-bottom:8px" data-t="bk_4">4 · Confirm &amp; pay</label>
         <div style="margin-top:14px;display:grid;gap:10px">
           <div><label for="bkName" data-t="bk_name" style="font-size:13px;font-weight:600">Full name</label>
@@ -1096,7 +1091,11 @@ footer a:hover{color:#E8DCB2}
           <div id="bkStatus" style="font-size:13.5px;font-weight:600;color:var(--spruce-deep);min-height:18px"></div>
         </div>
         <button class="btn btn-primary" onclick="confirmBooking(this)" data-t="bk_pay">Pay &amp; confirm booking</button>
-        <a id="bkFinal" class="btn btn-primary" target="_blank" rel="noopener" style="display:none;margin-top:10px" data-t="bk_finalize">Choose exact time &amp; pay</a>
+        <div id="schedWrap" style="display:none;margin-top:18px">
+          <h3 style="font-size:17px;margin-bottom:6px" data-t="sched_h">Pick the exact time — your details are pre-filled</h3>
+          <div id="schedBox"></div>
+          <p class="note" style="margin-top:8px"><a id="schedLink" target="_blank" rel="noopener" data-t="sched_fb">If the calendar doesn&#8217;t load, open it here</a></p>
+        </div>
         <p class="note" style="margin-top:12px" data-t="bk_note">Your details go straight to the office (live). Exact time, payment and the meeting link are finalized on the scheduling page that opens after you confirm.</p>
       </div>
       <div class="card">
@@ -1104,7 +1103,7 @@ footer a:hover{color:#E8DCB2}
         <div class="book-summary">
           <div><span data-t="bs_svc">Service</span><strong id="sumSvc">Express Entry Strategy</strong></div>
           <div><span data-t="bs_cons">Consultant</span><strong id="sumCons">Arash Bahrami · RCIC #R418351</strong></div>
-          <div><span data-t="bs_time">Time</span><strong id="sumSlot">Thu Sep 10 · 14:00</strong></div>
+          <div><span data-t="bs_time">Time</span><strong id="sumSlot"></strong></div>
           <div><span data-t="bs_intake">Intake form</span><strong id="sumIntake" data-t="bs_intake_v">To complete after payment</strong></div>
           <div><span data-t="bs_docs">Documents</span><strong data-t="bs_docs_v">Upload after intake, before the meeting</strong></div>
         </div>
@@ -1186,10 +1185,10 @@ footer a:hover{color:#E8DCB2}
    paste its URL between the quotes below (e.g. 'https://bahrami-ai.YOURNAME.workers.dev').
    Leave empty ('') until then — the chat will show its polite fallback message. */
 window.AI_PROXY_URL='';
-/* Leads database () — paste Project URL and anon public key after setup (see STEP1-SETUP.md).
+/* Leads database (Supabase) — paste Project URL and anon public key after setup (see STEP1-SETUP.md).
    Leave empty until then: the booking form works in demo mode and clearly says so. */
-window.SUPABASE_URL='https://dhnsbevujqksbbrqeipm.supabase.co';
-window.SUPABASE_ANON='sb_publishable_W0EmgLD7SceydaxLzj1SLw_TEwzGh88';
+window.SUPABASE_URL='';
+window.SUPABASE_ANON='';
 /* Real scheduling & payment link (Calendly / Cal.com event). Shown after a lead is captured. */
 window.BOOKING_URL='';
 
@@ -1198,7 +1197,7 @@ function L(en,fa){return state.lang==='fa'?fa:en;}
 function lx(p){return state.lang==='fa'?p[1]:p[0];}
 
 const FA={
-nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_finalize:'انتخاب زمان دقیق و پرداخت',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
+nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
 hero_h:'مسیر مهاجرت شما به کانادا با انتخاب برنامه درست شروع می‌شود.',
 hero_p:'قوانین در ۲۰۲۵–۲۰۲۶ خیلی عوض شد — امتیاز جاب آفر از CRS حذف شد، استارت‌آپ ویزا بسته شد و BC PNP به سمت درمان و مشاغل فنی چرخید. ببینید امروز واقعاً کجای مسیر ایستاده‌اید.',
 hero_cta:'ارزیابی شرایط من',hero_alt:'یا اول شرایط برنامه‌ها را ببینید',
@@ -1308,7 +1307,7 @@ du_note:'فایل‌ها فقط در همین نشست مرورگر می‌ما�
 tm_h:'تایم‌لاین مسیر شما',
 cs_h:'ویزای تحصیلی — پرونده #SP-2411',cs_tag:'نیازمند بازبینی موکل',
 cs_1:'بررسی شرایط انجام شد',cs_2:'مدارک جمع‌آوری‌شده',cs_3:'فرم‌ها تکمیل شد',cs_4:'نیازمند بازبینی موکل',cs_5:'به IRCC ارسال شد',cs_6:'بایومتریک انجام شد',cs_7:'در انتظار تصمیم',
-cs_next:'<strong>اقدام بعدی:</strong> آپلود گردش حساب جدید · مهلت ۱۲ سپتامبر',
+cs_next:'<strong>اقدام بعدی:</strong> آپلود صورتحساب بانکی جدید · مهلت: ۷ روز دیگر',
 cd_h:'مدارک پرونده (داده نمونه)',cd_1:'پاسپورت',cd_2:'گردش حساب بانکی',cd_3:'نامه اشتغال',cd_4:'گواهی عدم سوءپیشینه',
 tag_ver:'تایید شد',tag_exp:'رو به انقضا',tag_mis:'ناقص',
 cd_note:'این تب تجربه موکلِ قراردادی را با داده نمونه نشان می‌دهد. مدل داده پشت آن: User ← Case ← Application ← Documents ← Checklist ← Tasks ← Timeline ← Consultations.',
@@ -1321,7 +1320,7 @@ sv_inc:'ثبت شرکت و ویزای کار',sv_inv:'سرمایه‌گذاری 
 sv_incan:'خدمات داخل کانادا (تمدید پرمیت/ویزا، تغییر DLI)',sv_ref:'بررسی ریجکتی',
 bk_2:'۲ · انتخاب مشاور',cons_1:'آرش بهرامی · RCIC #R418351',cons_2:'مشاور همکار (RCIC)',
 bk_3:'۳ · انتخاب زمان (به وقت ونکوور)',
-sl_1:'چهارشنبه ۹ سپتامبر · ۱۰:۳۰',sl_2:'پنجشنبه ۱۰ سپتامبر · ۱۴:۰۰',sl_3:'جمعه ۱۱ سپتامبر · ۰۹:۰۰',sl_4:'جمعه ۱۱ سپتامبر · ۱۹:۳۰',
+
 bk_4:'۴ · تایید و پرداخت',bk_pay:'پرداخت و تایید رزرو',
 bk_note:'اطلاعات شما مستقیم به دفتر می‌رسد (فعال). زمان دقیق، پرداخت و لینک جلسه در صفحه زمان‌بندی که بعد از تایید باز می‌شود نهایی می‌گردد.',
 bs_h:'رزرو شما',bs_svc:'خدمت',bs_cons:'مشاور',bs_time:'زمان',bs_intake:'فرم اطلاعات',bs_intake_v:'تکمیل بعد از پرداخت',
@@ -1612,6 +1611,7 @@ function route(){
   if(p==='portal'){renderDash();renderChecklist();renderTimeline();renderAudit();}
   if(p==='stories'&&window.STORIES)renderStories(window.STORIES);
   if(p==='articles')renderArticles();
+  if(p==='booking')renderSlots();
 }
 
 /* ============ content layer (stage 0): repo JSON files with safe fallback ============
@@ -2139,7 +2139,19 @@ function renderBookingBanner(){
   }
 }
 function pickSvc(el){pick(el,'svc');state.service=el.textContent;document.getElementById('sumSvc').textContent=el.textContent;}
-function pickSlot(el){pick(el,'slots');document.getElementById('sumSlot').textContent=el.textContent;}
+function pickSlot(el){pick(el,'slots');state.slotIdx=+el.dataset.idx||0;document.getElementById('sumSlot').textContent=el.textContent;}
+function renderSlots(){
+  var box=document.getElementById('slots');if(!box)return;
+  var days=[],d=new Date();
+  while(days.length<3){d=new Date(d.getTime()+864e5);var w=d.getDay();if(w!==0&&w!==6)days.push(new Date(d));}
+  var fmt=new Intl.DateTimeFormat(state.lang==='fa'?'fa-u-ca-gregory':'en-CA',{weekday:'short',month:'short',day:'numeric'});
+  var slots=[[days[0],'10:30'],[days[1],'14:00'],[days[2],'09:00'],[days[2],'19:30']];
+  if(state.slotIdx==null)state.slotIdx=1;
+  box.innerHTML=slots.map(function(s,i){
+    return '<button class="chip'+(i===state.slotIdx?' sel':'')+'" data-idx="'+i+'" onclick="pickSlot(this)">'+fmt.format(s[0])+' · '+s[1]+'</button>';
+  }).join('');
+  document.getElementById('sumSlot').textContent=fmt.format(slots[state.slotIdx][0])+' · '+slots[state.slotIdx][1];
+}
 async function confirmBooking(btn){
   var nm=(document.getElementById('bkName').value||'').trim();
   var em=(document.getElementById('bkEmail').value||'').trim();
@@ -2161,7 +2173,7 @@ async function confirmBooking(btn){
     :(r.skipped?L('Demo mode — connect the leads database to receive submissions (STEP1-SETUP.md).','حالت دمو — برای دریافت واقعی، دیتابیس لید را وصل کنید (STEP1-SETUP.md).')
     :L('Could not send — please try again, or message us on WhatsApp.','ارسال نشد — دوباره تلاش کنید یا در واتساپ پیام بدهید.'));
   btn.textContent=L('Booked ✓ — continue to intake','رزرو شد ✓ — ادامه به فرم اطلاعات');
-  if(window.BOOKING_URL){var a=document.getElementById('bkFinal');a.href=window.BOOKING_URL;a.style.display='inline-block';}
+  if(window.BOOKING_URL)openScheduler(lead);
   btn.onclick=null;btn.disabled=false;
 }
 async function sendLead(row){
@@ -2172,6 +2184,26 @@ async function sendLead(row){
       body:JSON.stringify(row)});
     return{ok:res.ok};
   }catch(e){return{ok:false};}
+}
+function openScheduler(lead){
+  if(!window.BOOKING_URL)return;
+  var u;try{u=new URL(window.BOOKING_URL);}catch(e){return;}
+  if(lead.name)u.searchParams.set('name',lead.name);
+  if(lead.email)u.searchParams.set('email',lead.email);
+  if(lead.phone)u.searchParams.set('a1',lead.phone);
+  u.searchParams.set('hide_gdpr_banner','1');
+  u.searchParams.set('utm_source','platform');
+  u.searchParams.set('utm_content',((lead.service||'')+(lead.crs?(' · CRS '+lead.crs):'')).slice(0,80));
+  var wrap=document.getElementById('schedWrap'),box=document.getElementById('schedBox');
+  box.innerHTML='<div class="calendly-inline-widget" data-url="'+u.toString().replace(/"/g,'%22')+'" style="min-width:300px;height:660px"></div>';
+  document.getElementById('schedLink').href=u.toString();
+  wrap.style.display='block';
+  if(!document.getElementById('calendlyJs')){
+    var s=document.createElement('script');s.id='calendlyJs';s.async=true;
+    s.src='https://assets.calendly.com/assets/external/widget.js';
+    document.body.appendChild(s);
+  }else if(window.Calendly&&window.Calendly.initInlineWidgets){window.Calendly.initInlineWidgets();}
+  try{wrap.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
 }
 function buildAssessmentRow(leadId){
   var p=state.profile,c=state.crsParts||{};
