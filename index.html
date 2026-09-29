@@ -1,5 +1,3 @@
-window.SUPABASE_URL='https://dhnsbevujqksbbrqeipm.supabase.co/rest/v1/';
-window.SUPABASE_ANON='sb_publishable_W0EmgLD7SceydaxLzj1SLw_TEwzGh88';
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1087,8 +1085,19 @@ footer a:hover{color:#E8DCB2}
           <button class="chip" onclick="pickSlot(this)" data-t="sl_4">Fri Sep 11 · 19:30</button>
         </div>
         <label style="margin-bottom:8px" data-t="bk_4">4 · Confirm &amp; pay</label>
+        <div style="margin-top:14px;display:grid;gap:10px">
+          <div><label for="bkName" data-t="bk_name" style="font-size:13px;font-weight:600">Full name</label>
+            <input id="bkName" autocomplete="name" style="width:100%;padding:11px 12px;margin-top:4px"></div>
+          <div><label for="bkEmail" data-t="bk_email" style="font-size:13px;font-weight:600">Email</label>
+            <input id="bkEmail" type="email" autocomplete="email" style="width:100%;padding:11px 12px;margin-top:4px"></div>
+          <div><label for="bkPhone" data-t="bk_phone" style="font-size:13px;font-weight:600">Phone / WhatsApp</label>
+            <input id="bkPhone" autocomplete="tel" style="width:100%;padding:11px 12px;margin-top:4px"></div>
+          <p class="note" style="margin:0" data-t="bk_consent">By confirming, you agree the office may contact you to coordinate this booking.</p>
+          <div id="bkStatus" style="font-size:13.5px;font-weight:600;color:var(--spruce-deep);min-height:18px"></div>
+        </div>
         <button class="btn btn-primary" onclick="confirmBooking(this)" data-t="bk_pay">Pay &amp; confirm booking</button>
-        <p class="note" style="margin-top:12px" data-t="bk_note">Production integrations at this step: Stripe payment, Google/Microsoft calendar sync, email + SMS confirmation, and a Zoom/Meet link — all stubbed in this prototype.</p>
+        <a id="bkFinal" class="btn btn-primary" target="_blank" rel="noopener" style="display:none;margin-top:10px" data-t="bk_finalize">Choose exact time &amp; pay</a>
+        <p class="note" style="margin-top:12px" data-t="bk_note">Your details go straight to the office (live). Exact time, payment and the meeting link are finalized on the scheduling page that opens after you confirm.</p>
       </div>
       <div class="card">
         <h3 style="font-size:18px;margin-bottom:12px" data-t="bs_h">Your booking</h3>
@@ -1172,12 +1181,24 @@ footer a:hover{color:#E8DCB2}
 </footer>
 <script>
 /* ============ i18n core ============ */
+/* === CONFIG ===============================================================
+   AI Guide proxy: after deploying ai-proxy-worker.js on Cloudflare Workers,
+   paste its URL between the quotes below (e.g. 'https://bahrami-ai.YOURNAME.workers.dev').
+   Leave empty ('') until then — the chat will show its polite fallback message. */
+window.AI_PROXY_URL='';
+/* Leads database (Supabase) — paste Project URL and anon public key after setup (see STEP1-SETUP.md).
+   Leave empty until then: the booking form works in demo mode and clearly says so. */
+window.SUPABASE_URL='';
+window.SUPABASE_ANON='';
+/* Real scheduling & payment link (Calendly / Cal.com event). Shown after a lead is captured. */
+window.BOOKING_URL='';
+
 const state={lang:'en',loggedIn:false,assessmentDone:false,comparedDone:false,goal:null,profile:null,crs:null,crsParts:null,results:null,service:'Express Entry Strategy',docs:[],auditLog:[],booked:null};
 function L(en,fa){return state.lang==='fa'?fa:en;}
 function lx(p){return state.lang==='fa'?p[1]:p[0];}
 
 const FA={
-nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
+nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_finalize:'انتخاب زمان دقیق و پرداخت',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
 hero_h:'مسیر مهاجرت شما به کانادا با انتخاب برنامه درست شروع می‌شود.',
 hero_p:'قوانین در ۲۰۲۵–۲۰۲۶ خیلی عوض شد — امتیاز جاب آفر از CRS حذف شد، استارت‌آپ ویزا بسته شد و BC PNP به سمت درمان و مشاغل فنی چرخید. ببینید امروز واقعاً کجای مسیر ایستاده‌اید.',
 hero_cta:'ارزیابی شرایط من',hero_alt:'یا اول شرایط برنامه‌ها را ببینید',
@@ -1302,7 +1323,7 @@ bk_2:'۲ · انتخاب مشاور',cons_1:'آرش بهرامی · RCIC #R41835
 bk_3:'۳ · انتخاب زمان (ساعت ونکوور / تهران)',
 sl_1:'چهارشنبه ۹ سپتامبر · ۱۰:۳۰',sl_2:'پنجشنبه ۱۰ سپتامبر · ۱۴:۰۰',sl_3:'جمعه ۱۱ سپتامبر · ۰۹:۰۰',sl_4:'جمعه ۱۱ سپتامبر · ۱۹:۳۰',
 bk_4:'۴ · تایید و پرداخت',bk_pay:'پرداخت و تایید رزرو',
-bk_note:'اتصال‌های نسخه نهایی در این قدم: پرداخت Stripe، همگام‌سازی تقویم گوگل/مایکروسافت، تایید ایمیل و پیامک، و لینک Zoom/Meet — در این پروتوتایپ استاب هستند.',
+bk_note:'اطلاعات شما مستقیم به دفتر می‌رسد (فعال). زمان دقیق، پرداخت و لینک جلسه در صفحه زمان‌بندی که بعد از تایید باز می‌شود نهایی می‌گردد.',
 bs_h:'رزرو شما',bs_svc:'خدمت',bs_cons:'مشاور',bs_time:'زمان',bs_intake:'فرم اطلاعات',bs_intake_v:'تکمیل بعد از پرداخت',
 bs_docs:'مدارک',bs_docs_v:'آپلود بعد از فرم، قبل از جلسه',
 bs_note:'مسیر فقط رو به جلو: پرداخت ← فرم اطلاعات ← مدارک ← جلسه. هیچ‌چیز شما را به ارزیابی برنمی‌گرداند.',
@@ -2120,10 +2141,35 @@ function renderBookingBanner(){
 }
 function pickSvc(el){pick(el,'svc');state.service=el.textContent;document.getElementById('sumSvc').textContent=el.textContent;}
 function pickSlot(el){pick(el,'slots');document.getElementById('sumSlot').textContent=el.textContent;}
-function confirmBooking(btn){
+async function confirmBooking(btn){
+  var nm=(document.getElementById('bkName').value||'').trim();
+  var em=(document.getElementById('bkEmail').value||'').trim();
+  var ph=(document.getElementById('bkPhone').value||'').trim();
+  var st=document.getElementById('bkStatus');
+  if(!nm||(!em&&!ph)){st.textContent=L('Please enter your name and an email or phone number.','لطفاً نام و یکی از ایمیل یا شماره تماس را وارد کنید.');return;}
   state.booked=document.getElementById('sumSlot').textContent;
   audit('booking_confirmed',state.service+' · '+state.booked);
-  btn.textContent=L('Booked ✓ — continue to intake','رزرو شد ✓ — ادامه به فرم اطلاعات');btn.onclick=null;
+  btn.disabled=true;var keep=btn.textContent;btn.textContent=L('Sending…','در حال ارسال…');
+  var lead={name:nm,email:em||null,phone:ph||null,service:state.service,slot:state.booked,lang:state.lang,source:'booking',
+    goal:state.goal||null,province:(state.profile&&state.profile.prov)||null,
+    crs:(state.assessmentDone&&state.crs)?state.crs:null,
+    top_programs:(state.results||[]).filter(function(m){return m.cls==='strong'||m.cls==='possible';}).slice(0,3).map(function(m){return m.name;}).join(' | ')||null};
+  var r=await sendLead(lead);
+  st.textContent=r.ok?L('Received ✓ — the office will contact you to confirm.','دریافت شد ✓ — دفتر برای تایید با شما تماس می‌گیرد.')
+    :(r.skipped?L('Demo mode — connect the leads database to receive submissions (STEP1-SETUP.md).','حالت دمو — برای دریافت واقعی، دیتابیس لید را وصل کنید (STEP1-SETUP.md).')
+    :L('Could not send — please try again, or message us on WhatsApp.','ارسال نشد — دوباره تلاش کنید یا در واتساپ پیام بدهید.'));
+  btn.textContent=L('Booked ✓ — continue to intake','رزرو شد ✓ — ادامه به فرم اطلاعات');
+  if(window.BOOKING_URL){var a=document.getElementById('bkFinal');a.href=window.BOOKING_URL;a.style.display='inline-block';}
+  btn.onclick=null;btn.disabled=false;
+}
+async function sendLead(row){
+  if(!window.SUPABASE_URL||!window.SUPABASE_ANON)return{ok:false,skipped:true};
+  try{
+    var res=await fetch(window.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/leads',{method:'POST',
+      headers:{'apikey':window.SUPABASE_ANON,'Authorization':'Bearer '+window.SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(row)});
+    return{ok:res.ok};
+  }catch(e){return{ok:false};}
 }
 
 /* ============ AI guide ============ */
