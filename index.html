@@ -1077,7 +1077,7 @@ footer a:hover{color:#E8DCB2}
           <button class="chip sel" onclick="pick(this,'cons');document.getElementById('sumCons').textContent=this.textContent" data-t="cons_1">Arash Bahrami · RCIC #R418351</button>
           <button class="chip" onclick="pick(this,'cons');document.getElementById('sumCons').textContent=this.textContent" data-t="cons_2">Associate consultant (RCIC)</button>
         </div>
-        <label style="margin-bottom:8px" data-t="bk_3">3 · Pick a time (Vancouver / Tehran hours)</label>
+        <label style="margin-bottom:8px" data-t="bk_3">3 · Pick a time (Vancouver time)</label>
         <div class="slotrow" id="slots">
           <button class="chip" onclick="pickSlot(this)" data-t="sl_1">Wed Sep 9 · 10:30</button>
           <button class="chip sel" onclick="pickSlot(this)" data-t="sl_2">Thu Sep 10 · 14:00</button>
@@ -1188,8 +1188,8 @@ footer a:hover{color:#E8DCB2}
 window.AI_PROXY_URL='';
 /* Leads database (Supabase) — paste Project URL and anon public key after setup (see STEP1-SETUP.md).
    Leave empty until then: the booking form works in demo mode and clearly says so. */
-window.SUPABASE_URL='https://dhnsbevujqksbbrqeipm.supabase.co';
-window.SUPABASE_ANON='sb_publishable_W0EmgLD7SceydaxLzj1SLw_TEwzGh88';
+window.SUPABASE_URL='';
+window.SUPABASE_ANON='';
 /* Real scheduling & payment link (Calendly / Cal.com event). Shown after a lead is captured. */
 window.BOOKING_URL='';
 
@@ -1320,7 +1320,7 @@ sv_elig:'بررسی شرایط',sv_ee:'استراتژی اکسپرس انتری'
 sv_inc:'ثبت شرکت و ویزای کار',sv_inv:'سرمایه‌گذاری در کانادا',sv_court:'اعتراض به ریجکتی در دادگاه',sv_tour:'ویزای توریستی',
 sv_incan:'خدمات داخل کانادا (تمدید پرمیت/ویزا، تغییر DLI)',sv_ref:'بررسی ریجکتی',
 bk_2:'۲ · انتخاب مشاور',cons_1:'آرش بهرامی · RCIC #R418351',cons_2:'مشاور همکار (RCIC)',
-bk_3:'۳ · انتخاب زمان (ساعت ونکوور / تهران)',
+bk_3:'۳ · انتخاب زمان (به وقت ونکوور)',
 sl_1:'چهارشنبه ۹ سپتامبر · ۱۰:۳۰',sl_2:'پنجشنبه ۱۰ سپتامبر · ۱۴:۰۰',sl_3:'جمعه ۱۱ سپتامبر · ۰۹:۰۰',sl_4:'جمعه ۱۱ سپتامبر · ۱۹:۳۰',
 bk_4:'۴ · تایید و پرداخت',bk_pay:'پرداخت و تایید رزرو',
 bk_note:'اطلاعات شما مستقیم به دفتر می‌رسد (فعال). زمان دقیق، پرداخت و لینک جلسه در صفحه زمان‌بندی که بعد از تایید باز می‌شود نهایی می‌گردد.',
@@ -1693,7 +1693,6 @@ function renderStepper(cur){
     const cls='jstep'+(cur===s[0]?' current':(done?' done':''));
     h+=(i?'<span class="jarrow">›</span>':'')+'<a class="'+cls+'" href="#/'+s[0]+'"><span class="num">'+(done&&cur!==s[0]?'✓':i+1)+'</span>'+lx(s[1])+'</a>';
   });
-  h+='<span class="jresources">'+L('Resources:','منابع:')+'<a href="#/tools">'+L('Tools','ابزارها')+'</a><a href="#/updates">'+L('Updates','اخبار')+'</a><a href="#/stories">'+L('Stories','پرونده‌ها')+'</a><a href="#/guide">'+L('AI Guide','دستیار')+'</a></span>';
   bar.innerHTML=h;
 }
 function renderNextBar(p){
@@ -2154,7 +2153,10 @@ async function confirmBooking(btn){
     goal:state.goal||null,province:(state.profile&&state.profile.prov)||null,
     crs:(state.assessmentDone&&state.crs)?state.crs:null,
     top_programs:(state.results||[]).filter(function(m){return m.cls==='strong'||m.cls==='possible';}).slice(0,3).map(function(m){return m.name;}).join(' | ')||null};
+  var uid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var v=Math.random()*16|0;return (c==='x'?v:(v&0x3|0x8)).toString(16);});
+  lead.id=uid;
   var r=await sendLead(lead);
+  if(r.ok&&state.assessmentDone){try{await sendAssessment(uid);}catch(e){}}
   st.textContent=r.ok?L('Received ✓ — the office will contact you to confirm.','دریافت شد ✓ — دفتر برای تایید با شما تماس می‌گیرد.')
     :(r.skipped?L('Demo mode — connect the leads database to receive submissions (STEP1-SETUP.md).','حالت دمو — برای دریافت واقعی، دیتابیس لید را وصل کنید (STEP1-SETUP.md).')
     :L('Could not send — please try again, or message us on WhatsApp.','ارسال نشد — دوباره تلاش کنید یا در واتساپ پیام بدهید.'));
@@ -2168,6 +2170,37 @@ async function sendLead(row){
     var res=await fetch(window.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/leads',{method:'POST',
       headers:{'apikey':window.SUPABASE_ANON,'Authorization':'Bearer '+window.SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify(row)});
+    return{ok:res.ok};
+  }catch(e){return{ok:false};}
+}
+function buildAssessmentRow(leadId){
+  var p=state.profile,c=state.crsParts||{};
+  var top=(state.results||[]).slice(0,3);
+  function nm(m){return m?String(m.name):null}
+  function stx(m){return m?m.cls:null}
+  var row={lead_id:leadId,lang:state.lang,goal:p.goal||null,res_status:null,
+    status:p.status||null,country:p.country||null,province:p.prov||null,
+    age_band:p.age||null,education:p.edu||null,clb:p.clb||null,french:!!p.fr,
+    foreign_years:p.forYrs==null?null:p.forYrs,canadian_years:p.cad==null?null:p.cad,
+    canadian_study:p.cadStudy||null,sibling:!!p.sibling,teer:p.teer||null,sector:p.sector||null,
+    offer:p.offer||null,funds:p.funds==null?null:p.funds,
+    spouse:!!(p.spouse&&p.spouse.has),
+    spouse_edu:(p.spouse&&p.spouse.has)?(p.spouse.edu||null):null,
+    spouse_clb:(p.spouse&&p.spouse.has)?(p.spouse.clb||null):null,
+    spouse_cad:(p.spouse&&p.spouse.has)?(p.spouse.cad||null):null,
+    crs:c.total||null,crs_core:c.core||null,crs_trans:c.trans||null,
+    res1:nm(top[0]),res1_status:stx(top[0]),
+    res2:nm(top[1]),res2_status:stx(top[1]),
+    res3:nm(top[2]),res3_status:stx(top[2])};
+  delete row.res_status;
+  return row;
+}
+async function sendAssessment(leadId){
+  if(!window.SUPABASE_URL||!window.SUPABASE_ANON||!state.profile)return{ok:false,skipped:true};
+  try{
+    var res=await fetch(window.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/assessments',{method:'POST',
+      headers:{'apikey':window.SUPABASE_ANON,'Authorization':'Bearer '+window.SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify(buildAssessmentRow(leadId))});
     return{ok:res.ok};
   }catch(e){return{ok:false};}
 }
