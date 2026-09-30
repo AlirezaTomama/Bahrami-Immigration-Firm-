@@ -1077,7 +1077,7 @@ footer a:hover{color:#E8DCB2}
           <button class="chip sel" onclick="pick(this,'cons');document.getElementById('sumCons').textContent=this.textContent" data-t="cons_1">Arash Bahrami · RCIC #R418351</button>
           <button class="chip" onclick="pick(this,'cons');document.getElementById('sumCons').textContent=this.textContent" data-t="cons_2">Associate consultant (RCIC)</button>
         </div>
-        <label style="margin-bottom:8px" data-t="bk_3">3 · Pick a time (Vancouver time)</label>
+        <label style="margin-bottom:8px" data-t="bk_3">3 · Best time of day for you (Vancouver time)</label>
         <div class="slotrow" id="slots"></div>
         <label style="margin-bottom:8px" data-t="bk_4">4 · Confirm &amp; pay</label>
         <div style="margin-top:14px;display:grid;gap:10px">
@@ -1095,6 +1095,7 @@ footer a:hover{color:#E8DCB2}
           <h3 style="font-size:17px;margin-bottom:6px" data-t="sched_h">Pick the exact time — your details are pre-filled</h3>
           <div id="schedBox"></div>
           <p class="note" style="margin-top:8px"><a id="schedLink" target="_blank" rel="noopener" data-t="sched_fb">If the calendar doesn&#8217;t load, open it here</a></p>
+          <p class="note" style="margin-top:4px"><a href="#" id="schedSwap" style="display:none;font-weight:700"></a></p>
         </div>
         <p class="note" style="margin-top:12px" data-t="bk_note">Your details go straight to the office (live). Exact time, payment and the meeting link are finalized on the scheduling page that opens after you confirm.</p>
       </div>
@@ -1103,7 +1104,7 @@ footer a:hover{color:#E8DCB2}
         <div class="book-summary">
           <div><span data-t="bs_svc">Service</span><strong id="sumSvc">Express Entry Strategy</strong></div>
           <div><span data-t="bs_cons">Consultant</span><strong id="sumCons">Arash Bahrami · RCIC #R418351</strong></div>
-          <div><span data-t="bs_time">Time</span><strong id="sumSlot"></strong></div>
+          <div><span data-t="bs_time">Preferred time</span><strong id="sumSlot"></strong></div>
           <div><span data-t="bs_intake">Intake form</span><strong id="sumIntake" data-t="bs_intake_v">To complete after payment</strong></div>
           <div><span data-t="bs_docs">Documents</span><strong data-t="bs_docs_v">Upload after intake, before the meeting</strong></div>
         </div>
@@ -1187,10 +1188,13 @@ footer a:hover{color:#E8DCB2}
 window.AI_PROXY_URL='';
 /* Leads database (Supabase) — paste Project URL and anon public key after setup (see STEP1-SETUP.md).
    Leave empty until then: the booking form works in demo mode and clearly says so. */
-window.SUPABASE_URL='https://dhnsbevujqksbbrqeipm.supabase.co';
-window.SUPABASE_ANON='sb_publishable_W0EmgLD7SceydaxLzj1SLw_TEwzGh88';
+window.SUPABASE_URL='';
+window.SUPABASE_ANON='';
 /* Real scheduling & payment link (Calendly / Cal.com event). Shown after a lead is captured. */
-window.BOOKING_URL='https://calendly.com/alireza-torabi/consultation';
+window.BOOKING_URL='';
+/* Optional second Calendly event for clients INSIDE Iran (no card payment — e.g. 15-min intro;
+   fee handled by the Tehran office in rial). Users are routed by assessment country or phone prefix. */
+window.BOOKING_URL_IR='';
 
 const state={lang:'en',loggedIn:false,assessmentDone:false,comparedDone:false,goal:null,profile:null,crs:null,crsParts:null,results:null,service:'Express Entry Strategy',docs:[],auditLog:[],booked:null};
 function L(en,fa){return state.lang==='fa'?fa:en;}
@@ -1319,11 +1323,11 @@ sv_elig:'بررسی شرایط',sv_ee:'استراتژی اکسپرس انتری'
 sv_inc:'ثبت شرکت و ویزای کار',sv_inv:'سرمایه‌گذاری در کانادا',sv_court:'اعتراض به ریجکتی در دادگاه',sv_tour:'ویزای توریستی',
 sv_incan:'خدمات داخل کانادا (تمدید پرمیت/ویزا، تغییر DLI)',sv_ref:'بررسی ریجکتی',
 bk_2:'۲ · انتخاب مشاور',cons_1:'آرش بهرامی · RCIC #R418351',cons_2:'مشاور همکار (RCIC)',
-bk_3:'۳ · انتخاب زمان (به وقت ونکوور)',
+bk_3:'۳ · بهترین بازه روز برای شما (به وقت ونکوور)',
 
 bk_4:'۴ · تایید و پرداخت',bk_pay:'پرداخت و تایید رزرو',
 bk_note:'اطلاعات شما مستقیم به دفتر می‌رسد (فعال). زمان دقیق، پرداخت و لینک جلسه در صفحه زمان‌بندی که بعد از تایید باز می‌شود نهایی می‌گردد.',
-bs_h:'رزرو شما',bs_svc:'خدمت',bs_cons:'مشاور',bs_time:'زمان',bs_intake:'فرم اطلاعات',bs_intake_v:'تکمیل بعد از پرداخت',
+bs_h:'رزرو شما',bs_svc:'خدمت',bs_cons:'مشاور',bs_time:'بازه ترجیحی',bs_intake:'فرم اطلاعات',bs_intake_v:'تکمیل بعد از پرداخت',
 bs_docs:'مدارک',bs_docs_v:'آپلود بعد از فرم، قبل از جلسه',
 bs_note:'مسیر فقط رو به جلو: پرداخت ← فرم اطلاعات ← مدارک ← جلسه. هیچ‌چیز شما را به ارزیابی برنمی‌گرداند.',
 gd_k:'دستیار هوشمند مهاجرت',gd_h:'بپرسید «چرا» — پاسخ بر پایه پروفایل خودتان',
@@ -2139,18 +2143,16 @@ function renderBookingBanner(){
   }
 }
 function pickSvc(el){pick(el,'svc');state.service=el.textContent;document.getElementById('sumSvc').textContent=el.textContent;}
-function pickSlot(el){pick(el,'slots');state.slotIdx=+el.dataset.idx||0;document.getElementById('sumSlot').textContent=el.textContent;}
+function pickSlot(el){pick(el,'slots');state.timePref=el.dataset.pref||null;renderSlots();}
 function renderSlots(){
   var box=document.getElementById('slots');if(!box)return;
-  var days=[],d=new Date();
-  while(days.length<3){d=new Date(d.getTime()+864e5);var w=d.getDay();if(w!==0&&w!==6)days.push(new Date(d));}
-  var fmt=new Intl.DateTimeFormat(state.lang==='fa'?'fa-u-ca-gregory':'en-CA',{weekday:'short',month:'short',day:'numeric'});
-  var slots=[[days[0],'10:30'],[days[1],'14:00'],[days[2],'09:00'],[days[2],'19:30']];
-  if(state.slotIdx==null)state.slotIdx=1;
-  box.innerHTML=slots.map(function(s,i){
-    return '<button class="chip'+(i===state.slotIdx?' sel':'')+'" data-idx="'+i+'" onclick="pickSlot(this)">'+fmt.format(s[0])+' · '+s[1]+'</button>';
+  var prefs=[['morning',L('Morning (9–12)','صبح (۹–۱۲)')],['afternoon',L('Afternoon (12–5)','بعدازظهر (۱۲–۱۷)')],['evening',L('Evening (5–8)','عصر (۱۷–۲۰)')]];
+  if(!state.timePref)state.timePref='afternoon';
+  box.innerHTML=prefs.map(function(s){
+    return '<button class="chip'+(s[0]===state.timePref?' sel':'')+'" data-pref="'+s[0]+'" onclick="pickSlot(this)">'+s[1]+'</button>';
   }).join('');
-  document.getElementById('sumSlot').textContent=fmt.format(slots[state.slotIdx][0])+' · '+slots[state.slotIdx][1];
+  var cur=prefs.filter(function(s){return s[0]===state.timePref;})[0];
+  document.getElementById('sumSlot').textContent=cur[1]+' · '+L('exact time in the calendar below','زمان دقیق در تقویم پایین');
 }
 async function confirmBooking(btn){
   var nm=(document.getElementById('bkName').value||'').trim();
@@ -2158,15 +2160,15 @@ async function confirmBooking(btn){
   var ph=(document.getElementById('bkPhone').value||'').trim();
   var st=document.getElementById('bkStatus');
   if(!nm||(!em&&!ph)){st.textContent=L('Please enter your name and an email or phone number.','لطفاً نام و یکی از ایمیل یا شماره تماس را وارد کنید.');return;}
-  state.booked=document.getElementById('sumSlot').textContent;
+  state.booked=state.timePref||'unspecified';
   audit('booking_confirmed',state.service+' · '+state.booked);
   btn.disabled=true;var keep=btn.textContent;btn.textContent=L('Sending…','در حال ارسال…');
-  var lead={name:nm,email:em||null,phone:ph||null,service:state.service,slot:state.booked,lang:state.lang,source:'booking',
+  var lead={name:nm,email:em||null,phone:ph||null,service:state.service,time_pref:state.timePref||null,lang:state.lang,source:'booking',
     goal:state.goal||null,province:(state.profile&&state.profile.prov)||null,
     crs:(state.assessmentDone&&state.crs)?state.crs:null,
     top_programs:(state.results||[]).filter(function(m){return m.cls==='strong'||m.cls==='possible';}).slice(0,3).map(function(m){return m.name;}).join(' | ')||null};
   var uid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var v=Math.random()*16|0;return (c==='x'?v:(v&0x3|0x8)).toString(16);});
-  lead.id=uid;
+  lead.id=uid;state.leadId=uid;
   var r=await sendLead(lead);
   if(r.ok&&state.assessmentDone){try{await sendAssessment(uid);}catch(e){}}
   st.textContent=r.ok?L('Received ✓ — the office will contact you to confirm.','دریافت شد ✓ — دفتر برای تایید با شما تماس می‌گیرد.')
@@ -2185,26 +2187,56 @@ async function sendLead(row){
     return{ok:res.ok};
   }catch(e){return{ok:false};}
 }
-function openScheduler(lead){
-  if(!window.BOOKING_URL)return;
-  var u;try{u=new URL(window.BOOKING_URL);}catch(e){return;}
-  if(lead.name)u.searchParams.set('name',lead.name);
-  if(lead.email)u.searchParams.set('email',lead.email);
-  if(lead.phone)u.searchParams.set('a1',lead.phone);
-  u.searchParams.set('hide_gdpr_banner','1');
-  u.searchParams.set('utm_source','platform');
-  u.searchParams.set('utm_content',((lead.service||'')+(lead.crs?(' · CRS '+lead.crs):'')).slice(0,80));
+function toEnDigits(s){return String(s||'').replace(/[۰-۹]/g,function(d){return String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d));}).replace(/[٠-٩]/g,function(d){return String('٠١٢٣٤٥٦٧٨٩'.indexOf(d));});}
+function isIranPhone(p){p=toEnDigits(p).replace(/[\s\-()]/g,'');return /^(\+98|0098)/.test(p)||/^09\d{8,}$/.test(p);}
+function openScheduler(lead,forceBase){
+  var STD=window.BOOKING_URL||'',IR=window.BOOKING_URL_IR||'';
+  if(!STD&&!IR)return;
+  var iran=/iran|ایران/i.test((state.profile&&state.profile.country)||'')||isIranPhone(lead.phone);
+  var base=forceBase||((iran&&IR)?IR:(STD||IR));
+  var q=[];function ap(k,v){if(v!=null&&v!=='')q.push(k+'='+encodeURIComponent(v));}
+  ap('name',lead.name);ap('email',lead.email);ap('a1',lead.phone);
+  ap('hide_gdpr_banner','1');ap('utm_source','platform');
+  ap('utm_content',((lead.service||'')+(lead.crs?(' CRS '+lead.crs):'')).slice(0,80));
+  var full=base+(base.indexOf('?')>-1?'&':'?')+q.join('&');
   var wrap=document.getElementById('schedWrap'),box=document.getElementById('schedBox');
-  box.innerHTML='<div class="calendly-inline-widget" data-url="'+u.toString().replace(/"/g,'%22')+'" style="min-width:300px;height:660px"></div>';
-  document.getElementById('schedLink').href=u.toString();
+  box.innerHTML='<div class="calendly-inline-widget" data-url="'+full.replace(/"/g,'%22')+'" style="min-width:300px;height:660px"></div>';
+  document.getElementById('schedLink').href=full;
   wrap.style.display='block';
   if(!document.getElementById('calendlyJs')){
     var s=document.createElement('script');s.id='calendlyJs';s.async=true;
     s.src='https://assets.calendly.com/assets/external/widget.js';
     document.body.appendChild(s);
   }else if(window.Calendly&&window.Calendly.initInlineWidgets){window.Calendly.initInlineWidgets();}
+  var sw=document.getElementById('schedSwap');
+  if(sw){var other=(base===STD)?IR:STD;
+    if(STD&&IR&&other&&other!==base){
+      sw.style.display='inline';
+      sw.textContent=(base===STD)?L('Inside Iran? Switch to the Iran intro session','داخل ایران هستید؟ به جلسه ویژه ایران بروید')
+                                 :L('Outside Iran? Switch to the standard consultation','خارج از ایران هستید؟ به جلسه استاندارد بروید');
+      sw.onclick=function(ev){ev.preventDefault();openScheduler(lead,other);};
+    }else{sw.style.display='none';}
+  }
   try{wrap.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
 }
+async function markBooked(eventUri){
+  if(!window.SUPABASE_URL||!window.SUPABASE_ANON||!state.leadId)return;
+  try{
+    await fetch(window.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/leads?id=eq.'+encodeURIComponent(state.leadId),{method:'PATCH',
+      headers:{'apikey':window.SUPABASE_ANON,'Authorization':'Bearer '+window.SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({booked_at:new Date().toISOString(),booked_event:eventUri||null})});
+  }catch(e){}
+}
+window.addEventListener('message',function(e){
+  if(e.origin!=='https://calendly.com'||!e.data||typeof e.data.event!=='string')return;
+  if(e.data.event==='calendly.event_scheduled'){
+    var uri=null;try{uri=e.data.payload.event.uri;}catch(x){}
+    markBooked(uri);
+    var st=document.getElementById('bkStatus');
+    if(st)st.textContent=L('Meeting time confirmed ✓ — check your email for the invite.','زمان جلسه قطعی شد ✓ — دعوت‌نامه به ایمیل شما آمد.');
+    audit('meeting_scheduled',uri||'calendly');
+  }
+});
 function buildAssessmentRow(leadId){
   var p=state.profile,c=state.crsParts||{};
   var top=(state.results||[]).slice(0,3);
