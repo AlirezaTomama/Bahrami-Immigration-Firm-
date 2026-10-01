@@ -1185,13 +1185,13 @@ footer a:hover{color:#E8DCB2}
    AI Guide proxy: after deploying ai-proxy-worker.js on Cloudflare Workers,
    paste its URL between the quotes below (e.g. 'https://bahrami-ai.YOURNAME.workers.dev').
    Leave empty ('') until then — the chat will show its polite fallback message. */
-window.AI_PROXY_URL='https://bahrami-hub.a-torabl-m.workers.dev';
+window.AI_PROXY_URL='';
 /* Leads database (Supabase) — paste Project URL and anon public key after setup (see STEP1-SETUP.md).
    Leave empty until then: the booking form works in demo mode and clearly says so. */
-window.SUPABASE_URL='https://dhnsbevujqksbbrqeipm.supabase.co';
-window.SUPABASE_ANON='sb_publishable_W0EmgLD7SceydaxLzj1SLw_TEwzGh88';
+window.SUPABASE_URL='';
+window.SUPABASE_ANON='';
 /* Real scheduling & payment link (Calendly / Cal.com event). Shown after a lead is captured. */
-window.BOOKING_URL='https://calendly.com/alireza-torabi/consultation';
+window.BOOKING_URL='';
 /* Optional second Calendly event for clients INSIDE Iran (no card payment — e.g. 15-min intro;
    fee handled by the Tehran office in rial). Users are routed by assessment country or phone prefix. */
 window.BOOKING_URL_IR='';
@@ -2220,20 +2220,36 @@ function openScheduler(lead,forceBase){
   try{wrap.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
 }
 async function markBooked(eventUri){
-  if(!window.SUPABASE_URL||!window.SUPABASE_ANON||!state.leadId)return;
+  if(!state.leadId){console.log('[booked] no leadId in state');return{ok:false,why:'no-lead'};}
+  if(window.AI_PROXY_URL){
+    try{
+      var wres=await fetch(window.AI_PROXY_URL.replace(/\/+$/,'')+'/booked',{method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({lead_id:state.leadId,event_uri:eventUri||null})});
+      console.log('[booked] worker path status',wres.status);
+      return{ok:wres.ok,why:'worker-'+wres.status};
+    }catch(e){console.log('[booked] worker path failed',e&&e.message);return{ok:false,why:'worker-net'};}
+  }
+  if(!window.SUPABASE_URL||!window.SUPABASE_ANON)return{ok:false,why:'no-config'};
   try{
     await fetch(window.SUPABASE_URL.replace(/\/+$/,'')+'/rest/v1/leads?id=eq.'+encodeURIComponent(state.leadId),{method:'PATCH',
       headers:{'apikey':window.SUPABASE_ANON,'Authorization':'Bearer '+window.SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
       body:JSON.stringify({booked_at:new Date().toISOString(),booked_event:eventUri||null})});
-  }catch(e){}
+    return{ok:true,why:'direct'};
+  }catch(e){return{ok:false,why:'direct-net'};}
 }
 window.addEventListener('message',function(e){
   if(e.origin!=='https://calendly.com'||!e.data||typeof e.data.event!=='string')return;
   if(e.data.event==='calendly.event_scheduled'){
     var uri=null;try{uri=e.data.payload.event.uri;}catch(x){}
-    markBooked(uri);
+    console.log('[booked] calendly signal received',uri);
     var st=document.getElementById('bkStatus');
-    if(st)st.textContent=L('Meeting time confirmed ✓ — check your email for the invite.','زمان جلسه قطعی شد ✓ — دعوت‌نامه به ایمیل شما آمد.');
+    if(st)st.textContent=L('Meeting time confirmed ✓ — saving…','زمان جلسه قطعی شد ✓ — در حال ثبت…');
+    Promise.resolve(markBooked(uri)).then(function(r){
+      if(!st)return;
+      if(r&&r.ok)st.textContent=L('Meeting time confirmed ✓ — saved. Check your email for the invite.','زمان جلسه قطعی شد ✓ — ثبت شد. دعوت‌نامه به ایمیل شما آمد.');
+      else st.textContent=L('Meeting confirmed ✓ but status save failed ('+(r&&r.why||'?')+') — the office still gets the calendar invite.','جلسه قطعی شد ✓ ولی ثبت وضعیت ناموفق بود ('+(r&&r.why||'?')+') — دعوت تقویم به دفتر می‌رسد.');
+    });
     audit('meeting_scheduled',uri||'calendly');
   }
 });
