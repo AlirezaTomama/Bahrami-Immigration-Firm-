@@ -23,11 +23,11 @@ const MODEL = 'claude-sonnet-4-6';
 const MAX_TOKENS = 1000;
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/lead-hook') return leadHook(request, env);
     if (url.pathname === '/booked') return bookedMark(request, env);
-    return aiProxy(request, env);
+    return aiProxy(request, env, ctx);
   },
 };
 
@@ -50,8 +50,9 @@ async function leadHook(request, env) {
       '\n📞 ' + (r.phone || '—') + '  ✉️ ' + (r.email || '—') +
       '\n🧭 سرویس: ' + (r.service || '—') +
       '\n🕑 بازه ترجیحی: ' + prefFa(r.time_pref) + ' (ونکوور)' +
-      (r.crs ? '\n📊 CRS: ' + r.crs : '') +
-      (r.top_programs ? '\n⭐ برنامه‌ها: ' + r.top_programs : '') +
+      (r.chat_summary ? '\n💬 از چت AI پرسیده: ' + r.chat_summary : '') +
+      (r.crs ? '\n📊 از ارزیابی — CRS: ' + r.crs : '') +
+      (r.top_programs ? '\n⭐ از ارزیابی — برنامه‌های برتر: ' + r.top_programs : '') +
       (r.goal ? '\n🎯 هدف: ' + r.goal + (r.province ? ' · استان: ' + r.province : '') : '') +
       '\n🌐 زبان کاربر: ' + (r.lang || '—') +
       '\n⏳ هنوز زمان جلسه را قطعی نکرده — اگر تا فردا booked نشد، در همان بازه تماس بگیرید.';
@@ -116,7 +117,7 @@ function prefFa(v) {
 }
 
 /* ---------------- step 2: AI Guide proxy (unchanged behaviour) ---------------- */
-async function aiProxy(request, env) {
+async function aiProxy(request, env, ctx) {
   const origin = request.headers.get('Origin') || '';
   const okOrigin = ALLOWED_ORIGINS.includes(origin);
   const cors = {
@@ -131,6 +132,7 @@ async function aiProxy(request, env) {
 
   let body;
   try { body = await request.json(); } catch { return new Response('Bad JSON', { status: 400, headers: cors }); }
+  const meta = body.meta && typeof body.meta === 'object' ? body.meta : null;
   const messages = Array.isArray(body.messages) ? body.messages.slice(0, 4) : null;
   if (!messages) return new Response('Bad request', { status: 400, headers: cors });
 
@@ -144,5 +146,35 @@ async function aiProxy(request, env) {
     body: JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, messages: messages }),
   });
   const text = await upstream.text();
+
+  /* 2.1 — anonymous chat log (fire-and-forget; never blocks the reply) */
+  if (upstream.ok && meta && env.SB_SERVICE_KEY) {
+    const job = (async () => {
+      try {
+        let answer = '';
+        try {
+          const j = JSON.parse(text);
+          answer = (j.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n');
+        } catch {}
+        await fetch(SUPABASE_URL + '/rest/v1/chat_logs', {
+          method: 'POST',
+          headers: {
+            'apikey': env.SB_SERVICE_KEY,
+            'Authorization': 'Bearer ' + env.SB_SERVICE_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal',
+          },
+          body: JSON.stringify({
+            question: String(meta.q || '').slice(0, 1000),
+            answer: answer.slice(0, 4000),
+            lang: typeof meta.lang === 'string' ? meta.lang.slice(0, 5) : null,
+            lead_id: (typeof meta.lead_id === 'string' && /^[0-9a-f-]{36}$/i.test(meta.lead_id)) ? meta.lead_id : null,
+          }),
+        });
+      } catch {}
+    })();
+    if (ctx && ctx.waitUntil) ctx.waitUntil(job);
+  }
+
   return new Response(text, { status: upstream.status, headers: { ...cors, 'Content-Type': 'application/json' } });
 }
