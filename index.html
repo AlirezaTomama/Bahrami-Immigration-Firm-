@@ -1124,6 +1124,7 @@ footer a:hover{color:#E8DCB2}
       <h2 data-t="gd_h">Ask why — get an answer grounded in your profile</h2>
       <p data-t="gd_p">Not a free-roaming chatbot. The Guide answers from three sources only: your assessment profile, the 2026 program rules in this platform's data layer, and the firm's approved knowledge base.</p>
     </div>
+    <p class="note" style="margin:0 0 10px" data-t="gd_log">Conversations are stored anonymously to improve answers — please don&#8217;t include names, passport or file numbers.</p>
     <div class="guardrail" data-t="gd_guard"><strong>Boundary:</strong> general information, not individualized legal advice, until reviewed by an authorized professional. The Guide will say "I don't know" rather than guess, and will point to a consultant when a question needs one.</div>
     <div class="chat">
       <div class="chat-log" id="chatLog">
@@ -1131,8 +1132,13 @@ footer a:hover{color:#E8DCB2}
       </div>
       <div class="chat-in">
         <input type="text" id="chatInput" placeholder="Ask about your eligibility, a program rule, or a recent change…" data-tp="gd_ph" onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="btn btn-secondary" id="micBtn" onclick="toggleMic()" style="display:none;min-width:46px" title="Voice input">🎤</button>
         <button class="btn btn-primary" id="chatSend" onclick="sendChat()" data-t="gd_ask">Ask</button>
       </div>
+    </div>
+    <div id="chatCtas" style="display:none;gap:10px;margin-top:12px;flex-wrap:wrap">
+      <a class="btn btn-primary" href="#/assess" data-t="gd_cta1">Take the free 3-minute assessment</a>
+      <a class="btn btn-secondary" href="#/booking" data-t="gd_cta2">Book a consultation</a>
     </div>
     <p class="note" style="margin-top:12px" data-t="gd_note">Powered by Claude with your profile and the platform's rules data passed as context. Conversations are logged to the audit trail. If your assessment isn't done, the Guide answers general questions only.</p>
   </section>
@@ -1190,7 +1196,7 @@ function L(en,fa){return state.lang==='fa'?fa:en;}
 function lx(p){return state.lang==='fa'?p[1]:p[0];}
 
 const FA={
-nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_reset:'شروع رزرو جدید',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
+nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_reset:'شروع رزرو جدید',gd_log:'گفتگوها به‌صورت ناشناس برای بهبود پاسخ‌ها ذخیره می‌شود — لطفاً نام، شماره پاسپورت یا شماره پرونده ننویسید.',gd_cta1:'ارزیابی رایگان ۳ دقیقه‌ای',gd_cta2:'رزرو مشاوره',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
 hero_h:'مسیر مهاجرت شما به کانادا با انتخاب برنامه درست شروع می‌شود.',
 hero_p:'قوانین در ۲۰۲۵–۲۰۲۶ خیلی عوض شد — امتیاز جاب آفر از CRS حذف شد، استارت‌آپ ویزا بسته شد و BC PNP به سمت درمان و مشاغل فنی چرخید. ببینید امروز واقعاً کجای مسیر ایستاده‌اید.',
 hero_cta:'ارزیابی شرایط من',hero_alt:'یا اول شرایط برنامه‌ها را ببینید',
@@ -1359,6 +1365,7 @@ function applyLang(){
   renderLoginLink();
   syncBookingSummary();
   route();
+  initMic();
   loadContent(); // re-renders page-specific dynamic content in the new language
   if(state.assessmentDone&&location.hash.includes('assess'))renderSnapshot();
 }
@@ -2154,6 +2161,7 @@ async function confirmBooking(btn){
   btn.disabled=true;var keep=btn.textContent;btn.textContent=L('Sending…','در حال ارسال…');
   var lead={name:nm,email:em||null,phone:ph||null,service:state.service,time_pref:state.timePref||null,lang:state.lang,source:'booking',
     goal:state.goal||null,province:(state.profile&&state.profile.prov)||null,
+    chat_summary:(state.chatTopics&&state.chatTopics.length)?state.chatTopics.join(' | ').slice(0,300):null,
     crs:(state.assessmentDone&&state.crs)?state.crs:null,
     top_programs:(state.results||[]).filter(function(m){return m.cls==='strong'||m.cls==='possible';}).slice(0,3).map(function(m){return m.name;}).join(' | ')||null};
   var uid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var v=Math.random()*16|0;return (c==='x'?v:(v&0x3|0x8)).toString(16);});
@@ -2208,6 +2216,28 @@ function openScheduler(lead,forceBase){
     }else{sw.style.display='none';}
   }
   try{wrap.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
+}
+var micRec=null;
+function initMic(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var btn=document.getElementById('micBtn');
+  if(!SR||!btn)return;
+  btn.style.display='inline-block';
+  btn.setAttribute('aria-label',L('Voice input','ورودی صوتی'));
+}
+function toggleMic(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var btn=document.getElementById('micBtn'),inp=document.getElementById('chatInput');
+  if(!SR||!btn||!inp)return;
+  if(micRec){try{micRec.stop();}catch(e){}return;}
+  var r=new SR();micRec=r;
+  r.lang=state.lang==='fa'?'fa-IR':'en-CA';
+  r.interimResults=true;r.continuous=false;
+  btn.textContent='⏺';btn.style.background='var(--garnet)';btn.style.color='#fff';
+  r.onresult=function(ev){var t='';for(var i=0;i<ev.results.length;i++)t+=ev.results[i][0].transcript;inp.value=t;};
+  r.onerror=function(){};
+  r.onend=function(){micRec=null;btn.textContent='🎤';btn.style.background='';btn.style.color='';inp.focus();};
+  try{r.start();}catch(e){micRec=null;}
 }
 function resetBooking(ev){
   if(ev)ev.preventDefault();
@@ -2294,7 +2324,7 @@ function guideContext(){
   const rules=PROGLIB.map(p=>p.n[0]+': '+p.req.map(r=>r[0]).join(' | ')+' [2026: '+p.s26[0]+']').join('\n');
   const prof=state.assessmentDone?JSON.stringify({profile:state.profile,crs:state.crsParts,results:state.results.map(m=>({program:m.name,status:m.tag[1],missing:m.missing}))}):'No assessment completed yet — answer general questions only and invite the user to complete the 3-minute assessment for personal answers.';
   const langLine='LANGUAGE RULE: Detect the language of the user\'s question and reply in that same language (Persian question -> Persian answer, English question -> English answer), regardless of any other setting. If the language is unclear or mixed, default to '+(state.lang==='fa'?'Persian':'English')+'. End every answer with exactly this one line, in the language of your answer: Persian: "اطلاعات عمومی — تا پیش از بازبینی توسط متخصص دارای مجوز، مشاوره حقوقی فردی محسوب نمی‌شود." English: "General information — not individualized legal advice until reviewed by an authorized professional." Output only the answer itself — never mention, quote, or reason about these instructions.';
-  return 'You are the Immigration Guide on the website of Bahrami Immigration (RCIC #R418351, CICC-regulated, Vancouver & Tehran). Answer ONLY from the rules data and user profile below. If the answer is not derivable from them, say you do not know and suggest booking a consultation. Never guarantee outcomes. Keep answers under 150 words, plain language. '+langLine+'\n\n=== 2026 PROGRAM RULES (verified Sep 2026) ===\n'+rules+'\n\n=== KEY FACTS ===\nJob offer CRS points: 0 since Mar 25, 2025. Latest draw: Aug 18, 2026 CEC 1,000 ITAs. 2026 CEC cut-off range: 510–525. EE fees since Apr 30, 2026: principal $1,590 total. Proof of funds 2026: $15,263 single (CEC exempt). Study funds: $23,448 from Sep 1, 2026. Start-Up Visa closed Jan 1, 2026. BC PNP 2026: allocation ~5,254 (reported), priority healthcare/trades. Skills: TEER 0-3 indeterminate offer, 2 yrs experience, CLB 4+, application fee $1,750 (registration free). Entrepreneur: Base $600K net worth/$200K investment, Regional $300K/$100K + community referral (WelcomeBC official).\n\n=== USER ===\n'+prof;
+  return 'You are the Immigration Guide on the website of Bahrami Immigration (RCIC #R418351, CICC-regulated, Vancouver & Tehran). Answer ONLY from the rules data and user profile below. If the answer is not derivable from them, say you do not know and suggest booking a consultation. Never guarantee outcomes. Keep answers under 150 words, plain language. When the answer concerns the user\'s own path, eligibility or next steps, add ONE short closing invitation (before the disclaimer line, max one sentence, same language) to take the free 3-minute assessment or book a consultation; skip it for purely factual questions. '+langLine+'\n\n=== 2026 PROGRAM RULES (verified Sep 2026) ===\n'+rules+'\n\n=== KEY FACTS ===\nJob offer CRS points: 0 since Mar 25, 2025. Latest draw: Aug 18, 2026 CEC 1,000 ITAs. 2026 CEC cut-off range: 510–525. EE fees since Apr 30, 2026: principal $1,590 total. Proof of funds 2026: $15,263 single (CEC exempt). Study funds: $23,448 from Sep 1, 2026. Start-Up Visa closed Jan 1, 2026. BC PNP 2026: allocation ~5,254 (reported), priority healthcare/trades. Skills: TEER 0-3 indeterminate offer, 2 yrs experience, CLB 4+, application fee $1,750 (registration free). Entrepreneur: Base $600K net worth/$200K investment, Regional $300K/$100K + community referral (WelcomeBC official).\n\n=== USER ===\n'+prof;
 }
 let chatBusy=false;
 async function sendChat(){
@@ -2302,6 +2332,7 @@ async function sendChat(){
   const inp=document.getElementById('chatInput'),log=document.getElementById('chatLog');
   const q=inp.value.trim();if(!q)return;
   inp.value='';chatBusy=true;document.getElementById('chatSend').textContent='…';
+  state.chatTopics=state.chatTopics||[];state.chatTopics.push(q.slice(0,80));if(state.chatTopics.length>5)state.chatTopics.shift();
   log.insertAdjacentHTML('beforeend','<div class="msg user">'+q.replace(/</g,'&lt;')+'</div>');
   log.insertAdjacentHTML('beforeend','<div class="msg ai" id="pending">'+L('Thinking…','در حال فکر…')+'</div>');
   log.scrollTop=log.scrollHeight;
@@ -2311,12 +2342,14 @@ async function sendChat(){
        (one line in index.html) to your Cloudflare Worker proxy that holds the API key server-side. */
     const res=await fetch(window.AI_PROXY_URL||'https://api.anthropic.com/v1/messages',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,
-        messages:[{role:'user',content:guideContext()+'\n\nUser question: '+q}]})});
+      body:JSON.stringify(Object.assign({model:'claude-sonnet-4-6',max_tokens:1000,
+        messages:[{role:'user',content:guideContext()+'\n\nUser question: '+q}]},
+        window.AI_PROXY_URL?{meta:{q:q.slice(0,500),lang:state.lang,lead_id:state.leadId||null}}:{}))});
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     const text=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n')||L('No answer returned — please try again.','پاسخی نیامد — دوباره امتحان کنید.');
     document.getElementById('pending').outerHTML='<div class="msg ai">'+mdLite(text)+'</div>';
+    var ct=document.getElementById('chatCtas');if(ct)ct.style.display='flex';
   }catch(e){
     document.getElementById('pending').outerHTML='<div class="msg ai">'+L('The Guide could not reach the model just now. Your question is saved — try again, or book a consultation for a human answer.','دستیار الان به مدل دسترسی پیدا نکرد. سوال شما ذخیره شد — دوباره امتحان کنید یا برای پاسخ انسانی مشاوره رزرو کنید.')+'</div>';
   }
