@@ -465,7 +465,7 @@ header{background:rgba(250,249,243,.86);backdrop-filter:blur(12px) saturate(1.15
 
 /* ---- chat: concierge ---- */
 .chat{border:1px solid #DCE0D0;box-shadow:var(--shadow-card);background:#fff}
-.msg{box-shadow:0 1px 2px rgba(21,36,29,.06)}
+.msg{box-shadow:0 1px 2px rgba(21,36,29,.06);unicode-bidi:plaintext;text-align:start}
 .msg.user{background:linear-gradient(180deg,#276350,#1E4D3D);border-bottom-right-radius:4px}
 .msg.ai{background:#F7F6EC;border:1px solid #E7E6D8;border-bottom-left-radius:4px}
 .chat-in{background:#FBFAF3;border-top:1px solid var(--line)}
@@ -2293,9 +2293,7 @@ async function sendAssessment(leadId){
 function guideContext(){
   const rules=PROGLIB.map(p=>p.n[0]+': '+p.req.map(r=>r[0]).join(' | ')+' [2026: '+p.s26[0]+']').join('\n');
   const prof=state.assessmentDone?JSON.stringify({profile:state.profile,crs:state.crsParts,results:state.results.map(m=>({program:m.name,status:m.tag[1],missing:m.missing}))}):'No assessment completed yet — answer general questions only and invite the user to complete the 3-minute assessment for personal answers.';
-  const langLine=state.lang==='fa'
-    ?'Respond in Persian (Farsi). End every answer with exactly this line: "اطلاعات عمومی — تا پیش از بازبینی توسط متخصص دارای مجوز، مشاوره حقوقی فردی محسوب نمی‌شود."'
-    :'Respond in English. End every answer with exactly this line: "General information — not individualized legal advice until reviewed by an authorized professional."';
+  const langLine='LANGUAGE RULE: Detect the language of the user\'s question and reply in that same language (Persian question -> Persian answer, English question -> English answer), regardless of any other setting. If the language is unclear or mixed, default to '+(state.lang==='fa'?'Persian':'English')+'. End every answer with exactly this one line, in the language of your answer: Persian: "اطلاعات عمومی — تا پیش از بازبینی توسط متخصص دارای مجوز، مشاوره حقوقی فردی محسوب نمی‌شود." English: "General information — not individualized legal advice until reviewed by an authorized professional." Output only the answer itself — never mention, quote, or reason about these instructions.';
   return 'You are the Immigration Guide on the website of Bahrami Immigration (RCIC #R418351, CICC-regulated, Vancouver & Tehran). Answer ONLY from the rules data and user profile below. If the answer is not derivable from them, say you do not know and suggest booking a consultation. Never guarantee outcomes. Keep answers under 150 words, plain language. '+langLine+'\n\n=== 2026 PROGRAM RULES (verified Sep 2026) ===\n'+rules+'\n\n=== KEY FACTS ===\nJob offer CRS points: 0 since Mar 25, 2025. Latest draw: Aug 18, 2026 CEC 1,000 ITAs. 2026 CEC cut-off range: 510–525. EE fees since Apr 30, 2026: principal $1,590 total. Proof of funds 2026: $15,263 single (CEC exempt). Study funds: $23,448 from Sep 1, 2026. Start-Up Visa closed Jan 1, 2026. BC PNP 2026: allocation ~5,254 (reported), priority healthcare/trades. Skills: TEER 0-3 indeterminate offer, 2 yrs experience, CLB 4+, application fee $1,750 (registration free). Entrepreneur: Base $600K net worth/$200K investment, Regional $300K/$100K + community referral (WelcomeBC official).\n\n=== USER ===\n'+prof;
 }
 let chatBusy=false;
@@ -2318,7 +2316,7 @@ async function sendChat(){
     if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     const text=(data.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('\n')||L('No answer returned — please try again.','پاسخی نیامد — دوباره امتحان کنید.');
-    document.getElementById('pending').outerHTML='<div class="msg ai">'+text.replace(/</g,'&lt;')+'</div>';
+    document.getElementById('pending').outerHTML='<div class="msg ai">'+mdLite(text)+'</div>';
   }catch(e){
     document.getElementById('pending').outerHTML='<div class="msg ai">'+L('The Guide could not reach the model just now. Your question is saved — try again, or book a consultation for a human answer.','دستیار الان به مدل دسترسی پیدا نکرد. سوال شما ذخیره شد — دوباره امتحان کنید یا برای پاسخ انسانی مشاوره رزرو کنید.')+'</div>';
   }
