@@ -1090,7 +1090,8 @@ footer a:hover{color:#E8DCB2}
           <p class="note" style="margin:0" data-t="bk_consent">By confirming, you agree the office may contact you to coordinate this booking.</p>
           <div id="bkStatus" style="font-size:13.5px;font-weight:600;color:var(--spruce-deep);min-height:18px"></div>
         </div>
-        <button class="btn btn-primary" onclick="confirmBooking(this)" data-t="bk_pay">Pay &amp; confirm booking</button>
+        <button id="bkConfirm" class="btn btn-primary" onclick="confirmBooking(this)" data-t="bk_pay">Pay &amp; confirm booking</button>
+        <p class="note" style="margin-top:8px"><a href="#" id="bkReset" style="display:none;font-weight:700" onclick="resetBooking(event)" data-t="bk_reset">Start a new booking</a></p>
         <div id="schedWrap" style="display:none;margin-top:18px">
           <h3 style="font-size:17px;margin-bottom:6px" data-t="sched_h">Pick the exact time — your details are pre-filled</h3>
           <div id="schedBox"></div>
@@ -1189,7 +1190,7 @@ function L(en,fa){return state.lang==='fa'?fa:en;}
 function lx(p){return state.lang==='fa'?p[1]:p[0];}
 
 const FA={
-nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
+nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_reset:'شروع رزرو جدید',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
 hero_h:'مسیر مهاجرت شما به کانادا با انتخاب برنامه درست شروع می‌شود.',
 hero_p:'قوانین در ۲۰۲۵–۲۰۲۶ خیلی عوض شد — امتیاز جاب آفر از CRS حذف شد، استارت‌آپ ویزا بسته شد و BC PNP به سمت درمان و مشاغل فنی چرخید. ببینید امروز واقعاً کجای مسیر ایستاده‌اید.',
 hero_cta:'ارزیابی شرایط من',hero_alt:'یا اول شرایط برنامه‌ها را ببینید',
@@ -2165,6 +2166,7 @@ async function confirmBooking(btn){
   btn.textContent=L('Booked ✓ — continue to intake','رزرو شد ✓ — ادامه به فرم اطلاعات');
   if(window.BOOKING_URL)openScheduler(lead);
   btn.onclick=null;btn.disabled=false;
+  var rs=document.getElementById('bkReset');if(rs)rs.style.display='inline-block';
 }
 async function sendLead(row){
   if(!window.SUPABASE_URL||!window.SUPABASE_ANON)return{ok:false,skipped:true};
@@ -2206,6 +2208,20 @@ function openScheduler(lead,forceBase){
     }else{sw.style.display='none';}
   }
   try{wrap.scrollIntoView({behavior:'smooth',block:'start'});}catch(e){}
+}
+function resetBooking(ev){
+  if(ev)ev.preventDefault();
+  state.leadId=null;state.booked=null;
+  var btn=document.getElementById('bkConfirm');
+  if(btn){btn.disabled=false;btn.innerHTML='Pay &amp; confirm booking';btn.dataset.orig=btn.innerHTML;btn.onclick=function(){confirmBooking(btn);};}
+  var st=document.getElementById('bkStatus');if(st)st.textContent='';
+  var w=document.getElementById('schedWrap');if(w)w.style.display='none';
+  var b=document.getElementById('schedBox');if(b)b.innerHTML='';
+  var sw=document.getElementById('schedSwap');if(sw)sw.style.display='none';
+  var rs=document.getElementById('bkReset');if(rs)rs.style.display='none';
+  applyLang();
+  try{document.getElementById('bkName').focus();}catch(e){}
+  audit('booking_reset','');
 }
 async function markBooked(eventUri){
   if(!state.leadId){console.log('[booked] no leadId in state');return{ok:false,why:'no-lead'};}
