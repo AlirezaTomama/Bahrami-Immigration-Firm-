@@ -3,28 +3,34 @@
  "_readme_en": "Content source for the site. Each top-level key overrides the same key in the app. Keep valid JSON; every figure RCIC-approved before commit. Guide: CONTENT-GUIDE.md",
  "meta": {
   "rulesVerified": [
-   "Sep 2026",
-   "سپتامبر ۲۰۲۶"
+   "Oct 2026",
+   "اکتبر ۲۰۲۶"
   ]
  },
  "draws": {
   "latest": {
    "date": [
-    "Aug 18, 2026",
-    "۱۸ اوت ۲۰۲۶"
+    "Oct 28, 2026",
+    "۲۸ اکتبر ۲۰۲۶"
    ],
-   "program": "CEC",
-   "itas": 1000
+   "program": "Transport",
+   "itas": 150
   },
   "cecCutoffRange": [
-   510,
-   525
+   507,
+   523
   ],
   "categories": [
    "French-language proficiency",
    "Healthcare & social services",
+   "STEM occupations",
+   "Trade occupations",
    "Education",
-   "Trades"
+   "Transport occupations",
+   "Physicians (Canadian experience)",
+   "Senior managers (Canadian experience)",
+   "Researchers (Canadian experience)",
+   "Skilled military recruits"
   ]
  },
  "funds": {
@@ -63,8 +69,7 @@
     "Dependent child (each)",
     "فرزند همراه (هر نفر)"
    ],
-   "amt": 270,
-   "approx": true
+   "amt": 270
   },
   "bcpnp": {
    "label": [
@@ -137,8 +142,8 @@
     "۵ ماه"
    ],
    "fwd": [
-    "~6–7 months",
-    "حدود ۶–۷ ماه"
+    "~6 months",
+    "حدود ۶ ماه"
    ],
    "tag": "ok",
    "t": [
@@ -156,13 +161,13 @@
     "۶ ماه"
    ],
    "fwd": [
-    "~8 months",
-    "حدود ۸ ماه"
+    "~7 months",
+    "حدود ۷ ماه"
    ],
-   "tag": "warn",
+   "tag": "ok",
    "t": [
-    "Slowing",
-    "رو به کندی"
+    "Improving",
+    "رو به بهبود"
    ]
   },
   {
@@ -194,13 +199,13 @@
     "۹ هفته"
    ],
    "fwd": [
-    "~11 weeks",
-    "حدود ۱۱ هفته"
+    "varies by country (~5–10 weeks)",
+    "بسته به کشور (~۵–۱۰ هفته)"
    ],
    "tag": "ok",
    "t": [
-    "Stable",
-    "پایدار"
+    "Country-specific — IRCC",
+    "کشورمحور — IRCC"
    ]
   },
   {
@@ -213,13 +218,13 @@
     "۱۱ ماه"
    ],
    "fwd": [
-    "~12 months",
-    "حدود ۱۲ ماه"
+    "~18 months",
+    "حدود ۱۸ ماه"
    ],
-   "tag": "ok",
+   "tag": "warn",
    "t": [
-    "Stable",
-    "پایدار"
+    "Slowing",
+    "رو به کندی"
    ]
   },
   {
@@ -243,6 +248,76 @@
   }
  ],
  "updates": [
+  {
+   "d": [
+    "Nov 3, 2026",
+    "۳ نوامبر ۲۰۲۶"
+   ],
+   "t": [
+    "Job-offer points return to Express Entry — no LMIA needed",
+    "بازگشت امتیاز جاب‌آفر به اکسپرس انتری — بدون نیاز به LMIA"
+   ],
+   "m": [
+    "Announced Oct 16, in force Nov 3: a job offer in a high-wage occupation (median wage ≥1.3× the Canadian average) adds 50/70/100 CRS points, and high-wage Canadian work experience adds 20/40/70 (not combinable; the new factor is capped at 150). Pool scores are recalculated automatically and draws pause for up to ~2 weeks.",
+    "اعلام ۱۶ اکتبر، اجرا از ۳ نوامبر: جاب‌آفر در مشاغل پردرآمد (متوسط دستمزد ≥۱.۳ برابر میانگین کانادا) ۵۰/۷۰/۱۰۰ امتیاز CRS می‌دهد و سابقه کار پردرآمد کانادایی ۲۰/۴۰/۷۰ (جمع‌شدنی نیستند؛ سقف فاکتور جدید ۱۵۰). امتیازها خودکار بازمحاسبه می‌شوند و دراوها تا حدود ۲ هفته متوقف است."
+   ]
+  },
+  {
+   "d": [
+    "Oct 26–28, 2026",
+    "۲۶–۲۸ اکتبر ۲۰۲۶"
+   ],
+   "t": [
+    "A wave of draws before the Nov 3 change",
+    "موج دراوها پیش از تغییر ۳ نوامبر"
+   ],
+   "m": [
+    "French-language cut-off fell to 407 (the year’s lowest; 5,000 ITAs), a PNP round invited 792 at 761, and the first Transport-occupations rounds arrived (Oct 28: 150 ITAs at 477) — the last draws before recalculation.",
+    "کات‌آف دراو فرانسه به ۴۰۷ رسید (کف سال؛ ۵٬۰۰۰ دعوت)، دراو PNP با کات‌آف ۷۶۱ برای ۷۹۲ نفر، و اولین دراوهای مشاغل حمل‌ونقل (۲۸ اکتبر: ۱۵۰ دعوت با ۴۷۷) — آخرین دراوها قبل از بازمحاسبه."
+   ]
+  },
+  {
+   "d": [
+    "Oct 29, 2026",
+    "۲۹ اکتبر ۲۰۲۶"
+   ],
+   "t": [
+    "BC PNP Innovate: 772 invitations, lower wage floor",
+    "دراو Innovate بی‌سی: ۷۷۲ دعوت با کف حقوق پایین‌تر"
+   ],
+   "m": [
+    "BC’s largest Innovate round of 2026. The wage-based threshold has eased through the year to ≥$49/hr (~$99K/yr), down from $70/hr in February.",
+    "بزرگ‌ترین دراو Innovate سال BC. کف مسیر مبتنی بر دستمزد در طول سال نرم شده و به ≥۴۹ دلار/ساعت (~۹۹ هزار دلار در سال) رسیده — در فوریه ۷۰ دلار/ساعت بود."
+   ]
+  },
+  {
+   "d": [
+    "Oct 31, 2026",
+    "۳۱ اکتبر ۲۰۲۶"
+   ],
+   "t": [
+    "Quebec PEQ window closed — demand far above forecast",
+    "بسته شدن پنجره PEQ کبک — تقاضا فراتر از پیش‌بینی"
+   ],
+   "m": [
+    "The reopened PEQ intake (Jul 2 – Oct 31) closed after applications passed the full-period forecast within two months (12,364 by end of August). No next window has been announced.",
+    "پنجره بازگشایی‌شده PEQ (۲ جولای تا ۳۱ اکتبر) بسته شد؛ فقط در دو ماه اول ۱۲٬۳۶۴ درخواست رسید — بیش از پیش‌بینی کل دوره. پنجره بعدی اعلام نشده است."
+   ]
+  },
+  {
+   "d": [
+    "Oct 2026",
+    "اکتبر ۲۰۲۶"
+   ],
+   "t": [
+    "Spousal sponsorship now ~18 months (outland)",
+    "اسپانسرشیپ همسر: حدود ۱۸ ماه (خارج از کانادا)"
+   ],
+   "m": [
+    "IRCC’s October processing data shows outland spousal sponsorship at ~18 months and inland at ~26 months (outside Quebec). Plan timelines with the new numbers.",
+    "داده اکتبر IRCC زمان اسپانسرشیپ همسر خارج از کانادا را حدود ۱۸ ماه و داخل کانادا را حدود ۲۶ ماه نشان می‌دهد (خارج از کبک). برنامه زمانی را با اعداد جدید ببندید."
+   ]
+  },
   {
    "d": [
     "Apr 30, 2026",
@@ -273,20 +348,6 @@
   },
   {
    "d": [
-    "Mar 2026",
-    "مارس ۲۰۲۶"
-   ],
-   "t": [
-    "IRCC signals job-offer points may return",
-    "احتمال بازگشت امتیاز جاب آفر از نگاه IRCC"
-   ],
-   "m": [
-    "The 2026–27 Departmental Plan proposes reintroducing CRS points for high-wage job offers. Nothing in force yet — a job offer still adds 0 points today.",
-    "برنامه ۲۰۲۶–۲۷ وزارتخانه بازگرداندن امتیاز برای آفرهای پردرآمد را پیشنهاد داده. هنوز اجرایی نیست — امروز جاب آفر همچنان صفر امتیاز دارد."
-   ]
-  },
-  {
-   "d": [
     "Feb 18, 2026",
     "۱۸ فوریه ۲۰۲۶"
    ],
@@ -295,8 +356,8 @@
     "اعلام دسته‌های ۲۰۲۶ اکسپرس انتری"
    ],
    "m": [
-    "French, healthcare & social services, education, and trades continue as category-based draws — often with lower cut-offs than general rounds.",
-    "فرانسه، درمان و خدمات اجتماعی، آموزش و مشاغل فنی به‌عنوان دراوهای دسته‌ای ادامه دارند — معمولاً با کات‌آف پایین‌تر از دراوهای عمومی."
+    "The 2026 list has 10 categories: French, healthcare & social services, STEM, trades, education, transport, plus Canadian-experience categories for physicians, senior managers, researchers and skilled military recruits — often with lower cut-offs than general rounds.",
+    "لیست ۲۰۲۶ ده دسته دارد: فرانسه، درمان و خدمات اجتماعی، STEM، مشاغل فنی، آموزش، حمل‌ونقل، به‌علاوه دسته‌های با سابقه کانادایی برای پزشکان، مدیران ارشد، پژوهشگران و نیروهای نظامی ماهر — معمولاً با کات‌آف پایین‌تر از دراوهای عمومی."
    ]
   },
   {
