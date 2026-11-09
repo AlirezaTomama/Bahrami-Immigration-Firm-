@@ -29,6 +29,7 @@ export default {
     if (url.pathname === '/booked') return bookedMark(request, env);
     if (url.pathname === '/tg-update') return tgUpdate(request, env);
     if (url.pathname === '/sweep') return sweepHTTP(request, env);
+    if (url.pathname === '/setup-commands') return setupCommands(request, env);
     return aiProxy(request, env, ctx);
   },
   /* Cron trigger (set the schedule in Cloudflare → Settings → Trigger Events) */
@@ -249,13 +250,34 @@ async function tgUpdate(request, env) {
 
   if (u.message && u.message.text && u.message.chat && String(u.message.chat.id) === String(env.TG_CHAT_ID)) {
     const t = u.message.text.trim();
+    if (t === '/sweep') {
+      const r = await followupSweep(env);
+      if (!r.count) await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: '✅ لید پیگیری‌نشده‌ای نیست — همه یا رزرو کرده‌اند یا قبلاً اعلام شده‌اند.' });
+      return new Response('ok');
+    }
     if (t === '/cases' && env.SB_SERVICE_KEY) {
-      const q = await sb(env, 'cases?stage=neq.closed&select=id,name,service,stage&order=updated_at.desc&limit=15');
+      const q = await sb(env, 'cases?stage=neq.closed&select=name,service,stage&order=updated_at.desc&limit=50');
       const rows = await q.json().catch(() => []);
-      const lines = rows.length
-        ? rows.map(c => '• ' + (c.name || '—') + ' · ' + (c.service || '—') + ' ← ' + stageFa(c.stage))
-        : ['پرونده بازی نیست.'];
-      await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: '📂 پرونده‌های باز:\n' + lines.join('\n') });
+      let text;
+      if (!rows.length) text = 'پرونده بازی نیست.';
+      else {
+        const by = {};
+        rows.forEach(c => { (by[c.stage] = by[c.stage] || []).push(c.name || '—'); });
+        const parts = ['📂 پرونده‌های باز (' + rows.length + '):'];
+        STAGES.forEach(s => { if (by[s[0]]) parts.push('▸ ' + s[1] + ' (' + by[s[0]].length + '): ' + by[s[0]].join('، ')); });
+        Object.keys(by).forEach(k => { if (!STAGES.find(s => s[0] === k)) parts.push('▸ ' + k + ': ' + by[k].join('، ')); });
+        text = parts.join('\n');
+      }
+      await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: text });
+      return new Response('ok');
+    }
+    if (t === '/help' || t === '/start') {
+      await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: HELP_TEXT });
+      return new Response('ok');
+    }
+    if (t.startsWith('/')) {
+      await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: 'دستور ناشناخته — راهنما: /help' });
+      return new Response('ok');
     }
     return new Response('ok');
   }
@@ -301,6 +323,36 @@ async function sweepHTTP(request, env) {
     return new Response('forbidden', { status: 403 });
   const r = await followupSweep(env);
   return new Response(JSON.stringify(r), { headers: { 'Content-Type': 'application/json' } });
+}
+
+const HELP_TEXT =
+  '📖 راهنمای بات دفتر\n' +
+  '\n' +
+  'دستورها:\n' +
+  '/cases — پرونده‌های باز، به تفکیک مرحله\n' +
+  '/sweep — چک فوری لیدهای بدون رزرو (پیگیری)\n' +
+  '/help — همین راهنما\n' +
+  '\n' +
+  '🔘 مدیریت پرونده: زیر پیام «جلسه قطعی شد» هر موکل، دکمه دارد —\n' +
+  '«✅ تایید مرحله بعد» پرونده را یک مرحله جلو می‌برد (۱۲ مرحله تا بسته شدن)\n' +
+  '«📋 وضعیت پرونده» مرحله فعلی را نشان می‌دهد\n' +
+  '\n' +
+  '🤖 خودکارها (بدون دستور):\n' +
+  '🟢 لید جدید — لحظه ثبت فرم\n' +
+  '✅ جلسه قطعی شد + باز شدن پرونده — لحظه رزرو تقویم\n' +
+  '⏰ پیگیری — هر ساعت چک می‌شود؛ لید ۲۴ساعت+ بدون رزرو فقط یک بار اعلام می‌شود';
+
+/* one-time: register the bot command menu (the list Telegram shows when you type /) */
+async function setupCommands(request, env) {
+  if (request.method !== 'POST') return new Response('POST only', { status: 405 });
+  if (request.headers.get('x-hook-secret') !== env.HOOK_SECRET)
+    return new Response('forbidden', { status: 403 });
+  const r = await tgApi(env, 'setMyCommands', { commands: [
+    { command: 'cases', description: 'پرونده‌های باز به تفکیک مرحله' },
+    { command: 'sweep', description: 'چک فوری لیدهای بدون رزرو' },
+    { command: 'help', description: 'راهنمای بات' },
+  ]});
+  return new Response(r.ok ? 'commands set' : 'telegram error', { status: r.ok ? 200 : 502 });
 }
 
 function prefFa(v) {
