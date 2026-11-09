@@ -1099,7 +1099,11 @@ footer a:hover{color:#E8DCB2}
         <div id="schedWrap" style="display:none;margin-top:18px">
           <h3 style="font-size:17px;margin-bottom:6px" data-t="sched_h">Pick the exact time — your details are pre-filled</h3>
           <div id="schedBox"></div>
-          <p class="note" style="margin-top:8px"><a id="schedLink" target="_blank" rel="noopener" data-t="sched_fb">If the calendar doesn&#8217;t load, open it here</a></p>
+          <p class="note" style="margin-top:8px"><a id="schedLink" target="_blank" rel="noopener" data-t="sched_fb" onclick="var m=document.getElementById('manualConfirm');if(m)m.style.display='block';">If the calendar doesn&#8217;t load, open it here</a></p>
+          <div id="manualConfirm" style="display:none;margin-top:8px">
+            <p class="note" data-t="mc_note">Booked in the other tab? Tell us so the office file opens:</p>
+            <button class="btn btn-secondary" onclick="confirmManualBooking(this)" data-t="mc_btn">I completed my booking ✓</button>
+          </div>
           <p class="note" style="margin-top:4px"><a href="#" id="schedSwap" style="display:none;font-weight:700"></a></p>
         </div>
         <p class="note" style="margin-top:12px" data-t="bk_note">Your details go straight to the office (live). Exact time, payment and the meeting link are finalized on the scheduling page that opens after you confirm.</p>
@@ -1200,7 +1204,7 @@ function L(en,fa){return state.lang==='fa'?fa:en;}
 function lx(p){return state.lang==='fa'?p[1]:p[0];}
 
 const FA={
-nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_reset:'شروع رزرو جدید',w_lmi:'آن شغل (آفر، یا شغل فعلی کانادایی‌تان) در لیست ۱۸۶ شغل پردرآمد IRCC هست؟',lmi_no:'نه / مطمئن نیستم',lmi_13:'بله — ۱.۳ تا ۱.۵ برابر متوسط دستمزد',lmi_15:'بله — ۱.۵ تا ۲ برابر',lmi_20:'بله — ۲ برابر و بیشتر',c_lmi:'شغل پردرآمد (لیست ۱۸۶ شغل IRCC، از ۳ نوامبر)',cl_o13:'جاب‌آفر — ۱.۳ تا ۱.۵x (+۵۰)',cl_o15:'جاب‌آفر — ۱.۵ تا ۲x (+۷۰)',cl_o20:'جاب‌آفر — ۲x+ (+۱۰۰)',cl_e13:'سابقه کانادایی ۱۲ماه+ — ۱.۳ تا ۱.۵x (+۲۰)',cl_e15:'سابقه کانادایی — ۱.۵ تا ۲x (+۴۰)',cl_e20:'سابقه کانادایی — ۲x+ (+۷۰)',gd_log:'گفتگوها به‌صورت ناشناس برای بهبود پاسخ‌ها ذخیره می‌شود — لطفاً نام، شماره پاسپورت یا شماره پرونده ننویسید.',gd_cta1:'ارزیابی رایگان ۳ دقیقه‌ای',gd_cta2:'رزرو مشاوره',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
+nav_tools:'ابزارها',nav_updates:'اخبار و تغییرات',nav_stories:'پرونده‌های موفق',nav_refusal:'ریجکتی',nav_guide:'دستیار هوشمند',nav_articles:'مقالات',bk_name:'نام و نام خانوادگی',bk_email:'ایمیل',bk_phone:'شماره تماس / واتساپ',bk_consent:'با تایید رزرو، موافقید دفتر برای هماهنگی همین رزرو با شما تماس بگیرد.',bk_reset:'شروع رزرو جدید',mc_note:'در تب دیگر رزرو کردید؟ به ما بگویید تا پرونده دفتر باز شود:',mc_btn:'رزروم را انجام دادم ✓',w_lmi:'آن شغل (آفر، یا شغل فعلی کانادایی‌تان) در لیست ۱۸۶ شغل پردرآمد IRCC هست؟',lmi_no:'نه / مطمئن نیستم',lmi_13:'بله — ۱.۳ تا ۱.۵ برابر متوسط دستمزد',lmi_15:'بله — ۱.۵ تا ۲ برابر',lmi_20:'بله — ۲ برابر و بیشتر',c_lmi:'شغل پردرآمد (لیست ۱۸۶ شغل IRCC، از ۳ نوامبر)',cl_o13:'جاب‌آفر — ۱.۳ تا ۱.۵x (+۵۰)',cl_o15:'جاب‌آفر — ۱.۵ تا ۲x (+۷۰)',cl_o20:'جاب‌آفر — ۲x+ (+۱۰۰)',cl_e13:'سابقه کانادایی ۱۲ماه+ — ۱.۳ تا ۱.۵x (+۲۰)',cl_e15:'سابقه کانادایی — ۱.۵ تا ۲x (+۴۰)',cl_e20:'سابقه کانادایی — ۲x+ (+۷۰)',gd_log:'گفتگوها به‌صورت ناشناس برای بهبود پاسخ‌ها ذخیره می‌شود — لطفاً نام، شماره پاسپورت یا شماره پرونده ننویسید.',gd_cta1:'ارزیابی رایگان ۳ دقیقه‌ای',gd_cta2:'رزرو مشاوره',sched_h:'زمان دقیق را انتخاب کنید — اطلاعات شما از قبل پر شده است',sched_fb:'اگر تقویم بالا نیامد، اینجا بازش کنید',ar_h:'مقالات و راهنماها',ar_p:'راهنماهای ساده درباره قوانین ۲۰۲۶. از فایل محتوای دفتر منتشر می‌شود و قبل از انتشار به تایید مشاور دارای مجوز می‌رسد.',nav_login:'ورود موکلین',nav_cta:'ارزیابی شرایط من',
 hero_h:'مسیر مهاجرت شما به کانادا با انتخاب برنامه درست شروع می‌شود.',
 hero_p:'قوانین در ۲۰۲۵–۲۰۲۶ خیلی عوض شد — و از ۳ نوامبر ۲۰۲۶ باز هم عوض شد: امتیاز جاب آفر برای مشاغل پردرآمد برگشت، استارت‌آپ ویزا بسته مانده و BC PNP به سمت درمان و مشاغل فنی چرخیده. ببینید امروز واقعاً کجای مسیر ایستاده‌اید.',
 hero_cta:'ارزیابی شرایط من',hero_alt:'یا اول شرایط برنامه‌ها را ببینید',
@@ -2223,8 +2227,13 @@ function openScheduler(lead,forceBase){
   if(!document.getElementById('calendlyJs')){
     var s=document.createElement('script');s.id='calendlyJs';s.async=true;
     s.src='https://assets.calendly.com/assets/external/widget.js';
+    s.onerror=function(){schedBlocked();};
     document.body.appendChild(s);
   }else if(window.Calendly&&window.Calendly.initInlineWidgets){window.Calendly.initInlineWidgets();}
+  setTimeout(function(){
+    var b=document.getElementById('schedBox');
+    if(b&&!b.querySelector('iframe'))schedBlocked();
+  },6000);
   var sw=document.getElementById('schedSwap');
   if(sw){var other=(base===STD)?IR:STD;
     if(STD&&IR&&other&&other!==base){
@@ -2264,6 +2273,26 @@ function toggleMic(){
   r.onerror=function(){};
   r.onend=function(){micRec=null;btn.dataset.rec='';btn.style.background='';btn.style.color='';setMicLabel();inp.focus();};
   try{r.start();}catch(e){micRec=null;}
+}
+function schedBlocked(){
+  var st=document.getElementById('bkStatus');
+  if(st)st.textContent=L('The calendar seems blocked (ad-blocker?). Use the link below — then come back and press “I completed my booking”.','به نظر می‌رسد تقویم مسدود شده (مسدودکننده تبلیغات؟). از لینک پایین رزرو کنید — بعد برگردید و «رزروم را انجام دادم» را بزنید.');
+  var m=document.getElementById('manualConfirm');if(m)m.style.display='block';
+  audit('scheduler_blocked','');
+}
+function confirmManualBooking(btn){
+  if(btn){btn.disabled=true;btn.textContent='…';}
+  Promise.resolve(markBooked('manual:user-confirmed')).then(function(r){
+    var st=document.getElementById('bkStatus');
+    if(r&&r.ok){
+      if(st)st.textContent=L('Thanks — your booking is recorded ✓ The office will confirm by email.','ممنون — رزرو شما ثبت شد ✓ دفتر از طریق ایمیل تایید می‌کند.');
+      var m=document.getElementById('manualConfirm');if(m)m.style.display='none';
+    }else{
+      if(st)st.textContent=L('Could not record it ('+(r&&r.why||'?')+') — the office still gets the calendar invite.','ثبت نشد ('+(r&&r.why||'?')+') — دعوت تقویم به هر حال به دفتر می‌رسد.');
+      if(btn){btn.disabled=false;}
+    }
+    applyLang&&applyLang();
+  });
 }
 function resetBooking(ev){
   if(ev)ev.preventDefault();

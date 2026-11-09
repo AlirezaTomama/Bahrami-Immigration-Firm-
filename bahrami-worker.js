@@ -8,6 +8,7 @@
  *   TG_CHAT_ID          chat id that receives notifications
  *   HOOK_SECRET         any long random string; must match the Supabase webhook header
  *   ANTHROPIC_API_KEY   (only needed when you enable the AI Guide — step 2)
+ *   CALENDLY_TOKEN      (optional — personal access token; enables meeting-time capture + reminders)
  */
 
 /* Supabase project URL (same as the site config) — edit this one line: */
@@ -25,7 +26,7 @@ const MAX_TOKENS = 1000;
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    if (url.pathname === '/lead-hook') return leadHook(request, env);
+    if (url.pathname === '/lead-hook') return leadHook(request, env, ctx);
     if (url.pathname === '/booked') return bookedMark(request, env);
     if (url.pathname === '/tg-update') return tgUpdate(request, env);
     if (url.pathname === '/sweep') return sweepHTTP(request, env);
@@ -34,12 +35,12 @@ export default {
   },
   /* Cron trigger (set the schedule in Cloudflare → Settings → Trigger Events) */
   async scheduled(controller, env, ctx) {
-    ctx.waitUntil(followupSweep(env));
+    ctx.waitUntil(Promise.all([followupSweep(env), meetingReminders(env)]));
   },
 };
 
 /* ---------------- step 1.5: Supabase -> Telegram ---------------- */
-async function leadHook(request, env) {
+async function leadHook(request, env, ctx) {
   if (request.method !== 'POST') return new Response('POST only', { status: 405 });
   if (request.headers.get('x-hook-secret') !== env.HOOK_SECRET)
     return new Response('forbidden', { status: 403 });
@@ -67,7 +68,7 @@ async function leadHook(request, env) {
 
   if (p.type === 'UPDATE' && p.table === 'leads' &&
       r.booked_at && (!old || !old.booked_at)) {
-    return bookedCaseFlow(r, env);
+    return bookedCaseFlow(r, env, ctx);
   }
 
   if (!text) return new Response('ignored', { status: 200 });
@@ -165,7 +166,7 @@ function tgApi(env, method, payload) {
 }
 
 /* booked → open (or reuse) the case, notify with approval buttons */
-async function bookedCaseFlow(r, env) {
+async function bookedCaseFlow(r, env, ctx) {
   let caseId = null, stage = 'consult_booked';
   if (env.SB_SERVICE_KEY && r.id) {
     try {
@@ -184,16 +185,85 @@ async function bookedCaseFlow(r, env) {
       console.log('[case] booked flow', caseId, stage);
     } catch (e) { console.log('[case] create failed:', e && e.message); }
   }
+  const mt = await captureMeetingTime(r, env);
   const text =
     '✅ جلسه قطعی شد — ' + (r.name || '—') +
     '\n📞 ' + (r.phone || '—') +
     '\n🧭 ' + (r.service || '—') +
+    (mt ? '\n🕑 زمان جلسه: ' + vanTime(mt) + ' (ونکوور)' : '') +
     (caseId ? '\n📂 پرونده باز شد — مرحله: ' + stageFa(stage) : '') +
-    '\nجزئیات زمان در Calendly / Google Calendar است.';
+    (mt ? '' : '\nجزئیات زمان در Calendly / Google Calendar است.');
   const payload = { chat_id: env.TG_CHAT_ID, text: text };
   if (caseId) payload.reply_markup = caseKeyboard(caseId, stage);
   const tg = await tgApi(env, 'sendMessage', payload);
+  /* P2: pre-consultation brief — generated out-of-band, never blocks the webhook */
+  const briefJob = sendBrief(r, env).catch(e => console.log('[brief] failed:', e && e.message));
+  if (ctx && ctx.waitUntil) ctx.waitUntil(briefJob);
   return new Response(tg.ok ? 'sent' : 'telegram error', { status: tg.ok ? 200 : 502 });
+}
+
+/* ============ P2: pre-consultation brief ============
+   On booking: pull the lead's assessment + chat questions, have the AI write a
+   ~150-word Persian brief for the consultant. If the AI is unavailable, send the
+   raw data summary instead — the office always gets SOMETHING useful. */
+async function sendBrief(r, env) {
+  if (!env.SB_SERVICE_KEY) return;
+  let a = null, chats = [];
+  try {
+    const qa = await sb(env, 'assessments?lead_id=eq.' + r.id + '&order=created_at.desc&limit=1');
+    a = (await qa.json().catch(() => []))[0] || null;
+    const qc = await sb(env, 'chat_logs?lead_id=eq.' + r.id + '&select=question&order=created_at.desc&limit=5');
+    chats = (await qc.json().catch(() => [])).map(x => x.question).filter(Boolean);
+  } catch (e) {}
+
+  const lines = [];
+  lines.push('نام: ' + (r.name || '—') + ' · سرویس: ' + (r.service || '—') + ' · زبان: ' + (r.lang || '—'));
+  if (a) {
+    lines.push('پروفایل: سن ' + (a.age_band || '—') + ' · تحصیلات ' + (a.education || '—') + ' · CLB ' + (a.clb ?? '—') +
+      (a.french ? ' · فرانسه' : '') + ' · سابقه خارجی ' + (a.foreign_years ?? '—') + ' سال · کانادایی ' + (a.canadian_years ?? '—') + ' سال' +
+      (a.spouse ? ' · متاهل' : '') + (a.offer && a.offer !== 'no' ? ' · جاب‌آفر: ' + a.offer + (a.offer_tier ? ' (رده ' + a.offer_tier + ')' : '') : ''));
+    lines.push('CRS: ' + (a.crs ?? '—') + ' (هسته ' + (a.crs_core ?? '—') + '، انتقال‌پذیری ' + (a.crs_trans ?? '—') + ') · تمکن اعلامی: ' + (a.funds ?? '—'));
+    const res = [[a.res1, a.res1_status], [a.res2, a.res2_status], [a.res3, a.res3_status]]
+      .filter(x => x[0]).map(x => x[0] + (x[1] ? ' [' + x[1] + ']' : '')).join(' · ');
+    if (res) lines.push('نتایج برتر ارزیابی: ' + res);
+  } else {
+    lines.push('ارزیابی آنلاین انجام نشده — فقط فرم رزرو' + (r.crs ? ' · CRS اعلامی: ' + r.crs : ''));
+    if (r.top_programs) lines.push('برنامه‌های برتر: ' + r.top_programs);
+  }
+  if (r.chat_summary) lines.push('خلاصه چت: ' + r.chat_summary);
+  if (chats.length) lines.push('سوالات اخیر از دستیار: ' + chats.slice(0, 3).join(' | '));
+  const dataBlock = lines.join('\n');
+
+  let briefText = null;
+  if (env.ANTHROPIC_API_KEY) {
+    try {
+      const up = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': env.ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({ model: MODEL, max_tokens: 500, messages: [{ role: 'user', content:
+          'You are preparing an internal pre-consultation brief for a licensed Canadian immigration consultant (RCIC). ' +
+          'Write in PERSIAN, max 140 words, plain text (no markdown headers). Structure: one line on who the client is; ' +
+          'one line on CRS standing vs recent CEC cut-offs (507–523) if CRS known; best 1–2 pathways and why; ' +
+          'client\u2019s concerns from chat if any; end with ONE concrete preparation point for the consultant ' +
+          '(e.g. verify NOC against the high-wage list, confirm funds, check ECA). Use ONLY the data below; ' +
+          'skip anything missing; no disclaimers, no greetings.\n\nDATA:\n' + dataBlock }] }),
+      });
+      if (up.ok) {
+        const j = await up.json().catch(() => null);
+        briefText = j && (j.content || []).filter(c => c.type === 'text').map(c => c.text).join('\n').trim();
+      } else { console.log('[brief] ai status', up.status); }
+    } catch (e) { console.log('[brief] ai error:', e && e.message); }
+  }
+
+  const text = briefText
+    ? '📋 بریف پیش‌جلسه — ' + (r.name || '—') + '\n' + briefText
+    : '📋 داده‌های پرونده — ' + (r.name || '—') + ' (بریف هوشمند در دسترس نبود)\n' + dataBlock;
+  const tg = await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: text.slice(0, 4000) });
+  console.log('[brief] sent:', tg.ok, briefText ? 'ai' : 'fallback');
 }
 
 /* Telegram webhook: inline-button approvals + /cases command */
@@ -252,7 +322,35 @@ async function tgUpdate(request, env) {
     const t = u.message.text.trim();
     if (t === '/sweep') {
       const r = await followupSweep(env);
-      if (!r.count) await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: '✅ لید پیگیری‌نشده‌ای نیست — همه یا رزرو کرده‌اند یا قبلاً اعلام شده‌اند.' });
+      const m = await meetingReminders(env);
+      if (!r.count && !m.count) await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: '✅ نه لید پیگیری‌نشده تازه‌ای هست، نه جلسه‌ای در ۲ ساعت آینده.' });
+      return new Response('ok');
+    }
+    if (t === '/pending' && env.SB_SERVICE_KEY) {
+      const q = await sb(env, 'leads?booked_at=is.null&select=name,phone,email,service,time_pref,created_at&order=created_at.desc&limit=20');
+      const rows = await q.json().catch(() => []);
+      let text;
+      if (!rows.length) text = '🎉 لید بدون رزروی نداریم.';
+      else {
+        const now = Date.now();
+        const lines = rows.map(r => {
+          const days = Math.floor((now - new Date(r.created_at).getTime()) / 86400000);
+          return '• ' + (r.name || '—') + ' · ' + (r.phone || r.email || '—') + ' · ' + (r.service || '—') +
+            ' · بازه: ' + prefFa(r.time_pref) + ' · ' + (days ? days + ' روز پیش' : 'امروز');
+        });
+        text = '📞 لیدهای بدون رزرو (' + rows.length + '):\n' + lines.join('\n');
+      }
+      await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: text });
+      return new Response('ok');
+    }
+    if (t === '/meetings' && env.SB_SERVICE_KEY) {
+      const lo = new Date(Date.now() - 3600e3).toISOString(), hi = new Date(Date.now() + 48 * 3600e3).toISOString();
+      const q = await sb(env, 'leads?meeting_at=gte.' + lo + '&meeting_at=lte.' + hi + '&select=name,phone,service,meeting_at&order=meeting_at.asc&limit=15');
+      const rows = await q.json().catch(() => []);
+      const text = rows.length
+        ? '🗓 جلسات ۴۸ ساعت آینده (' + rows.length + '):\n' + rows.map(r => '• ' + vanTime(r.meeting_at) + ' — ' + (r.name || '—') + ' · ' + (r.phone || '—') + ' · ' + (r.service || '—')).join('\n')
+        : '🗓 جلسه‌ای در ۴۸ ساعت آینده ثبت نشده. (زمان جلسه فقط برای رزروهای دارای CALENDLY_TOKEN ذخیره می‌شود.)';
+      await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: text });
       return new Response('ok');
     }
     if (t === '/cases' && env.SB_SERVICE_KEY) {
@@ -322,7 +420,52 @@ async function sweepHTTP(request, env) {
   if (request.headers.get('x-hook-secret') !== env.HOOK_SECRET)
     return new Response('forbidden', { status: 403 });
   const r = await followupSweep(env);
-  return new Response(JSON.stringify(r), { headers: { 'Content-Type': 'application/json' } });
+  const m = await meetingReminders(env);
+  return new Response(JSON.stringify({ followups: r, reminders: m }), { headers: { 'Content-Type': 'application/json' } });
+}
+
+/* ============ P3: meeting time + reminders ============ */
+function vanTime(iso) {
+  try {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Vancouver', weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(iso));
+  } catch (e) { return iso; }
+}
+/* on booking: ask the Calendly API for the event's start time and store it on the lead */
+async function captureMeetingTime(r, env) {
+  try {
+    if (!env.CALENDLY_TOKEN || !env.SB_SERVICE_KEY || !r.booked_event) return null;
+    if (r.booked_event.indexOf('https://api.calendly.com/scheduled_events/') !== 0) return null;
+    if (r.meeting_at) return r.meeting_at;
+    const res = await fetch(r.booked_event, { headers: { 'Authorization': 'Bearer ' + env.CALENDLY_TOKEN } });
+    if (!res.ok) { console.log('[meeting] calendly api', res.status); return null; }
+    const j = await res.json().catch(() => null);
+    const st = j && j.resource && j.resource.start_time;
+    if (!st) return null;
+    await sb(env, 'leads?id=eq.' + r.id, { method: 'PATCH', headers: { 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ meeting_at: st }) });
+    console.log('[meeting] stored', st);
+    return st;
+  } catch (e) { console.log('[meeting] err', e && e.message); return null; }
+}
+/* hourly: remind the office ~2h before each stored meeting, once */
+async function meetingReminders(env) {
+  if (!env.SB_SERVICE_KEY || !env.TG_BOT_TOKEN) return { ok: false, count: 0 };
+  const lo = new Date(Date.now() - 10 * 60e3).toISOString();
+  const hi = new Date(Date.now() + 2 * 3600e3 + 5 * 60e3).toISOString();
+  const q = await sb(env, 'leads?meeting_at=gte.' + lo + '&meeting_at=lte.' + hi + '&meeting_reminded_at=is.null&select=id,name,phone,service,meeting_at&order=meeting_at.asc&limit=10');
+  const rows = await q.json().catch(() => []);
+  if (!Array.isArray(rows) || !rows.length) return { ok: true, count: 0 };
+  for (const r of rows) {
+    await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text:
+      '🔔 یادآوری جلسه — ' + (r.name || '—') +
+      '\n🕑 ' + vanTime(r.meeting_at) + ' (ونکوور)' +
+      '\n📞 ' + (r.phone || '—') + ' · ' + (r.service || '—') });
+  }
+  const ids = rows.map(r => r.id).join(',');
+  await sb(env, 'leads?id=in.(' + ids + ')', { method: 'PATCH', headers: { 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ meeting_reminded_at: new Date().toISOString() }) });
+  console.log('[remind]', rows.length);
+  return { ok: true, count: rows.length };
 }
 
 const HELP_TEXT =
@@ -330,7 +473,9 @@ const HELP_TEXT =
   '\n' +
   'دستورها:\n' +
   '/cases — پرونده‌های باز، به تفکیک مرحله\n' +
-  '/sweep — چک فوری لیدهای بدون رزرو (پیگیری)\n' +
+  '/pending — همه لیدهای بدون رزرو، با قدمت هر کدام\n' +
+  '/meetings — جلسات ۴۸ ساعت آینده\n' +
+  '/sweep — چک فوری: فقط تازه‌رسیده‌ها به آستانه ۲۴ ساعت (هر کدام یک بار اعلام می‌شود)\n' +
   '/help — همین راهنما\n' +
   '\n' +
   '🔘 مدیریت پرونده: زیر پیام «جلسه قطعی شد» هر موکل، دکمه دارد —\n' +
@@ -340,7 +485,8 @@ const HELP_TEXT =
   '🤖 خودکارها (بدون دستور):\n' +
   '🟢 لید جدید — لحظه ثبت فرم\n' +
   '✅ جلسه قطعی شد + باز شدن پرونده — لحظه رزرو تقویم\n' +
-  '⏰ پیگیری — هر ساعت چک می‌شود؛ لید ۲۴ساعت+ بدون رزرو فقط یک بار اعلام می‌شود';
+  '⏰ پیگیری — هر ساعت چک می‌شود؛ لید ۲۴ساعت+ بدون رزرو فقط یک بار اعلام می‌شود\n' +
+  '🔔 یادآوری جلسه — حدود ۲ ساعت قبل از هر جلسه (در صورت فعال بودن CALENDLY_TOKEN)';
 
 /* one-time: register the bot command menu (the list Telegram shows when you type /) */
 async function setupCommands(request, env) {
@@ -349,7 +495,9 @@ async function setupCommands(request, env) {
     return new Response('forbidden', { status: 403 });
   const r = await tgApi(env, 'setMyCommands', { commands: [
     { command: 'cases', description: 'پرونده‌های باز به تفکیک مرحله' },
-    { command: 'sweep', description: 'چک فوری لیدهای بدون رزرو' },
+    { command: 'pending', description: 'همه لیدهای بدون رزرو' },
+    { command: 'meetings', description: 'جلسات ۴۸ ساعت آینده' },
+    { command: 'sweep', description: 'چک پیگیری (تازه‌های ۲۴ساعت+)' },
     { command: 'help', description: 'راهنمای بات' },
   ]});
   return new Response(r.ok ? 'commands set' : 'telegram error', { status: r.ok ? 200 : 502 });
