@@ -28,7 +28,12 @@ export default {
     if (url.pathname === '/lead-hook') return leadHook(request, env);
     if (url.pathname === '/booked') return bookedMark(request, env);
     if (url.pathname === '/tg-update') return tgUpdate(request, env);
+    if (url.pathname === '/sweep') return sweepHTTP(request, env);
     return aiProxy(request, env, ctx);
+  },
+  /* Cron trigger (set the schedule in Cloudflare → Settings → Trigger Events) */
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(followupSweep(env));
   },
 };
 
@@ -255,6 +260,47 @@ async function tgUpdate(request, env) {
     return new Response('ok');
   }
   return new Response('ok');
+}
+
+/* ================= P1: automated follow-up sweep =================
+   Every run: find leads older than 24h with no booking and no follow-up yet,
+   send ONE digest message to the office chat, then mark them so they never repeat. */
+async function followupSweep(env) {
+  if (!env.SB_SERVICE_KEY || !env.TG_BOT_TOKEN) return { ok: false, why: 'not configured' };
+  const cutoff = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+  const q = await sb(env,
+    'leads?booked_at=is.null&followed_up_at=is.null&created_at=lt.' + cutoff +
+    '&select=id,name,phone,email,service,time_pref&order=created_at.asc&limit=20');
+  const rows = await q.json().catch(() => []);
+  if (!Array.isArray(rows) || !rows.length) {
+    console.log('[sweep] nothing to follow up');
+    return { ok: true, count: 0 };
+  }
+  const lines = rows.map(r =>
+    '• ' + (r.name || '—') + ' · ' + (r.phone || r.email || '—') +
+    ' · ' + (r.service || '—') + ' · بازه: ' + prefFa(r.time_pref));
+  const text =
+    '⏰ پیگیری — ' + rows.length + ' لید بیش از ۲۴ ساعت است رزرو نکرده:\n' +
+    lines.join('\n') +
+    '\nدر همان بازه ترجیحی تماس بگیرید؛ بعد از رزرو، پیام «جلسه قطعی شد» خودکار می‌آید.';
+  const tg = await tgApi(env, 'sendMessage', { chat_id: env.TG_CHAT_ID, text: text });
+  if (!tg.ok) { console.log('[sweep] telegram failed'); return { ok: false, why: 'telegram' }; }
+  const ids = rows.map(r => r.id).join(',');
+  const up = await sb(env, 'leads?id=in.(' + ids + ')', {
+    method: 'PATCH',
+    headers: { 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ followed_up_at: new Date().toISOString() }),
+  });
+  console.log('[sweep] notified', rows.length, 'marked:', up.ok);
+  return { ok: true, count: rows.length };
+}
+/* manual trigger for testing: POST /sweep with x-hook-secret */
+async function sweepHTTP(request, env) {
+  if (request.method !== 'POST') return new Response('POST only', { status: 405 });
+  if (request.headers.get('x-hook-secret') !== env.HOOK_SECRET)
+    return new Response('forbidden', { status: 403 });
+  const r = await followupSweep(env);
+  return new Response(JSON.stringify(r), { headers: { 'Content-Type': 'application/json' } });
 }
 
 function prefFa(v) {
